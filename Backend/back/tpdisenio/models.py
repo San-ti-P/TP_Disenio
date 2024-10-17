@@ -55,13 +55,13 @@ class Usuario(models.Model):
     nombre = models.CharField(max_length=30)
     apellido = models.CharField(max_length=30)
 
-class Administrador(models.Model):
+class Administrador(Usuario):
     class Meta:
         db_table = "Administrador"
 
-    id_usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, db_column="id_usuario")
+    usuario_ptr = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, db_column="id_usuario", parent_link=True)
 
-class Bedel(models.Model):
+class Bedel(Usuario):
     class Meta:
         db_table = "Bedel"
 
@@ -70,7 +70,7 @@ class Bedel(models.Model):
         TARDE = "Tarde"
         NOCHE = "Noche"
     
-    id_usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, db_column="id_usuario")
+    usuario_ptr = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, db_column="id_usuario", parent_link=True)
     turno = models.CharField(max_length=10, choices=TipoTurno)
 
 class Sesion(models.Model):
@@ -113,18 +113,18 @@ class Tiene(models.Model):
     nro_aula = models.ForeignKey(Aula, on_delete=models.CASCADE, db_column="nro_aula")
     id_tipo_pizarron = models.ForeignKey(TipoPizarron, on_delete=models.CASCADE, db_column="id_tipo_pizarron")
 
-class AulaSinRecursosAdicionales(models.Model):
+class AulaSinRecursosAdicionales(Aula):
     class Meta:
         db_table = "AulaSinRecursosAdicionales"
 
-    nro_aula = models.OneToOneField(Aula, on_delete=models.CASCADE, primary_key=True, db_column="nro_aula")
+    aula_ptr = models.OneToOneField(Aula, on_delete=models.CASCADE, primary_key=True, db_column="nro_aula", parent_link=True)
     ventilador = models.BooleanField()
 
-class AulaMultimedios(models.Model):
+class AulaMultimedios(Aula):
     class Meta:
         db_table = "AulaMultimedios"
 
-    nro_aula = models.OneToOneField(Aula, on_delete=models.CASCADE, primary_key=True, db_column="nro_aula")
+    aula_ptr = models.OneToOneField(Aula, on_delete=models.CASCADE, primary_key=True, db_column="nro_aula", parent_link=True)
     televisor = models.BooleanField()
     canion = models.BooleanField()
     ventilador = models.BooleanField()
@@ -134,7 +134,7 @@ class AulaInformatica(models.Model):
     class Meta:
         db_table = "AulaInformatica"
 
-    nro_aula = models.OneToOneField(Aula, on_delete=models.CASCADE, primary_key=True, db_column="nro_aula")
+    aula_ptr = models.OneToOneField(Aula, on_delete=models.CASCADE, primary_key=True, db_column="nro_aula", parent_link=True)
     cant_PCs = models.PositiveSmallIntegerField()
     canion = models.BooleanField()
 
