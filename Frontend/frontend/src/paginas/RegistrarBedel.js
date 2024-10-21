@@ -4,6 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { ComponenteInput, ComponenteDesplegableInput } from "../componentes/input.js"
 
+import Modal from "../componentes/modal.js"
+
+
 const App = () => {
 
   const [nombre, cambiarNombre] = useState({campo:'', valido: null});
@@ -82,7 +85,6 @@ const App = () => {
 
 
 
-
   return (
     <main>
       <h1>Datos del bedel</h1>
@@ -155,9 +157,19 @@ const App = () => {
 
         <DivTextoCampoObligatorio>
         <p>Todos los campos son obligatorios</p>
+        
         <DivBotonesSC>  
           <BotonSC type="submit">Siguiente</BotonSC>
-          <BotonSC type="submit">Cancelar</BotonSC> 
+          <Modal 
+            titulo = "¿Está seguro que desea cancelar el registro?"
+            texto = "No podras deshacer esta accion"
+            icono = "question"
+            mostrarCancelar = {true}
+            confirmarTexto = "Confirmar"
+            cancelarTexto = "Regresar"
+            labelBoton ="Cancelar"
+            ></Modal> 
+        
         </DivBotonesSC>
       </DivTextoCampoObligatorio>
 
