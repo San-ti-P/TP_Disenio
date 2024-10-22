@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Usuario, Bedel
+#import services
 
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,5 +12,6 @@ class BedelSerializer(serializers.ModelSerializer):
         model = Bedel
         fields = '__all__'
 
-class BedelFormDataSerializer(serializers.Serializer):
-    pass
+class ErrorsListSerializer(serializers.Serializer):
+    errors = serializers.ListField(default=[])
+    
