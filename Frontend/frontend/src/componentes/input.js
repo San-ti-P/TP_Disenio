@@ -19,37 +19,6 @@ const CustomTooltip = styled(({ className, ...props }) => (
     },
   });
 
-// const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeholder, name}) => {
-
-//     const validacion = (e) => {
-//         if(e.target.value === 'Seleccione una opcion'){
-//             cambiarEstado({...estado, valido: 'false'});
-//         }
-//         else{
-//             cambiarEstado({...estado, valido: 'true'});
-//         }     
-//     }
-    
-//     return (
-//         <React.Fragment>
-//             <Label htmlFor={name} valido={estado.valido}>{label}</Label>
-//             <GrupoInput>
-//             <Select 
-//                 type={tipo} 
-//                 id={name} 
-//                 placeholder={placeholder}
-//                 onBlur={validacion}
-//                 valido={estado.valido}>
-//                 <option disabled selected>Seleccione una opcion</option>
-//                 <option value="mañana">Mañana</option>
-//                 <option value="tarde">Tarde</option>
-//                 <option value="noche">Noche</option>
-//             </Select>
-//             </GrupoInput>
-//         </React.Fragment>
-//     );
-// }
-
 const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeholder, name, leyendaError}) => {
     
     const validacion = (e) => {
@@ -71,7 +40,7 @@ const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeho
             <Select 
                 type={tipo} 
                 id={name}
-                value={estado.campo}  // Control del valor con estado 
+                value={estado.campo} 
                 placeholder={placeholder}
                 onBlur={validacion}
                 onChange={onChange}
