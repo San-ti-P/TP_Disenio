@@ -9,7 +9,7 @@ const Modal = ({titulo, texto, icono, mostrarCancelar, confirmarTexto, cancelarT
 
   const showAlert = () => {
 
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.innerHTML = `
       .swal2-confirm-button {
         background-color: #0075FF !important;
@@ -26,11 +26,13 @@ const Modal = ({titulo, texto, icono, mostrarCancelar, confirmarTexto, cancelarT
       cancelButtonText: cancelarTexto,
       customClass: {
         confirmButton: 'swal2-confirm-button'
-      }
+      },
+      width: 350,
+      
     }).then((result) => { if (result.isConfirmed) { navigate('/menu'); } });
   };
   
-  return (  <BotonSC onClick={showAlert}>{labelBoton}</BotonSC>  );
+  return (  <BotonSC onClick={showAlert} type="button">{labelBoton}</BotonSC>  );
 };
 
 export default Modal;

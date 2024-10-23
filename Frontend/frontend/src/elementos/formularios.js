@@ -1,8 +1,5 @@
 import styled, {css} from "styled-components";
 
-// Importamos los iconos https://fontawesome.com/search
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 const colores = {
     borde: "#0075FF",
     error: "#bb2929",
@@ -79,15 +76,6 @@ const LeyendaError = styled.p`
     display: none;
 `;
 
-const IconoValidacion = styled(FontAwesomeIcon)`
-    position: absolute;
-    right: 10px;
-    bottom: 14px;
-    z-index: 100;
-    font-size: 16px;
-    opacity: 0;
-`;
-
 const DivTextoCampoObligatorio = styled.div`
   display: flex;
   justify-content: space-between; 
@@ -146,6 +134,29 @@ const Select = styled.select`
     outline: none;
     box-shadow: 2px 0px 30px rgba(163, 163, 163, 0.4);
   }
+    // Estilo cuando la validación es positiva
+  ${props => props.valido === 'true' && css`
+    border: 2px solid transparent;
+  `}
+
+  // Estilo cuando la validación es negativa
+  ${props => props.valido === 'false' && css`
+    border: 2px solid ${colores.error} !important;
+    animation: shake 0.5s; // Aplicar la animación de sacudida
+  `}
 `;
 
-export {Formulario, Label, GrupoInput, Input, LeyendaError, IconoValidacion, DivTextoCampoObligatorio, DivBotonesSC, Select, BotonSC};
+const FilaCompletaCheckbox = styled.div`
+  grid-column: 1 / -1; 
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: -20px;
+  font-size: 13px;
+
+  input {
+    margin-right: 5px;
+  }
+`;
+
+export {Formulario, Label, GrupoInput, Input, LeyendaError, DivTextoCampoObligatorio, DivBotonesSC, Select, BotonSC, FilaCompletaCheckbox};

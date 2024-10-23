@@ -1,17 +1,13 @@
 import React, {useState} from "react";
 import { Formulario, DivTextoCampoObligatorio, DivBotonesSC, BotonSC} from "../elementos/formularios.js";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
 import { ComponenteInput, ComponenteDesplegableInput } from "../componentes/input.js"
-
 import Modal from "../componentes/modal.js"
-
 
 const App = () => {
 
   const [nombre, cambiarNombre] = useState({campo:'', valido: null});
   const [apellido, cambiarApellido] = useState({campo:'', valido: null});
-  //const [turno, cambiarTurno] = useState({campo:'', valido: null});
+  const [turno, cambiarTurno] = useState({campo:'', valido: null});
   const [idUsuario, cambiarIdUsuario] = useState({campo:'', valido: null});
   const [contraseña1, cambiarContraseña1] = useState({campo:'', valido: null});
   const [contraseña2, cambiarContraseña2] = useState({campo:'', valido: null});
@@ -55,6 +51,10 @@ const App = () => {
         cambiarApellido({ campo: apellido.campo, valido: 'false' });
         hayErrores = true;
     }
+    if (turno.valido !== 'true') {
+      cambiarTurno({ campo: turno.campo, valido: 'false' });
+      hayErrores = true;
+  }
     if (idUsuario.valido !== 'true') {
         cambiarIdUsuario({ campo: idUsuario.campo, valido: 'false' });
         hayErrores = true;
@@ -73,16 +73,14 @@ const App = () => {
         setTimeout(() => cambiarAnimarErrores(false), 1000);
     } else {
         cambiarFormularioValido(true);
-        // Aquí puedes proceder con el envío del formulario
-        // Restablecer los campos si es necesario
         cambiarNombre({ campo: '', valido: null });
         cambiarApellido({ campo: '', valido: null });
+        cambiarTurno({ campo: '', valido: null });
         cambiarIdUsuario({ campo: '', valido: null });
         cambiarContraseña1({ campo: '', valido: null });
         cambiarContraseña2({ campo: '', valido: null });
     }
 };
-
 
 
   return (
@@ -109,10 +107,13 @@ const App = () => {
           placeholder="Ingrese su apellido"
           name = "apellido" 
           leyendaError = "Descripcion cond de apellido"
-          expresionRegular = {expresiones.apellido}>
+          expresionRegular = {expresiones.apellido}
+          >
         </ComponenteInput>
-          
+
         <ComponenteDesplegableInput 
+          estado={turno}
+          cambiarEstado={cambiarTurno}
           tipo = "text" 
           label="Turno" 
           placeholder="Seleccione un turno"
@@ -129,7 +130,8 @@ const App = () => {
           placeholder="ID de usuario"
           name = "idUsuario" 
           leyendaError = "Descripcion cond de idUsuario" 
-          expresionRegular = {expresiones.idUsuario}>
+          expresionRegular = {expresiones.idUsuario}
+          textoTooltip = {`El campo debe comenzar con las letras "utn-" seguidas de exactamente seis dígitos numéricos. \n Ejemplo: utn-123456`}>
         </ComponenteInput>
 
         <ComponenteInput 
@@ -140,7 +142,9 @@ const App = () => {
           placeholder="Ingrese su contraseña"
           name = "contraseña" 
           leyendaError = "Descripcion cond de contraseña" 
-          expresionRegular = {expresiones.contraseña}>
+          expresionRegular = {expresiones.contraseña}
+          textoTooltip = {`La contraseña debe: \n -Tener una longitud mínima de 6 caracteres. \n -Contener al menos un signo especial. \n -Contener al menos una letra mayúscula.\n -Contener al menos un digito.\n -No ser igual a una contraseña utilizada anteriormente por el usuario.`}>
+          
         </ComponenteInput>
 
         <ComponenteInput 
