@@ -1,23 +1,24 @@
 import React, {useState} from "react";
-import {Input, Label, GrupoInput, Select, LeyendaError, FilaCompletaCheckbox } from "./../elementos/formularios";
+import {Input, Label, GrupoInput, Select, LeyendaError, FilaCompletaCheckbox, IconoPassword} from "./../elementos/formularios";
 import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
+import { Eye, EyeOff } from 'lucide-react';
 
 const CustomTooltip = styled(({ className, ...props }) => (
     <Tooltip {...props} classes={{ popper: className }} />
-  ))({
+))({
     [`& .MuiTooltip-tooltip`]: {
-      backgroundColor: "#f5f5f5", 
-      color: "#333",               
-      fontSize: "0.875rem",         
-      border: "px solid #dadde9",  
-      padding: "15px",              
-      borderRadius: "4px",          
+        backgroundColor: "#f5f5f5", 
+        color: "#333",               
+        fontSize: "0.875rem",         
+        border: "px solid #dadde9",  
+        padding: "15px",              
+        borderRadius: "4px",          
     },
     [`& .MuiTooltip-arrow`]: {
-      color: "#f5f5f5", 
+        color: "#f5f5f5", 
     },
-  });
+});
 
 const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeholder, name, leyendaError}) => {
     
@@ -57,23 +58,26 @@ const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeho
 }
 
 const ComponenteInput = ({estado, cambiarEstado, tipo, label, placeholder, name, leyendaError, expresionRegular, funcion, textoTooltip}) => {
-
     const [mostrarPassword, setMostrarPassword] = useState(false);
+    const [touched, setTouched] = useState(false);
 
     const onChange = (e) => {
+        setTouched(true);
         cambiarEstado({...estado, campo: e.target.value});
     }
 
     const validacion = () => {
-        if(expresionRegular){
-            if(expresionRegular.test(estado.campo)){
-                cambiarEstado({...estado, valido: 'true'});
-            } else {
-                cambiarEstado({...estado, valido: 'false'});
-            } 
-        }
-        if(funcion){
-            funcion();
+        if(touched) {//solo validar si el campo fue tocado 
+            if(expresionRegular){
+                if(expresionRegular.test(estado.campo)){
+                    cambiarEstado({...estado, valido: 'true'});
+                } else {
+                    cambiarEstado({...estado, valido: 'false'});
+                } 
+            }
+            if(funcion){
+                funcion();
+            }
         }
     }
 
@@ -105,8 +109,8 @@ const ComponenteInput = ({estado, cambiarEstado, tipo, label, placeholder, name,
                             onChange={onChange}
                             onKeyUp={validacion}
                             onBlur={validacion}
-                            valido={estado.valido}>
-                        </Input>
+                            valido={estado.valido}
+                        />
                     </CustomTooltip>
                 ) : (
                     <Input 
@@ -117,23 +121,18 @@ const ComponenteInput = ({estado, cambiarEstado, tipo, label, placeholder, name,
                         onChange={onChange}
                         onKeyUp={validacion}
                         onBlur={validacion}
-                        valido={estado.valido}>
-                    </Input>
+                        valido={estado.valido}
+                    />
+                )}
+                {tipo === "password" && (
+                    <IconoPassword onClick={() => setMostrarPassword(!mostrarPassword)}>
+                        {mostrarPassword ? 
+                            <EyeOff size={20} color="#555"/> : 
+                            <Eye size={20} color="#555"/>
+                        }
+                    </IconoPassword>
                 )}
             </GrupoInput>
-            
-            {tipo === "password" && (
-                <FilaCompletaCheckbox>
-                    <input
-                        type="checkbox"
-                        id={`mostrar-${name}`}
-                        checked={mostrarPassword}
-                        onChange={() => setMostrarPassword(!mostrarPassword)}
-                    />
-                    <label htmlFor={`mostrar-${name}`}>Mostrar contraseña</label>
-                </FilaCompletaCheckbox>
-            )}
-            
             <LeyendaError>{leyendaError}</LeyendaError>
         </React.Fragment>
     );

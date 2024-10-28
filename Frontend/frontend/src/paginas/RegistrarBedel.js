@@ -155,7 +155,7 @@ const App = () => {
           placeholder="Confirme la contraseña"
           name = "confiarmarContraseña" 
           leyendaError = "Descripcion cond de confirmar contraseña" 
-          //expresionRegular = {expresiones.contraseña}
+          expresionRegular = {expresiones.contraseña}
           funcion={validarContraseña2}>
         </ComponenteInput>
 

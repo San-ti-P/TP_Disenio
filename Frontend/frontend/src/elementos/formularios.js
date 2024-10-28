@@ -29,6 +29,7 @@ const Label = styled.label`
     ${props => props.valido === 'false' && css`
       color: ${colores.error} !important;
     `}
+    user-select: none;
 `;
 
 const GrupoInput = styled.div`
@@ -47,9 +48,9 @@ const Input = styled.input`
     border: 2px solid transparent;
 
     &:focus {
-    border: 2px solid ${colores.borde};
-    outline: none;
-    box-shadow: 3px 0px 30px rgba(163,163,163, 0.4);
+        border: 2px solid ${colores.borde};
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(0, 117, 255, 0.1);
     }
 
     ${props => props.valido === 'true' && css`
@@ -150,7 +151,7 @@ const FilaCompletaCheckbox = styled.div`
   grid-column: 1 / -1; 
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-end; 
   margin-top: -20px;
   font-size: 13px;
 
@@ -159,4 +160,27 @@ const FilaCompletaCheckbox = styled.div`
   }
 `;
 
-export {Formulario, Label, GrupoInput, Input, LeyendaError, DivTextoCampoObligatorio, DivBotonesSC, Select, BotonSC, FilaCompletaCheckbox};
+const IconoPassword = styled.div`
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 100;
+    transition: all 0.3s ease;
+    padding: 5px;
+    border-radius: 50%;
+    user-select: none;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        transform: translateY(-50%) scale(1.1);
+    }
+
+    &:active {
+        transform: translateY(-50%) scale(0.95);
+    }
+`;
+
+
+export {Formulario, Label, GrupoInput, Input, LeyendaError, DivTextoCampoObligatorio, DivBotonesSC, Select, BotonSC, FilaCompletaCheckbox, IconoPassword};
