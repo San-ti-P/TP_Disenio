@@ -1,8 +1,9 @@
-from abc import ABC, abstractclassmethod
+from abc import ABC     #, abstractclassmethod
 #from .serializers import RespuestaRegistrarBedelSerializer
 from ..models import Bedel
 
 class RespuestaRegistrarBedel(object):
+    """Se usa para construir el objeto respuesta del método .alta_bedel() de GestorBedel"""
     def __init__(self, campos_validos, contrasenia_valida, id_valido):
         self.errors = []
         if not campos_validos:
@@ -13,42 +14,71 @@ class RespuestaRegistrarBedel(object):
             self.errors.append("id_existente")
 
 class GestorBedel():
+    """Clase encargada de suministrar todo la lógica concerniente a la clase Bedel"""
     def __init__(self, gestor_sesion, gestor_usuario, gestor_contrasenia,
-                           bedelDAO, administradorDAO) -> None:
+                           bedel_DAO, administrador_DAO) -> None:
+        
         self.gestor_sesion = gestor_sesion
         self.gestor_usuario = gestor_usuario
         self.gestor_contrasenia = gestor_contrasenia
-        self.bedelDAO = bedelDAO
-        self.administradorDAO = administradorDAO
+        self.bedel_DAO = bedel_DAO
+        self.administrador_DAO = administrador_DAO
 
     def get_datos_bedel(self, id_usuario):
+        """Obtiene los datos del bedel
+        Parameters:
+        id_usuario: str
+            -- ID del bedel para el que se solicitan los datos"""
         pass
 
     def validar_datos(self, nombre, apellido, turno):
-        valido = True
+        """Valida datos de entrada. Retorna True si estos cumplen el formato requerido y False en caso contrario
+        Parametros:
+        nombre: str
+            -- nombre del bedel
+        apellido: str
+            -- apellido del bedel
+        turno: str
+            -- turno del bedel
+        """
         if not (len(nombre)>0 and len(nombre)<30):
-            valido = False
+            return False
         if not (len(apellido)>0 and len(apellido)<30):
-            valido = False
+            return False
         
         tipos_turno = []
         for tupla in Bedel.TipoTurno.choices:
             tipos_turno.append(tupla[1])
-        print(tipos_turno)
         
         if turno not in tipos_turno:
-            valido = False
-        return valido
-    '''Se usa true momentáneamente para pruebas'''
+            return False
+        
+        return True
     
     def alta_bedel(self, nombre, apellido, turno, id_usuario, contrasenia):
+        """
+        Principal responsable de implementar el CU13: Registrar Bedel
+        Parametros:
+        nombre: str
+            -- nombre del bedel
+        apellido: str
+            -- apellido del bedel
+        turno: str
+            -- turno del bedel
+        id_usuario: str
+            -- ID del bedel
+        contrasenia: str
+            -- contraseña del bedel
+        """
         campos_validos = False
         contrasenia_valida = False
         id_unico = False
         if self.validar_datos(nombre, apellido, turno):
             campos_validos = True
+        
         if self.gestor_usuario.validacion_id_unico(id_usuario):
             id_unico = True
+        
         if self.gestor_contrasenia.validar_politicas(contrasenia):
             contrasenia_valida = True
 
@@ -59,52 +89,86 @@ class GestorBedel():
         
         response = RespuestaRegistrarBedel(campos_validos, contrasenia_valida, id_unico)
         return response
-        '''Serializar!!!'''
-
-        #{
-        #   errors = []
-        #}
-        #
-        #
         '''Terminar'''
 
     def baja_bedel(self, id_usuario):
+        """
+        Principal responsable de implementar el CU15: Eliminar Bedel
+        Parametros:
+        id_usuario: str
+            -- ID del bedel a eliminar
+        """
         pass
 
-    def modificar_bedel(self, nombre, apellido, turno, id_usuario, contraseña, conf_contraseña):
+    def modificar_bedel(self, nombre, apellido, turno, id_usuario, contrasenia):
+        """
+        Principal responsable de implementar el CU14: Modificar Bedel
+        Parametros:
+        nombre: str
+            -- nombre del bedel
+        apellido: str
+            -- apellido del bedel
+        turno: str
+            -- turno del bedel
+        id_usuario: str
+            -- ID del bedel
+        contrasenia: str
+            -- contraseña del bedel
+        """
         pass
 
-    def buscar_por_apellido(self, apellido):
-        pass
-
-    def buscar_por_turno(self, turno):
-        pass
-
-    def buscar_por_turno_y_apellido(self, turno, apellido):
+    def buscar_bedel(self, apellido, turno):
+        """
+        Principal responsable de implementar el CU16: Buscar Bedel
+        Parametros:
+        apellido: str
+            -- apellido del bedel a buscar. Por defecto es None
+        turno: TipoTurno
+            -- turno del bedel a buscar. Por defecto es None
+        """
         pass
 
 
 class GestorUsuario():
-    def __init__(self, bedelDAO, administradorDAO) -> None:
-        self.bedelDAO = bedelDAO
-        self.administradorDAO = administradorDAO
+    """Clase encargada de suministrar todo la lógica concerniente a la clase Usuario"""
+    def __init__(self, bedel_DAO, administrador_DAO) -> None:
+        self.bede_lDAO = bedel_DAO
+        self.administrador_DAO = administrador_DAO
     
     def validacion_id_unico(self, id_usuario):
+        """
+        Valida que no exista otro usuario con el mismo ID. Retorna True si id_usuario está disponible y False en caso contrario
+        Parametros:
+        id_usuario: str
+            -- ID del bedel a crear
+        """
         return True
-    '''Se usa true momentáneamente para pruebas'''
+    #Se usa true momentáneamente para pruebas
 
-class GestorContraseña():
+class GestorContrasenia():
+    """Clase encargada de suministrar todo la lógica concerniente a la contraseñas"""
     def __init__(self) -> None:
         pass
     
     def get_politicas(self):
-        longitud_maxima = 50
+        """
+        Obtiene las políticas de seguridad que deben cumplir las contraseñas.
+        Retorna una lista con los siguientes valores:
+            Longitud mínima de la contraseña: int
+            Si debe contener signos especiales: boolean
+            Si debe contener mayúsculas: boolean
+            Si debe contener dígitos: boolean
+            Si puede ser igual a una contraseña anterior del usuario: boolean
+        """
+        #Políticas obtenidas del sistema externo hardcodeadas
+        #Consultar y modificar
+        longitud_minima = 8
         contiene_signos_esp = True
         contiene_mayus = True
         contiene_dig = True
         repite_anterior = True
         politicas = []
-        politicas.append(longitud_maxima)
+        politicas.append(longitud_minima)
         politicas.append(contiene_signos_esp)
         politicas.append(contiene_mayus)
         politicas.append(contiene_dig)
@@ -112,23 +176,66 @@ class GestorContraseña():
         return politicas
 
     def validar_politicas(self, contrasenia):
+        """
+        Valida si la contraseña cumple las políticas de seguridad. Retorna una True en ese caso y False en caso contrario
+        """
         politicas = self.get_politicas()
-        if len(contrasenia)>politicas[0]:
+
+        if len(contrasenia)<politicas[0]:
             return False
+        
+        if politicas[1]:
+            #La contraseña debe contener @#$%&*
+            sig_esp = ['@', '#', '$', '%', '&', '*']
+            cumple_sig_esp = False
+            for s in sig_esp:
+                if s in contrasenia:
+                    cumple_sig_esp = cumple_sig_esp or True
+            if not cumple_sig_esp:
+                return False
+        
+        if politicas[2]:
+            #La contraseña debe contener al menos una mayúscula
+            cumple_mayus = False
+            for c in contrasenia:
+                if c.isupper():
+                    cumple_mayus = True
+                    break
+            if not cumple_mayus:
+                return False
+        
+        if politicas[3]:
+            #La contraseña debe contener al menos un dígito
+            cumple_dig = False
+            for c in contrasenia:
+                if c.isdigit():
+                    cumple_dig = True
+                    break
+            if not cumple_dig:
+                return False
+
+        if not politicas[4]:
+            #Consultar e implementar
+            pass
+
         return True
-    '''Se usa true momentáneamente para pruebas'''
 
 class GestorSesion():
+    """Clase encargada de suministrar todo la lógica concerniente a la clase Sesion"""
     pass
 
 class AdministradorDAO(ABC):
+    """Interfaz encargada de definir el protocolo para persistir datos de la clase Administrador"""
     pass
 
 class BedelDAO(ABC):
+    """Interfaz encargada de definir el protocolo para persistir datos de la clase Bedel"""
     pass
 
 class SQLAdministradorDAO(AdministradorDAO):
+    """Clase encargada de implementar el protocolo para persistir datos de la clase Administrador en una BDD SQL (PostgreSQL)"""
     pass
 
 class SQLBedelDAO(BedelDAO):
+    """Clase encargada de implementar el protocolo para persistir datos de la clase Bedel en una BDD SQL (PostgreSQL)"""
     pass
