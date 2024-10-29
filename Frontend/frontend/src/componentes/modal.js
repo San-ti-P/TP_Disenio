@@ -28,6 +28,7 @@ const Modal = ({titulo, texto, icono, mostrarCancelar, confirmarTexto, cancelarT
         confirmButton: 'swal2-confirm-button'
       },
       width: 350,
+      toast: true,
       
     }).then((result) => { if (result.isConfirmed) { navigate('/menu'); } });
   };
@@ -58,11 +59,11 @@ const ModalSiguiente = ({titulo, texto, icono, mostrarCancelar, confirmarTexto, 
       customClass: {
       confirmButton: 'swal2-confirm-button'
       },
-      width: 350,
+      width: 275,
+      toast: true,
       
     }).then((result) => { 
       if (result.isConfirmed) { 
-      // navigate('/registrar-bedel'); 
       window.location.reload(); // Para hacer un F5 al haber cargado el bedel, o podemos navegar y hacer el F5. PENSARLO!
       } 
     });

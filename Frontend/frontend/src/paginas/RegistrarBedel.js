@@ -15,8 +15,8 @@ const App = () => {
   const [animarErrores, cambiarAnimarErrores] = useState(false);
 
   const expresiones = {
-    nombre: /^[a-zA-ZÀ-ÿ\s]{4,40}$/, // Letras y espacios, pueden llevar acentos- min 4 letras
-    apellido: /^[a-zA-ZÀ-ÿ\s]{4,40}$/, // Letras y espacios, pueden llevar acentos- min 4 letras
+    nombre: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 4 letras
+    apellido: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 4 letras
     idUsuario: /^utn-\d{6}$/, // Formato: utn- seguido de exactamente 6 dígitos.
     contraseña: /^(?=.*[!@#$%^&*()_\-+={[}\]|:;"'<>,.?/~`])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*()_\-+={[}\]|:;"'<>,.?/~`]{6,64}$/
     // Mínimo 6 y máximo 64 caracteres, al menos un signo especial, una letra mayúscula y un dígito
@@ -96,7 +96,8 @@ const App = () => {
           placeholder="Ingrese su nombre"
           name = "nombre" 
           leyendaError = "Descripcion cond de nombre" 
-          expresionRegular = {expresiones.nombre}>
+          expresionRegular = {expresiones.nombre}
+          >
         </ComponenteInput>
         
         <ComponenteInput 
@@ -156,7 +157,8 @@ const App = () => {
           name = "confiarmarContraseña" 
           leyendaError = "Descripcion cond de confirmar contraseña" 
           expresionRegular = {expresiones.contraseña}
-          funcion={validarContraseña2}>
+          funcion={validarContraseña2}
+          >
         </ComponenteInput>
 
         <DivTextoCampoObligatorio>
