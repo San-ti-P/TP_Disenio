@@ -15,8 +15,8 @@ const App = () => {
   const [animarErrores, cambiarAnimarErrores] = useState(false);
 
   const expresiones = {
-    nombre: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 4 letras
-    apellido: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 4 letras
+    nombre: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
+    apellido: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
     idUsuario: /^utn-\d{6}$/, // Formato: utn- seguido de exactamente 6 dígitos.
     contraseña: /^(?=.*[!@#$%^&*()_\-+={[}\]|:;"'<>,.?/~`])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*()_\-+={[}\]|:;"'<>,.?/~`]{6,64}$/
     // Mínimo 6 y máximo 64 caracteres, al menos un signo especial, una letra mayúscula y un dígito
@@ -88,15 +88,15 @@ const App = () => {
       <h1>Datos del bedel</h1>
       <Formulario action="" onSubmit={onSubmit}>
       
-        <ComponenteInput 
+        {/* <ComponenteInput 
           estado={nombre}
           cambiarEstado={cambiarNombre}
           tipo = "text" 
           label="Nombre" 
           placeholder="Ingrese su nombre"
           name = "nombre" 
-          leyendaError = "Descripcion cond de nombre" 
           expresionRegular = {expresiones.nombre}
+          textoTooltip = {nombre.valido? "El nombre debe tener minimo 2 letras y no tener números" : null } 
           >
         </ComponenteInput>
         
@@ -107,10 +107,32 @@ const App = () => {
           label="Apellido" 
           placeholder="Ingrese su apellido"
           name = "apellido" 
-          leyendaError = "Descripcion cond de apellido"
           expresionRegular = {expresiones.apellido}
+          textoTooltip = "El apellido debe tener minimo 2 letras y no tener números"
           >
-        </ComponenteInput>
+        </ComponenteInput> */}
+
+          <ComponenteInput
+            estado={nombre}
+            cambiarEstado={cambiarNombre}
+            tipo="text"
+            label="Nombre"
+            placeholder="Ingrese su nombre"
+            name="nombre"
+            expresionRegular= {expresiones.nombre}
+            textoTooltip={nombre.valido === 'false' ? "El nombre debe tener mínimo 2 letras y no tener números" : null}
+            ></ComponenteInput>
+
+          <ComponenteInput
+            estado={apellido}
+            cambiarEstado={cambiarApellido}
+            tipo="text"
+            label="Apellido"
+            placeholder="Ingrese su apellido"
+            name="apellido"
+            expresionRegular={expresiones.apellido}
+            textoTooltip={apellido.valido === 'false' ? "El apellido debe tener mínimo 2 letras y no tener números" : null}
+          ></ComponenteInput>
 
         <ComponenteDesplegableInput 
           estado={turno}
@@ -119,7 +141,6 @@ const App = () => {
           label="Turno" 
           placeholder="Seleccione un turno"
           name = "turno" 
-          leyendaError = "Descripcion cond de lista" 
         >
         </ComponenteDesplegableInput>
 
@@ -130,7 +151,6 @@ const App = () => {
           label="ID usuario" 
           placeholder="ID de usuario"
           name = "idUsuario" 
-          leyendaError = "Descripcion cond de idUsuario" 
           expresionRegular = {expresiones.idUsuario}
           textoTooltip = {`El campo debe comenzar con las letras "utn-" seguidas de exactamente seis dígitos numéricos. \n Ejemplo: utn-123456`}>
         </ComponenteInput>
@@ -142,7 +162,7 @@ const App = () => {
           label="Contraseña" 
           placeholder="Ingrese su contraseña"
           name = "contraseña" 
-          leyendaError = "Descripcion cond de contraseña" 
+          // leyendaError = "Descripcion cond de contraseña" 
           expresionRegular = {expresiones.contraseña}
           textoTooltip = {`La contraseña debe: \n -Tener una longitud mínima de 6 caracteres. \n -Contener al menos un signo especial. \n -Contener al menos una letra mayúscula.\n -Contener al menos un digito.\n -No ser igual a una contraseña utilizada anteriormente por el usuario.`}>
           
@@ -155,7 +175,7 @@ const App = () => {
           label="Confirmar contraseña" 
           placeholder="Confirme la contraseña"
           name = "confiarmarContraseña" 
-          leyendaError = "Descripcion cond de confirmar contraseña" 
+          // leyendaError = "Descripcion cond de confirmar contraseña" 
           expresionRegular = {expresiones.contraseña}
           funcion={validarContraseña2}
           >
