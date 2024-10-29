@@ -14,4 +14,6 @@ class BedelSerializer(serializers.ModelSerializer):
 
 class ErrorsListSerializer(serializers.Serializer):
     errors = serializers.ListField(default=[])
-    
+
+class PoliticasSerializer(serializers.Serializer):
+    politicas = serializers.CharField()

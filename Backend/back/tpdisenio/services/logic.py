@@ -94,13 +94,27 @@ class GestorUsuario():
     '''Se usa true momentáneamente para pruebas'''
 
 class GestorContraseña():
-    def __init__(self, sesionDAO) -> None:
-        self.sesionDAO = sesionDAO
+    def __init__(self) -> None:
+        pass
     
     def get_politicas(self):
-        pass
+        longitud_maxima = 50
+        contiene_signos_esp = True
+        contiene_mayus = True
+        contiene_dig = True
+        repite_anterior = True
+        politicas = []
+        politicas.append(longitud_maxima)
+        politicas.append(contiene_signos_esp)
+        politicas.append(contiene_mayus)
+        politicas.append(contiene_dig)
+        politicas.append(repite_anterior)
+        return politicas
 
-    def validar_politicas(self, contraseña):
+    def validar_politicas(self, contrasenia):
+        politicas = self.get_politicas()
+        if len(contrasenia)>politicas[0]:
+            return False
         return True
     '''Se usa true momentáneamente para pruebas'''
 
@@ -111,12 +125,6 @@ class AdministradorDAO(ABC):
     pass
 
 class BedelDAO(ABC):
-    pass
-
-class SesionDAO(ABC):
-    pass
-
-class SQLSesionDAO(SesionDAO):
     pass
 
 class SQLAdministradorDAO(AdministradorDAO):

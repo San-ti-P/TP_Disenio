@@ -73,6 +73,7 @@ class Bedel(Usuario):
     usuario_ptr = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, db_column="id_usuario", parent_link=True)
     turno = models.CharField(max_length=10, choices=TipoTurno)
 
+'''
 class Sesion(models.Model):
     class Meta:
         db_table = "Sesion"
@@ -81,6 +82,7 @@ class Sesion(models.Model):
     fecha_entrada = models.DateField()
     fecha_salida = models.DateField()
     id_usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, db_column="id_usuario")
+'''
 
 class TipoPizarron(models.Model):
     class Meta:
