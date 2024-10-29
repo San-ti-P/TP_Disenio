@@ -35,4 +35,40 @@ const Modal = ({titulo, texto, icono, mostrarCancelar, confirmarTexto, cancelarT
   return (  <BotonSC onClick={showAlert} type="button">{labelBoton}</BotonSC>  );
 };
 
-export default Modal;
+
+const ModalSiguiente = ({titulo, texto, icono, mostrarCancelar, confirmarTexto, cancelarTexto, labelBoton}) => {
+  const navigate = useNavigate();
+  const showAlert = () => {
+
+    const style = document.createElement("style");
+    style.innerHTML =  `
+      .swal2-confirm-button {
+        background-color: #0075FF !important;
+      }
+    ` ;
+    document.head.appendChild(style);
+
+    Swal.fire({
+      title: titulo,
+      text: texto,
+      icon: icono,
+      showCancelButton: mostrarCancelar,
+      confirmButtonText: confirmarTexto,
+      cancelButtonText: cancelarTexto,
+      customClass: {
+      confirmButton: 'swal2-confirm-button'
+      },
+      width: 350,
+      
+    }).then((result) => { 
+      if (result.isConfirmed) { 
+      // navigate('/registrar-bedel'); 
+      window.location.reload(); // Para hacer un F5 al haber cargado el bedel, o podemos navegar y hacer el F5. PENSARLO!
+      } 
+    });
+    };
+
+return (  <BotonSC onClick={showAlert} type="sumbit">{labelBoton}</BotonSC>  );
+};
+
+export {Modal, ModalSiguiente};

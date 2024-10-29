@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { Formulario, DivTextoCampoObligatorio, DivBotonesSC, BotonSC} from "../elementos/formularios.js";
 import { ComponenteInput, ComponenteDesplegableInput } from "../componentes/input.js"
-import Modal from "../componentes/modal.js"
+import { Modal, ModalSiguiente} from "../componentes/modal.js"
 
 const App = () => {
 
@@ -161,9 +161,17 @@ const App = () => {
 
         <DivTextoCampoObligatorio>
         <p>Todos los campos son obligatorios</p>
-        
-        <DivBotonesSC>  
-          <BotonSC type="submit">Siguiente</BotonSC>
+
+        <DivBotonesSC>
+          <ModalSiguiente
+            titulo = "Bedel registrado satisfactoriamente"
+            texto = ""
+            icono = "info"
+            mostrarCancelar = {false}
+            confirmarTexto = "Confirmar"
+            cancelarTexto = "Regresar"
+            labelBoton ="Siguiente">
+          </ModalSiguiente>
           <Modal 
             titulo = "¿Está seguro que desea cancelar el registro?"
             texto = "No podras deshacer esta accion"
@@ -173,7 +181,7 @@ const App = () => {
             cancelarTexto = "Regresar"
             labelBoton ="Cancelar"
             ></Modal> 
-        
+
         </DivBotonesSC>
       </DivTextoCampoObligatorio>
 
