@@ -31,7 +31,7 @@ class GestorBedel():
             -- ID del bedel para el que se solicitan los datos"""
         pass
 
-    def validar_datos(self, nombre, apellido, turno):
+    def validar_datos(self, nombre, apellido, turno, id_usuario):
         """Valida datos de entrada. Retorna True si estos cumplen el formato requerido y False en caso contrario
         Parametros:
         nombre: str
@@ -40,6 +40,8 @@ class GestorBedel():
             -- apellido del bedel
         turno: str
             -- turno del bedel
+        id_usuario: str
+            -- ID del bedel
         """
         if not (len(nombre)>0 and len(nombre)<30):
             return False
@@ -53,6 +55,8 @@ class GestorBedel():
         if turno not in tipos_turno:
             return False
         
+        if len(id_usuario)==0 or len(id_usuario)>10:
+            return False
         return True
     
     def alta_bedel(self, nombre, apellido, turno, id_usuario, contrasenia):
@@ -73,7 +77,7 @@ class GestorBedel():
         campos_validos = False
         contrasenia_valida = False
         id_unico = False
-        if self.validar_datos(nombre, apellido, turno):
+        if self.validar_datos(nombre, apellido, turno, id_usuario):
             campos_validos = True
         
         if self.gestor_usuario.validacion_id_unico(id_usuario):
@@ -179,9 +183,10 @@ class GestorContrasenia():
         """
         Valida si la contraseña cumple las políticas de seguridad. Retorna una True en ese caso y False en caso contrario
         """
+
         politicas = self.get_politicas()
 
-        if len(contrasenia)<politicas[0]:
+        if len(contrasenia)<politicas[0] or len(contrasenia)>50:
             return False
         
         if politicas[1]:
