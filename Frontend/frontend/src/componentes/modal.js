@@ -1,80 +1,45 @@
-// import React from 'react';
-// import Swal from 'sweetalert2';
-// import { useNavigate } from 'react-router-dom';
-// import { BotonSC } from '../elementos/formularios'; 
-
-// const CustomModal = ({
-//   titulo,
-//   texto,
-//   icono,
-//   mostrarCancelar = false,
-//   confirmarTexto = 'Confirmar',
-//   cancelarTexto = 'Regresar',
-//   labelBoton,
-//   width = 350,
-//   onConfirm,
-//   type = "button"
-// }) => {
-
-//   const showAlert = () => {
-//     const style = document.createElement("style");
-//     style.innerHTML = `
-//       .swal2-confirm-button {
-//         background-color: #0075FF !important;
-//         user-select: none;
-//       }
-//     `;
-//     document.head.appendChild(style);
-
-//     Swal.fire({
-//       title: titulo,
-//       text: texto,
-//       icon: icono,
-//       showCancelButton: mostrarCancelar,
-//       confirmButtonText: confirmarTexto,
-//       cancelButtonText: cancelarTexto,
-//       allowOutsideClick: false, // Deshabilita el clic fuera del modal
-//       customClass: {
-//         confirmButton: 'swal2-confirm-button'
-//       },
-//       width,
-//       toast: true,
-//     }).then((result) => {
-//       if (result.isConfirmed && onConfirm) {
-//         onConfirm();
-//       }
-//     });
-//   };
-
-//   return <BotonSC onClick={showAlert} type={type}>{labelBoton}</BotonSC>;
-// };
-
-// const CancelarModal = (props) => {
-//   const navigate = useNavigate();
-//   return (
-//     <CustomModal
-//       {...props}
-//       onConfirm={() => navigate('/menu')}
-//     />
-//   );
-// };
-
-// const SiguienteModal = (props) => (
-//   <CustomModal
-//     {...props}
-//     onConfirm={() => window.location.reload()}
-//     type="submit"
-//     width={275}
-//   />
-// );
-
-// export { CustomModal, CancelarModal, SiguienteModal };
-
-
 import React from 'react';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { BotonSC } from '../elementos/formularios'; 
+import axios from "axios";  
+
+// const getPoliticas = async () => {
+//   try {
+//     const url = ....
+//     const respuesta = await axios.get(url);
+//     console.log(respuesta);
+//   }
+//   catch (error) {
+//     console.error(error)
+//   }
+// }
+
+// const enviarFormulario = async (datosFormulario) => {
+//   try {
+//     const url = "http://127.0.0.1:8000/tpdisenio/RegistrarBedel" // url API
+//     const respuesta = await axios.post(url, datosFormulario);
+//     console.log(respuesta);
+//   }
+//   catch (error) {
+//     console.error(error)
+//   }
+// }
+
+const enviarFormulario = async (datosFormulario) => {
+  try {
+    const url = "http://127.0.0.1:8000/tpdisenio/RegistrarBedel";
+    const respuesta = await axios.post(url, datosFormulario, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    console.log(respuesta);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 
 const CustomModal = ({
   titulo,
@@ -186,13 +151,22 @@ const CancelarModal = (props) => {
   );
 };
 
+// const SiguienteModal = (props) => (
+//   <CustomModal
+//     {...props}
+//     onConfirm={() => window.location.reload()}
+//     type="submit"
+//     width={375}
+//   />
+// );
+
 const SiguienteModal = (props) => (
   <CustomModal
     {...props}
-    onConfirm={() => window.location.reload()}
+    onConfirm={() => Swal.fire('Formulario enviado', 'El formulario se ha enviado correctamente', 'success')}
     type="submit"
     width={375}
   />
 );
 
-export { CustomModal, CancelarModal, SiguienteModal };;
+export { CustomModal, CancelarModal, SiguienteModal, enviarFormulario };

@@ -20,8 +20,9 @@ def buscar_bedel_api_view(request):
 @api_view(['GET', 'POST'])
 def registrar_bedel_api_view(request):
     """
-    Define el comportamiento de .../RegistrarBedel. Acepta solicitudes GET y POST
+    Define el comportamiento de .../RegistrarBedel. Acepta solicitudes GET, y POST
     """
+        
     if request.method == 'GET':
         lista_politicas = services.gestor_contrasenia.get_politicas()
         politicas = "Longitud mínima de la contraseña: "+str(lista_politicas[0])+".\n"

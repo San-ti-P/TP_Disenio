@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-dff0c*1)&hfeb23d0)tdv!741ld-y_4i2my$^&3ot8fut=nc_u
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
@@ -61,13 +61,38 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-]
+#CORS_ALLOWED_ORIGINS = [
+ #   'http://localhost:3000',
+  #  'https://localhost:3000',
+#]
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-]
+CORS_ALLOW_ALL_ORIGINS = True;
+
+#CORS_ORIGIN_WHITELIST = [
+#    'http://localhost:3000/',
+#    'https://localhost:3000',
+#]
+
+#CORS_ALLOW_METHODS = [
+#    'GET',
+#    'POST',
+#    'OPTIONS',
+#    'DELETE',
+#    'PUT',
+#    'PATCH',
+#]
+
+#CORS_ALLOW_HEADERS = [
+#    'accept',
+#    'accept-encoding',
+#    'authorization',
+#    'content-type',
+#    'dnt',
+#    'origin',
+#    'user-agent',
+#    'x-csrftoken',
+#    'x-requested-with',
+#]
 
 ROOT_URLCONF = 'back.urls'
 

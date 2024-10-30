@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import { Formulario, DivTextoCampoObligatorio, DivBotonesSC } from "../elementos/formularios.js";
 import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "../componentes/input.js"
 import { SiguienteModal, CancelarModal} from "../componentes/modal.js"
+import { enviarFormulario } from "../componentes/modal.js"
+
 
 const App = () => {
 
@@ -37,7 +39,7 @@ const App = () => {
     }
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     
     let hayErrores = false;
@@ -72,13 +74,21 @@ const App = () => {
     if (hayErrores) {
         setTimeout(() => cambiarAnimarErrores(false), 1000);
     } else {
-        cambiarFormularioValido(true);
-        cambiarNombre({ campo: '', valido: null });
-        cambiarApellido({ campo: '', valido: null });
-        cambiarTurno({ campo: '', valido: null });
-        cambiarIdUsuario({ campo: '', valido: null });
-        cambiarContraseña1({ campo: '', valido: null });
-        cambiarContraseña2({ campo: '', valido: null });
+      cambiarFormularioValido(true);
+      const datosFormulario = {
+        nombre: nombre.campo,
+        apellido: apellido.campo,
+        turno: turno.campo,
+        id_usuario: idUsuario.campo,
+        contrasenia: contraseña1.campo
+      };
+      await enviarFormulario(datosFormulario);
+      cambiarNombre({ campo: '', valido: null });
+      cambiarApellido({ campo: '', valido: null });
+      cambiarTurno({ campo: '', valido: null });
+      cambiarIdUsuario({ campo: '', valido: null });
+      cambiarContraseña1({ campo: '', valido: null });
+      cambiarContraseña2({ campo: '', valido: null });
     }
 };
 

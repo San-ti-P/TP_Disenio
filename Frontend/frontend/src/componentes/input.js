@@ -167,9 +167,9 @@ const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeho
                     valido={estado.valido}
                 >
                     <option value="" disabled selected>Seleccione una opcion</option>
-                    <option value="mañana">Mañana</option>
-                    <option value="tarde">Tarde</option>
-                    <option value="noche">Noche</option>
+                    <option value="Mañana">Mañana</option>
+                    <option value="Tarde">Tarde</option>
+                    <option value="Noche">Noche</option>
                 </Select>
             </GrupoInput>
         </React.Fragment>
