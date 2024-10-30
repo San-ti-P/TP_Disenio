@@ -70,13 +70,6 @@ const Input = styled.input`
     }
 `;
 
-const LeyendaError = styled.p`
-    font-size: 12px;
-    margin-bottom: 0;
-    color: ${colores.error};
-    display: none;
-`;
-
 const DivTextoCampoObligatorio = styled.div`
   display: flex;
   justify-content: space-between; 
@@ -147,19 +140,6 @@ const Select = styled.select`
   `}
 `;
 
-const FilaCompletaCheckbox = styled.div`
-  grid-column: 1 / -1; 
-  display: flex;
-  align-items: center;
-  justify-content: flex-end; 
-  margin-top: -20px;
-  font-size: 13px;
-
-  input {
-    margin-right: 5px;
-  }
-`;
-
 const IconoPassword = styled.div`
     position: absolute;
     right: 10px;
@@ -182,5 +162,4 @@ const IconoPassword = styled.div`
     }
 `;
 
-
-export {Formulario, Label, GrupoInput, Input, LeyendaError, DivTextoCampoObligatorio, DivBotonesSC, Select, BotonSC, FilaCompletaCheckbox, IconoPassword};
+export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC}

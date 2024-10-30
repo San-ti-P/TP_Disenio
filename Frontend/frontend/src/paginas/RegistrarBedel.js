@@ -1,7 +1,7 @@
 import React, {useState} from "react";
-import { Formulario, DivTextoCampoObligatorio, DivBotonesSC, BotonSC} from "../elementos/formularios.js";
-import { ComponenteInput, ComponenteDesplegableInput } from "../componentes/input.js"
-import { Modal, ModalSiguiente} from "../componentes/modal.js"
+import { Formulario, DivTextoCampoObligatorio, DivBotonesSC } from "../elementos/formularios.js";
+import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "../componentes/input.js"
+import { SiguienteModal, CancelarModal} from "../componentes/modal.js"
 
 const App = () => {
 
@@ -82,133 +82,164 @@ const App = () => {
     }
 };
 
-
   return (
     <main>
       <h1>Datos del bedel</h1>
       <Formulario action="" onSubmit={onSubmit}>
-      
-        {/* <ComponenteInput 
-          estado={nombre}
-          cambiarEstado={cambiarNombre}
-          tipo = "text" 
-          label="Nombre" 
-          placeholder="Ingrese su nombre"
-          name = "nombre" 
-          expresionRegular = {expresiones.nombre}
-          textoTooltip = {nombre.valido? "El nombre debe tener minimo 2 letras y no tener números" : null } 
-          >
-        </ComponenteInput>
-        
-        <ComponenteInput 
-          estado={apellido}
-          cambiarEstado={cambiarApellido}
-          tipo = "text" 
-          label="Apellido" 
-          placeholder="Ingrese su apellido"
-          name = "apellido" 
-          expresionRegular = {expresiones.apellido}
-          textoTooltip = "El apellido debe tener minimo 2 letras y no tener números"
-          >
-        </ComponenteInput> */}
 
-          <ComponenteInput
-            estado={nombre}
-            cambiarEstado={cambiarNombre}
-            tipo="text"
-            label="Nombre"
-            placeholder="Ingrese su nombre"
-            name="nombre"
-            expresionRegular= {expresiones.nombre}
-            textoTooltip={nombre.valido === 'false' ? "El nombre debe tener mínimo 2 letras y no tener números" : null}
-            ></ComponenteInput>
+          {/* <ComponenteNyAP
+            estado = {nombre}
+            cambiarEstado = {cambiarNombre}
+            tipo = "text"
+            label = "Nombre"
+            placeholder = "Ingrese su nombre"
+            name = "nombre"
+            expresionRegular = {expresiones.nombre}
+            textoTooltip = {nombre.valido === 'false' ? "El nombre debe tener mínimo 2 letras y no tener números" : null}
+            ></ComponenteNyAP>
 
-          <ComponenteInput
-            estado={apellido}
-            cambiarEstado={cambiarApellido}
-            tipo="text"
+          <ComponenteNyAP
+            estado = {apellido}
+            cambiarEstado = {cambiarApellido}
+            tipo = "text"
             label="Apellido"
-            placeholder="Ingrese su apellido"
-            name="apellido"
-            expresionRegular={expresiones.apellido}
-            textoTooltip={apellido.valido === 'false' ? "El apellido debe tener mínimo 2 letras y no tener números" : null}
-          ></ComponenteInput>
+            placeholder = "Ingrese su apellido"
+            name = "apellido"
+            expresionRegular = {expresiones.apellido}
+            textoTooltip = {apellido.valido === 'false' ? "El apellido debe tener mínimo 2 letras y no tener números" : null}
+          ></ComponenteNyAP>
 
         <ComponenteDesplegableInput 
-          estado={turno}
-          cambiarEstado={cambiarTurno}
+          estado = {turno}
+          cambiarEstado = {cambiarTurno}
           tipo = "text" 
-          label="Turno" 
-          placeholder="Seleccione un turno"
+          label = "Turno" 
+          placeholder = "Seleccione un turno"
           name = "turno" 
         >
         </ComponenteDesplegableInput>
 
-        <ComponenteInput
-          estado={idUsuario}
-          cambiarEstado={cambiarIdUsuario}
+        <ComponenteOtro
+          estado = {idUsuario}
+          cambiarEstado = {cambiarIdUsuario}
           tipo = "text" 
-          label="ID usuario" 
-          placeholder="ID de usuario"
+          label= "ID usuario" 
+          placeholder = "ID de usuario"
           name = "idUsuario" 
           expresionRegular = {expresiones.idUsuario}
-          textoTooltip = {`El campo debe comenzar con las letras "utn-" seguidas de exactamente seis dígitos numéricos. \n Ejemplo: utn-123456`}>
-        </ComponenteInput>
+          textoTooltip = {`El campo debe comenzar con las letras "utn-" seguidas de exactamente seis dígitos numéricos. \n Ejemplo: utn-123456`}
+          ></ComponenteOtro>
 
-        <ComponenteInput 
+        <ComponenteOtro 
           estado={contraseña1}
           cambiarEstado={cambiarContraseña1}
           tipo = "password" 
           label="Contraseña" 
           placeholder="Ingrese su contraseña"
           name = "contraseña" 
-          // leyendaError = "Descripcion cond de contraseña" 
           expresionRegular = {expresiones.contraseña}
-          textoTooltip = {`La contraseña debe: \n -Tener una longitud mínima de 6 caracteres. \n -Contener al menos un signo especial. \n -Contener al menos una letra mayúscula.\n -Contener al menos un digito.\n -No ser igual a una contraseña utilizada anteriormente por el usuario.`}>
-          
-        </ComponenteInput>
+          textoTooltip = {`La contraseña debe: \n -Tener una longitud mínima de 6 caracteres. \n -Contener al menos un signo especial. \n -Contener al menos una letra mayúscula.\n -Contener al menos un digito.\n -No ser igual a una contraseña utilizada anteriormente por el usuario.`}
+          ></ComponenteOtro>
 
-        <ComponenteInput 
+        <ComponenteOtro 
           estado={contraseña2}
           cambiarEstado={cambiarContraseña2}
           tipo = "password" 
           label="Confirmar contraseña" 
           placeholder="Confirme la contraseña"
           name = "confiarmarContraseña" 
-          // leyendaError = "Descripcion cond de confirmar contraseña" 
           expresionRegular = {expresiones.contraseña}
           funcion={validarContraseña2}
-          >
-        </ComponenteInput>
+          ></ComponenteOtro> */}
 
-        <DivTextoCampoObligatorio>
+          <ComponenteNyAP
+              estado={nombre}
+              cambiarEstado={cambiarNombre}
+              tipo="text"
+              label="Nombre"
+              placeholder="Ingrese su nombre"
+              name="nombre"
+              expresionRegular={expresiones.nombre}
+              textoTooltip={nombre.valido === 'false' ? "El nombre debe tener mínimo 2 letras y no tener números" : null}
+          />
+          <ComponenteNyAP
+            estado = {apellido}
+            cambiarEstado = {cambiarApellido}
+            tipo = "text"
+            label="Apellido"
+            placeholder = "Ingrese su apellido"
+            name = "apellido"
+            expresionRegular = {expresiones.apellido}
+            textoTooltip = {apellido.valido === 'false' ? "El apellido debe tener mínimo 2 letras y no tener números" : null}
+          />
+        <ComponenteDesplegableInput 
+          estado = {turno}
+          cambiarEstado = {cambiarTurno}
+          tipo = "text" 
+          label = "Turno" 
+          placeholder = "Seleccione un turno"
+          name = "turno" 
+        />
+
+          <ComponenteOtro
+          estado = {idUsuario}
+          cambiarEstado = {cambiarIdUsuario}
+          tipo = "text" 
+          label= "ID usuario" 
+          placeholder = "ID de usuario"
+          name = "idUsuario" 
+          expresionRegular = {expresiones.idUsuario}
+          textoTooltip = {`El campo debe comenzar con las letras "utn-" seguidas de exactamente seis dígitos numéricos. \n Ejemplo: utn-123456`}
+          comportamientoTooltip = "siempre"
+          />
+
+        <ComponenteOtro 
+          estado={contraseña1}
+          cambiarEstado={cambiarContraseña1}
+          tipo = "password" 
+          label="Contraseña" 
+          placeholder="Ingrese su contraseña"
+          name = "contraseña" 
+          expresionRegular = {expresiones.contraseña}
+          textoTooltip = {`La contraseña debe: \n -Tener una longitud mínima de 6 caracteres. \n -Contener al menos un signo especial. \n -Contener al menos una letra mayúscula.\n -Contener al menos un digito.\n -No ser igual a una contraseña utilizada anteriormente por el usuario.`}
+          comportamientoTooltip = "siempre"
+          />
+
+        <ComponenteOtro 
+          estado={contraseña2}
+          cambiarEstado={cambiarContraseña2}
+          tipo = "password" 
+          label="Confirmar contraseña" 
+          placeholder="Confirme la contraseña"
+          name = "confiarmarContraseña" 
+          expresionRegular = {expresiones.contraseña}
+          funcion={validarContraseña2}
+          />
+
+      <DivTextoCampoObligatorio>
         <p>Todos los campos son obligatorios</p>
-
         <DivBotonesSC>
-          <ModalSiguiente
-            titulo = "Bedel registrado satisfactoriamente"
-            texto = ""
-            icono = "info"
-            mostrarCancelar = {false}
-            confirmarTexto = "Confirmar"
-            cancelarTexto = "Regresar"
-            labelBoton ="Siguiente">
-          </ModalSiguiente>
-          <Modal 
-            titulo = "¿Está seguro que desea cancelar el registro?"
-            texto = "No podras deshacer esta accion"
-            icono = "question"
-            mostrarCancelar = {true}
-            confirmarTexto = "Confirmar"
-            cancelarTexto = "Regresar"
-            labelBoton ="Cancelar"
-            ></Modal> 
-
+          <SiguienteModal
+            titulo="Bedel registrado satisfactoriamente"
+            texto=""
+            icono="info"
+            mostrarCancelar={false}
+            confirmarTexto="Confirmar"
+            labelBoton="Siguiente"
+          />
+          <CancelarModal 
+            titulo="¿Está seguro que desea cancelar el registro?"
+            texto="No podras deshacer esta accion"
+            icono="question"
+            mostrarCancelar={true}
+            confirmarTexto="Confirmar"
+            cancelarTexto="Regresar"
+            labelBoton="Cancelar"
+          />
         </DivBotonesSC>
       </DivTextoCampoObligatorio>
 
       </Formulario>
-      
     </main>
   );
 }
