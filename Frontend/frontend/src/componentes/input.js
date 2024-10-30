@@ -75,6 +75,7 @@ const ComponenteBaseInput = ({
             onChange={manejarCambio}
             onBlur={validarCampo}
             onKeyUp={tipo === "password" ? validarCampo : null}
+            //onKeyUp={funcion ? funcion():undefined}
             valido={estado.valido}
         />
     );
@@ -133,11 +134,11 @@ const ComponenteBaseInput = ({
 };
 
 const ComponenteNyAP = (props) => (
-    <ComponenteBaseInput {...props} comportamientoTooltip="error" />
+    <ComponenteBaseInput {...props} />
 );
 
 const ComponenteOtro = (props) => (
-    <ComponenteBaseInput {...props} comportamientoTooltip="siempre" />
+    <ComponenteBaseInput {...props}  />
 );
 
 const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeholder, name}) => {

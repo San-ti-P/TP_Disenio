@@ -191,7 +191,7 @@ const SiguienteModal = (props) => (
     {...props}
     onConfirm={() => window.location.reload()}
     type="submit"
-    width={275}
+    width={375}
   />
 );
 
