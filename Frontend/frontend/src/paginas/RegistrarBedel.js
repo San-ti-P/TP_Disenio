@@ -87,91 +87,26 @@ const App = () => {
       <h1>Datos del bedel</h1>
       <Formulario action="" onSubmit={onSubmit}>
 
-          {/* <ComponenteNyAP
-            estado = {nombre}
-            cambiarEstado = {cambiarNombre}
-            tipo = "text"
-            label = "Nombre"
-            placeholder = "Ingrese su nombre"
-            name = "nombre"
-            expresionRegular = {expresiones.nombre}
-            textoTooltip = {nombre.valido === 'false' ? "El nombre debe tener mínimo 2 letras y no tener números" : null}
-            ></ComponenteNyAP>
-
-          <ComponenteNyAP
-            estado = {apellido}
-            cambiarEstado = {cambiarApellido}
-            tipo = "text"
-            label="Apellido"
-            placeholder = "Ingrese su apellido"
-            name = "apellido"
-            expresionRegular = {expresiones.apellido}
-            textoTooltip = {apellido.valido === 'false' ? "El apellido debe tener mínimo 2 letras y no tener números" : null}
-          ></ComponenteNyAP>
-
-        <ComponenteDesplegableInput 
-          estado = {turno}
-          cambiarEstado = {cambiarTurno}
-          tipo = "text" 
-          label = "Turno" 
-          placeholder = "Seleccione un turno"
-          name = "turno" 
-        >
-        </ComponenteDesplegableInput>
-
-        <ComponenteOtro
-          estado = {idUsuario}
-          cambiarEstado = {cambiarIdUsuario}
-          tipo = "text" 
-          label= "ID usuario" 
-          placeholder = "ID de usuario"
-          name = "idUsuario" 
-          expresionRegular = {expresiones.idUsuario}
-          textoTooltip = {`El campo debe comenzar con las letras "utn-" seguidas de exactamente seis dígitos numéricos. \n Ejemplo: utn-123456`}
-          ></ComponenteOtro>
-
-        <ComponenteOtro 
-          estado={contraseña1}
-          cambiarEstado={cambiarContraseña1}
-          tipo = "password" 
-          label="Contraseña" 
-          placeholder="Ingrese su contraseña"
-          name = "contraseña" 
-          expresionRegular = {expresiones.contraseña}
-          textoTooltip = {`La contraseña debe: \n -Tener una longitud mínima de 6 caracteres. \n -Contener al menos un signo especial. \n -Contener al menos una letra mayúscula.\n -Contener al menos un digito.\n -No ser igual a una contraseña utilizada anteriormente por el usuario.`}
-          ></ComponenteOtro>
-
-        <ComponenteOtro 
-          estado={contraseña2}
-          cambiarEstado={cambiarContraseña2}
-          tipo = "password" 
-          label="Confirmar contraseña" 
-          placeholder="Confirme la contraseña"
-          name = "confiarmarContraseña" 
-          expresionRegular = {expresiones.contraseña}
-          funcion={validarContraseña2}
-          ></ComponenteOtro> */}
-
-          <ComponenteNyAP
-              estado={nombre}
-              cambiarEstado={cambiarNombre}
-              tipo="text"
-              label="Nombre"
-              placeholder="Ingrese su nombre"
-              name="nombre"
-              expresionRegular={expresiones.nombre}
-              textoTooltip={nombre.valido === 'false' ? "El nombre debe tener mínimo 2 letras y no tener números" : null}
-          />
-          <ComponenteNyAP
-            estado = {apellido}
-            cambiarEstado = {cambiarApellido}
-            tipo = "text"
-            label="Apellido"
-            placeholder = "Ingrese su apellido"
-            name = "apellido"
-            expresionRegular = {expresiones.apellido}
-            textoTooltip = {apellido.valido === 'false' ? "El apellido debe tener mínimo 2 letras y no tener números" : null}
-          />
+        <ComponenteNyAP
+            estado={nombre}
+            cambiarEstado={cambiarNombre}
+            tipo="text"
+            label="Nombre"
+            placeholder="Ingrese su nombre"
+            name="nombre"
+            expresionRegular={expresiones.nombre}
+            textoTooltip={nombre.valido === 'false' ? "El nombre debe tener mínimo 2 letras y no tener números" : null}
+        />
+        <ComponenteNyAP
+          estado = {apellido}
+          cambiarEstado = {cambiarApellido}
+          tipo = "text"
+          label="Apellido"
+          placeholder = "Ingrese su apellido"
+          name = "apellido"
+          expresionRegular = {expresiones.apellido}
+          textoTooltip = {apellido.valido === 'false' ? "El apellido debe tener mínimo 2 letras y no tener números" : null}
+        />
         <ComponenteDesplegableInput 
           estado = {turno}
           cambiarEstado = {cambiarTurno}
