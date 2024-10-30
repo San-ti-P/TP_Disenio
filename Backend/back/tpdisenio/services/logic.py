@@ -40,6 +40,8 @@ class GestorBedel():
             -- apellido del bedel
         turno: str
             -- turno del bedel
+        id_usuario: str
+            -- ID del bedel
         """
         if not (len(nombre)>0 and len(nombre)<30):
             return False
