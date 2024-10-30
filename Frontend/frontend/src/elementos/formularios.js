@@ -97,7 +97,8 @@ const BotonSC = styled.button`
   color: white;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.1s;
-
+  user-select: none;
+  
   &:hover {
     background-color: #005BB5;
   }

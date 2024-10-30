@@ -60,7 +60,6 @@ const ComponenteBaseInput = ({
     const manejarCambio = (e) => {
         setCampoTocado(true);
         cambiarEstado({ ...estado, campo: e.target.value });
-        if (funcion) funcion();
     }
 
     const tipoInput = tipo === "password" ? (mostrarPassword ? "text" : "password") : tipo;
