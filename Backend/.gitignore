@@ -1,1 +1,5 @@
 /tpenv
+/back/back/__pycache__
+/back/tpdisenio/__pycache__
+/back/tpdisenio/migrations/__pycache__
+/back/tpdisenio/services/__pycache__
