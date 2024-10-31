@@ -73,6 +73,7 @@ class Bedel(Usuario):
     usuario_ptr = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, db_column="id_usuario", parent_link=True)
     turno = models.CharField(max_length=10, choices=TipoTurno)
 
+
 '''
 class Sesion(models.Model):
     class Meta:
