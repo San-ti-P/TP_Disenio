@@ -21,8 +21,12 @@ const TooltipPersonalizado = styled(({ className, ...props }) => (
 });
 
 const formatearTextoTooltip = (texto) => {
-    return texto.split("\n").map((renglon, indice) => (
-        <span key={indice}>{renglon}<br /></span>
+    const lineas = texto.split("\n");
+    return lineas.map((renglon, indice) => (
+        <span key={indice}>
+            {renglon}
+            {indice < lineas.length - 1 && <br />}
+        </span>
     ));
 };
 
@@ -111,6 +115,7 @@ const ComponenteBaseInput = ({
                 {textoTooltip ? (
                     <TooltipPersonalizado
                         title={<React.Fragment>{formatearTextoTooltip(textoTooltip)}</React.Fragment>}
+                        // title = {textoTooltip}
                         placement="right"
                         arrow
                         {...obtenerConfiguracionTooltip()}

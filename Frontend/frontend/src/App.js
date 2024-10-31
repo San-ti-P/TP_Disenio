@@ -1,7 +1,7 @@
 import React from 'react';
 import EstilosGlobal from './estilos/estilosGlobal';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Menu from './componentes/menu';
+import {Menu} from './componentes/menu';
 import RegistrarReserva from './paginas/RegistrarReserva';
 import ListarReservasDia from './paginas/ListarReservasDia';
 import ListarReservasCurso from './paginas/ListarReservasCurso';

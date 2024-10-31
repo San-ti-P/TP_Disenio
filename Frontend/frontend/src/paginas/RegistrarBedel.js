@@ -1,9 +1,9 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from 'react';
 import { Formulario, DivTextoCampoObligatorio, DivBotonesSC } from "../elementos/formularios.js";
 import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "../componentes/input.js"
 import { SiguienteModal, CancelarModal} from "../componentes/modal.js"
 import { enviarFormulario } from "../componentes/modal.js"
-
+import { getPoliticas } from "../componentes/menu.js";
 
 const App = () => {
 
@@ -92,6 +92,20 @@ const App = () => {
     }
 };
 
+const [politicasTooltip, setPoliticasTooltip] = useState('');
+  useEffect(() => {
+    const fetchPoliticas = async () => {
+      try {
+        const politicas = await getPoliticas();
+        setPoliticasTooltip(politicas);
+      } catch (error) {
+        console.error('Error al obtener políticas:', error);
+      }
+    };
+
+    fetchPoliticas();
+  }, []);
+
   return (
     <main>
       <h1>Datos del bedel</h1>
@@ -146,7 +160,8 @@ const App = () => {
           placeholder="Ingrese su contraseña"
           name = "contraseña" 
           expresionRegular = {expresiones.contraseña}
-          textoTooltip = {`La contraseña debe: \n -Tener una longitud mínima de 6 caracteres. \n -Contener al menos un signo especial. \n -Contener al menos una letra mayúscula.\n -Contener al menos un digito.\n -No ser igual a una contraseña utilizada anteriormente por el usuario.`}
+          // textoTooltip = {`La contraseña debe: \n -Tener una longitud mínima de 6 caracteres. \n -Contener al menos un signo especial. \n -Contener al menos una letra mayúscula.\n -Contener al menos un digito.\n -No ser igual a una contraseña utilizada anteriormente por el usuario.`}
+          textoTooltip = {politicasTooltip}
           comportamientoTooltip = "siempre"
           />
 
@@ -160,7 +175,6 @@ const App = () => {
           expresionRegular = {expresiones.contraseña}
           funcion={validarContraseña2}
           textoTooltip="Las contraseñas no coinciden"
-          //comportamientoTooltip="error"
           />
 
       <DivTextoCampoObligatorio>

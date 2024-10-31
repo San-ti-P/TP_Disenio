@@ -4,28 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { BotonSC } from '../elementos/formularios'; 
 import axios from "axios";  
 
-// const getPoliticas = async () => {
-//   try {
-//     const url = ....
-//     const respuesta = await axios.get(url);
-//     console.log(respuesta);
-//   }
-//   catch (error) {
-//     console.error(error)
-//   }
-// }
-
-// const enviarFormulario = async (datosFormulario) => {
-//   try {
-//     const url = "http://127.0.0.1:8000/tpdisenio/RegistrarBedel" // url API
-//     const respuesta = await axios.post(url, datosFormulario);
-//     console.log(respuesta);
-//   }
-//   catch (error) {
-//     console.error(error)
-//   }
-// }
-
 const enviarFormulario = async (datosFormulario) => {
   try {
     const url = "http://127.0.0.1:8000/tpdisenio/RegistrarBedel";
@@ -34,12 +12,22 @@ const enviarFormulario = async (datosFormulario) => {
         'Content-Type': 'application/json',
       },
     });
-    console.log(respuesta);
+    manejarRespuesta(respuesta.data.errors);
+    console.log(respuesta.data);
   } catch (error) {
     console.error(error);
   }
 }
 
+const manejarRespuesta = (respuesta) => {
+  if (respuesta.length === 0) {
+    console.log("Respuesta valida");
+
+  } else {
+    console.log("Posibles: campos_invalidos, contrasenia_invalida, id_existente");
+    
+  }
+}
 
 const CustomModal = ({
   titulo,
@@ -150,15 +138,6 @@ const CancelarModal = (props) => {
     />
   );
 };
-
-// const SiguienteModal = (props) => (
-//   <CustomModal
-//     {...props}
-//     onConfirm={() => window.location.reload()}
-//     type="submit"
-//     width={375}
-//   />
-// );
 
 const SiguienteModal = (props) => (
   <CustomModal
