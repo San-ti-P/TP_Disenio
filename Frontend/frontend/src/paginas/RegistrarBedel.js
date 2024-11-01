@@ -4,6 +4,7 @@ import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "../c
 import { SiguienteModal, CancelarModal} from "../componentes/modal.js"
 import { enviarFormulario } from "../componentes/modal.js"
 import { getPoliticas } from "../componentes/menu.js";
+import { BotonSC } from '../elementos/formularios'; 
 
 const App = () => {
 
@@ -180,14 +181,15 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
       <DivTextoCampoObligatorio>
         <p>Todos los campos son obligatorios</p>
         <DivBotonesSC>
-          <SiguienteModal
+          {/* <SiguienteModal
             titulo="Bedel registrado satisfactoriamente"
             texto=""
             icono="info"
             mostrarCancelar={false}
             confirmarTexto="Confirmar"
             labelBoton="Siguiente"
-          />
+          /> */}
+          <BotonSC>Siguiente</BotonSC>
           <CancelarModal 
             titulo="¿Está seguro que desea cancelar el registro?"
             texto="No podras deshacer esta accion"
