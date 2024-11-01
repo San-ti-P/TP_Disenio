@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Formulario, DivTextoCampoObligatorio, DivBotonesSC } from "../elementos/formularios.js";
 import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "../componentes/input.js"
-import { SiguienteModal, CancelarModal} from "../componentes/modal.js"
+import { CancelarModal} from "../componentes/modal.js"
 import { enviarFormulario } from "../componentes/modal.js"
 import { getPoliticas } from "../componentes/menu.js";
 import { BotonSC } from '../elementos/formularios'; 
@@ -21,8 +21,7 @@ const App = () => {
     nombre: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
     apellido: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
     idUsuario: /^utn-\d{6}$/, // Formato: utn- seguido de exactamente 6 dígitos.
-    contraseña: /^(?=.*[!@#$%^&*()_\-+={[}\]|:;"'<>,.?/~`])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*()_\-+={[}\]|:;"'<>,.?/~`]{6,64}$/
-    // Mínimo 6 y máximo 64 caracteres, al menos un signo especial, una letra mayúscula y un dígito
+    contraseña: /^(?=.*[@#$%&*])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$%&*]{8,50}$/ // Mínimo 8 y máximo 50 caracteres
   };
 
   const validarContraseña2 = () =>{
@@ -84,12 +83,13 @@ const App = () => {
         contrasenia: contraseña1.campo
       };
       await enviarFormulario(datosFormulario);
-      cambiarNombre({ campo: '', valido: null });
-      cambiarApellido({ campo: '', valido: null });
-      cambiarTurno({ campo: '', valido: null });
-      cambiarIdUsuario({ campo: '', valido: null });
-      cambiarContraseña1({ campo: '', valido: null });
-      cambiarContraseña2({ campo: '', valido: null });
+      // cambiarNombre({ campo: '', valido: null });
+      // cambiarApellido({ campo: '', valido: null });
+      // cambiarTurno({ campo: '', valido: null });     CANDIDATO A SER BORRADO
+      // cambiarIdUsuario({ campo: '', valido: null });
+      // cambiarContraseña1({ campo: '', valido: null });
+      // cambiarContraseña2({ campo: '', valido: null });
+      // window.location.reload;
     }
 };
 
@@ -181,14 +181,6 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
       <DivTextoCampoObligatorio>
         <p>Todos los campos son obligatorios</p>
         <DivBotonesSC>
-          {/* <SiguienteModal
-            titulo="Bedel registrado satisfactoriamente"
-            texto=""
-            icono="info"
-            mostrarCancelar={false}
-            confirmarTexto="Confirmar"
-            labelBoton="Siguiente"
-          /> */}
           <BotonSC>Siguiente</BotonSC>
           <CancelarModal 
             titulo="¿Está seguro que desea cancelar el registro?"
