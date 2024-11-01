@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Formulario, DivTextoCampoObligatorio, DivBotonesSC } from "../elementos/formularios.js";
 import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "../componentes/input.js"
-import { CancelarModal} from "../componentes/modal.js"
-import { enviarFormulario } from "../componentes/modal.js"
+import { CancelarModal, mostrarModalExito } from "../componentes/modal.js"
+import { enviarFormulario } from "../services/api.js"
 import { getPoliticas } from "../componentes/menu.js";
 import { BotonSC } from '../elementos/formularios'; 
 
@@ -82,14 +82,14 @@ const App = () => {
         id_usuario: idUsuario.campo,
         contrasenia: contraseña1.campo
       };
-      await enviarFormulario(datosFormulario);
+      await enviarFormulario(datosFormulario, mostrarModalExito);
+      
       // cambiarNombre({ campo: '', valido: null });
       // cambiarApellido({ campo: '', valido: null });
       // cambiarTurno({ campo: '', valido: null });     CANDIDATO A SER BORRADO
       // cambiarIdUsuario({ campo: '', valido: null });
       // cambiarContraseña1({ campo: '', valido: null });
       // cambiarContraseña2({ campo: '', valido: null });
-      // window.location.reload;
     }
 };
 
@@ -120,7 +120,7 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
               placeholder="Ingrese su nombre"
               name="nombre"
               expresionRegular={expresiones.nombre}
-              textoTooltip={nombre.valido === 'false' ? "El nombre debe tener mínimo 2 letras y no tener números" : null}
+              textoTooltip={nombre.valido === "false" ? "El nombre debe tener mínimo 2 letras y no tener números" : null}
           />
           <ComponenteNyAP
             estado = {apellido}
@@ -130,7 +130,7 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
             placeholder = "Ingrese su apellido"
             name = "apellido"
             expresionRegular = {expresiones.apellido}
-            textoTooltip = {apellido.valido === 'false' ? "El apellido debe tener mínimo 2 letras y no tener números" : null}
+            textoTooltip = {apellido.valido === "false" ? "El apellido debe tener mínimo 2 letras y no tener números" : null}
           />
         <ComponenteDesplegableInput 
           estado = {turno}
@@ -161,7 +161,6 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
           placeholder="Ingrese su contraseña"
           name = "contraseña" 
           expresionRegular = {expresiones.contraseña}
-          // textoTooltip = {`La contraseña debe: \n -Tener una longitud mínima de 6 caracteres. \n -Contener al menos un signo especial. \n -Contener al menos una letra mayúscula.\n -Contener al menos un digito.\n -No ser igual a una contraseña utilizada anteriormente por el usuario.`}
           textoTooltip = {politicasTooltip}
           comportamientoTooltip = "siempre"
           />
@@ -184,7 +183,7 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
           <BotonSC>Siguiente</BotonSC>
           <CancelarModal 
             titulo="¿Está seguro que desea cancelar el registro?"
-            texto="No podras deshacer esta accion"
+            texto="No podrá deshacer esta acción"
             icono="question"
             mostrarCancelar={true}
             confirmarTexto="Confirmar"

@@ -11,7 +11,7 @@ const TooltipPersonalizado = styled(({ className, ...props }) => (
         backgroundColor: "#f5f5f5",
         color: "#333",
         fontSize: "0.875rem",
-        border: "px solid #dadde9",
+        border: "1px solid #dadde9",
         padding: "15px",
         borderRadius: "4px",
     },
@@ -79,7 +79,6 @@ const ComponenteBaseInput = ({
             onChange={manejarCambio}
             onBlur={validarCampo}
             onKeyUp={tipo === "password" ? validarCampo : null}
-            //onKeyUp={funcion ? funcion():undefined}
             valido={estado.valido}
         />
     );
@@ -171,7 +170,7 @@ const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeho
                     onChange={manejarCambio}
                     valido={estado.valido}
                 >
-                    <option value="" disabled selected>Seleccione una opcion</option>
+                    <option value="" disabled>Seleccione una opcion</option>
                     <option value="Mañana">Mañana</option>
                     <option value="Tarde">Tarde</option>
                     <option value="Noche">Noche</option>
