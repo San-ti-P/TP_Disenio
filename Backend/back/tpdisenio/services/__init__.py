@@ -1,4 +1,5 @@
 from .logic import *
+from .daos import *
 
 
 SQL_bedel_DAO = SQLBedelDAO()

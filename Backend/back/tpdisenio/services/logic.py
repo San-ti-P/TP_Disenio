@@ -87,7 +87,8 @@ class GestorBedel():
             contrasenia_valida = True
 
         if campos_validos and contrasenia_valida and id_unico:
-
+            bedel = Bedel(nombre=nombre, apellido=apellido, turno=turno, id_usuario=id_usuario, contrasenia=contrasenia)
+            self.bedel_DAO.create_bedel(bedel)
             # Registrar Bedel en BDD
             pass
         
@@ -136,7 +137,7 @@ class GestorBedel():
 class GestorUsuario():
     """Clase encargada de suministrar todo la lógica concerniente a la clase Usuario"""
     def __init__(self, bedel_DAO, administrador_DAO) -> None:
-        self.bede_lDAO = bedel_DAO
+        self.bedel_DAO = bedel_DAO
         self.administrador_DAO = administrador_DAO
     
     def validacion_id_unico(self, id_usuario):
@@ -146,7 +147,12 @@ class GestorUsuario():
         id_usuario: str
             -- ID del bedel a crear
         """
-        return True
+        ids_bedel = self.bedel_DAO.get_id_bedel()
+        ids_admin = self.administrador_DAO.get_id_administrador()
+        if id_usuario not in ids_admin:
+            if id_usuario not in ids_bedel:
+                return True
+        return False
     #Se usa true momentáneamente para pruebas
 
 class GestorContrasenia():
@@ -229,18 +235,3 @@ class GestorSesion():
     """Clase encargada de suministrar todo la lógica concerniente a la clase Sesion"""
     pass
 
-class AdministradorDAO(ABC):
-    """Interfaz encargada de definir el protocolo para persistir datos de la clase Administrador"""
-    pass
-
-class BedelDAO(ABC):
-    """Interfaz encargada de definir el protocolo para persistir datos de la clase Bedel"""
-    pass
-
-class SQLAdministradorDAO(AdministradorDAO):
-    """Clase encargada de implementar el protocolo para persistir datos de la clase Administrador en una BDD SQL (PostgreSQL)"""
-    pass
-
-class SQLBedelDAO(BedelDAO):
-    """Clase encargada de implementar el protocolo para persistir datos de la clase Bedel en una BDD SQL (PostgreSQL)"""
-    pass
