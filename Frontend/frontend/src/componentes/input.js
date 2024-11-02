@@ -78,6 +78,7 @@ const ComponenteBaseInput = ({
             value={estado.campo}
             onChange={manejarCambio}
             onBlur={validarCampo}
+            //onSubmit={label === "Contraseña" ? cambiarEstado({ ...estado, valido:'true'}) : validarCampo}
             onKeyUp={tipo === "password" ? validarCampo : null}
             valido={estado.valido}
         />

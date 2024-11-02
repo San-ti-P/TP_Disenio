@@ -4,7 +4,7 @@ import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "../c
 import { CancelarModal, mostrarModalExito } from "../componentes/modal.js"
 import { enviarFormulario } from "../services/api.js"
 import { getPoliticas } from "../componentes/menu.js";
-import { BotonSC } from '../elementos/formularios'; 
+import { BotonSC, BotonSubmit } from '../elementos/formularios'; 
 
 const App = () => {
 
@@ -12,7 +12,7 @@ const App = () => {
   const [apellido, cambiarApellido] = useState({campo:'', valido: null});
   const [turno, cambiarTurno] = useState({campo:'', valido: null});
   const [idUsuario, cambiarIdUsuario] = useState({campo:'', valido: null});
-  const [contraseña1, cambiarContraseña1] = useState({campo:'', valido: null});
+  const [contraseña1, cambiarContraseña1] = useState({campo:'', valido: 'true'});
   const [contraseña2, cambiarContraseña2] = useState({campo:'', valido: null});
   const [formularioValido, cambiarFormularioValido] = useState(null)
   const [animarErrores, cambiarAnimarErrores] = useState(false);
@@ -21,7 +21,7 @@ const App = () => {
     nombre: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
     apellido: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
     idUsuario: /^utn-\d{6}$/, // Formato: utn- seguido de exactamente 6 dígitos.
-    contraseña: /^(?=.*[@#$%&*])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$%&*]{8,50}$/ // Mínimo 8 y máximo 50 caracteres
+    //contraseña: /^(?=.*[@#$%&*])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$%&*]{8,50}$/ // Mínimo 8 y máximo 50 caracteres
   };
 
   const validarContraseña2 = () =>{
@@ -82,8 +82,29 @@ const App = () => {
         id_usuario: idUsuario.campo,
         contrasenia: contraseña1.campo
       };
-      await enviarFormulario(datosFormulario, mostrarModalExito);
       
+      const respuesta = await enviarFormulario(datosFormulario);
+
+      if (respuesta.error) {
+        alert("Ocurrió un error al enviar el formulario: " + respuesta.mensaje);
+      } else {
+        const respuestaErrores = respuesta.data.errors;
+        if (respuestaErrores.length === 0) {
+          mostrarModalExito();
+        } else {
+          if (respuestaErrores.includes("campos_invalidos")) { alert("Error de campo"); }
+          if (respuestaErrores.includes("contrasenia_invalida")){
+            //alert("Error de contraseña"); 
+            cambiarContraseña1({ campo: contraseña1.campo, valido: 'false' });
+            //cambiarContraseña2({ campo: contraseña2.campo, valido: 'false' });
+            }
+          if (respuestaErrores.includes("id_existente")) {
+            //alert("ID existente");
+            cambiarIdUsuario({ campo: idUsuario.campo, valido: 'false' });
+          }
+        }
+      }
+
       // cambiarNombre({ campo: '', valido: null });
       // cambiarApellido({ campo: '', valido: null });
       // cambiarTurno({ campo: '', valido: null });     CANDIDATO A SER BORRADO
@@ -160,7 +181,7 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
           label="Contraseña" 
           placeholder="Ingrese su contraseña"
           name = "contraseña" 
-          expresionRegular = {expresiones.contraseña}
+          //expresionRegular = {expresiones.contraseña}
           textoTooltip = {politicasTooltip}
           comportamientoTooltip = "siempre"
           />
@@ -172,7 +193,7 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
           label="Confirmar contraseña" 
           placeholder="Confirme la contraseña"
           name = "confiarmarContraseña" 
-          expresionRegular = {expresiones.contraseña}
+          //expresionRegular = {expresiones.contraseña}
           funcion={validarContraseña2}
           textoTooltip="Las contraseñas no coinciden"
           />
@@ -180,7 +201,7 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
       <DivTextoCampoObligatorio>
         <p>Todos los campos son obligatorios</p>
         <DivBotonesSC>
-          <BotonSC>Siguiente</BotonSC>
+          <BotonSubmit>Siguiente</BotonSubmit>
           <CancelarModal 
             titulo="¿Está seguro que desea cancelar el registro?"
             texto="No podrá deshacer esta acción"

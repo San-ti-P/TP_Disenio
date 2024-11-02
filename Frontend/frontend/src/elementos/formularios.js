@@ -113,6 +113,7 @@ const BotonSC = styled.button`
     transform: scale(0.98);
   }
 `;
+const BotonSubmit = () => <BotonSC as="input" type="submit" value="Siguiente" />;
 
 const Select = styled.select`
   width: 100%;
@@ -163,4 +164,4 @@ const IconoPassword = styled.div`
     }
 `;
 
-export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC}
+export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC, BotonSubmit}

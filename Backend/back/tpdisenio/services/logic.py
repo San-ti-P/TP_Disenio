@@ -43,9 +43,9 @@ class GestorBedel():
         id_usuario: str
             -- ID del bedel
         """
-        if not (len(nombre)>0 and len(nombre)<30):
+        if not (len(nombre)>1 and len(nombre)<30):
             return False
-        if not (len(apellido)>0 and len(apellido)<30):
+        if not (len(apellido)>1 and len(apellido)<30):
             return False
         
         tipos_turno = []
