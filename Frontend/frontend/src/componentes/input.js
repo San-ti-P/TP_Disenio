@@ -44,15 +44,14 @@ const ComponenteBaseInput = ({
 }) => {
     const [mostrarPassword, setMostrarPassword] = useState(false);
     const [campoTocado, setCampoTocado] = useState(false);
-
-    // Referencia para el input
     const inputRef = useRef(null);
+    const timeoutRef = useRef(null); // Definición de timeoutRef
+
 
     const validarCampo = (e) => {
         const siguienteElemento = e.relatedTarget;
 
-        // Realizamos la validación solo si el campo fue tocado y el siguiente elemento no es un botón 
-        if (campoTocado && !(siguienteElemento && siguienteElemento.tagName === "BUTTON")) {
+        if ( campoTocado && !(siguienteElemento && siguienteElemento.tagName === "BUTTON")) {
             if (expresionRegular) {
                 const esValido = expresionRegular.test(estado.campo);
                 cambiarEstado({ ...estado, valido: esValido ? 'true' : 'false' });
@@ -63,7 +62,8 @@ const ComponenteBaseInput = ({
 
     const manejarCambio = (e) => {
         setCampoTocado(true);
-        cambiarEstado({ ...estado, campo: e.target.value });
+        if (name == "contraseña") { cambiarEstado({ ...estado, campo: e.target.value, valido: "true"}); }
+        else { cambiarEstado({ ...estado, campo: e.target.value}); }
         if (funcion) funcion();
     }
 
@@ -78,8 +78,6 @@ const ComponenteBaseInput = ({
             value={estado.campo}
             onChange={manejarCambio}
             onBlur={validarCampo}
-            //onSubmit={label === "Contraseña" ? cambiarEstado({ ...estado, valido:'true'}) : validarCampo}
-            onKeyUp={tipo === "password" ? validarCampo : null}
             valido={estado.valido}
         />
     );
@@ -115,7 +113,6 @@ const ComponenteBaseInput = ({
                 {textoTooltip ? (
                     <TooltipPersonalizado
                         title={<React.Fragment>{formatearTextoTooltip(textoTooltip)}</React.Fragment>}
-                        // title = {textoTooltip}
                         placement="right"
                         arrow
                         {...obtenerConfiguracionTooltip()}

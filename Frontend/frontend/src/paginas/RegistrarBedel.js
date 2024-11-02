@@ -39,6 +39,7 @@ const App = () => {
     }
   }
 
+
   const onSubmit = async (e) => {
     e.preventDefault();
     
@@ -94,23 +95,13 @@ const App = () => {
         } else {
           if (respuestaErrores.includes("campos_invalidos")) { alert("Error de campo"); }
           if (respuestaErrores.includes("contrasenia_invalida")){
-            //alert("Error de contraseña"); 
-            cambiarContraseña1({ campo: contraseña1.campo, valido: 'false' });
-            //cambiarContraseña2({ campo: contraseña2.campo, valido: 'false' });
+            cambiarContraseña1({ campo: contraseña1.campo, valido: "false" });
             }
           if (respuestaErrores.includes("id_existente")) {
-            //alert("ID existente");
             cambiarIdUsuario({ campo: idUsuario.campo, valido: 'false' });
           }
         }
       }
-
-      // cambiarNombre({ campo: '', valido: null });
-      // cambiarApellido({ campo: '', valido: null });
-      // cambiarTurno({ campo: '', valido: null });     CANDIDATO A SER BORRADO
-      // cambiarIdUsuario({ campo: '', valido: null });
-      // cambiarContraseña1({ campo: '', valido: null });
-      // cambiarContraseña2({ campo: '', valido: null });
     }
 };
 
@@ -187,16 +178,15 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
           />
 
         <ComponenteOtro 
-          estado={contraseña2}
-          cambiarEstado={cambiarContraseña2}
-          tipo = "password" 
-          label="Confirmar contraseña" 
-          placeholder="Confirme la contraseña"
-          name = "confiarmarContraseña" 
-          //expresionRegular = {expresiones.contraseña}
-          funcion={validarContraseña2}
-          textoTooltip="Las contraseñas no coinciden"
-          />
+            estado={contraseña2}
+            cambiarEstado={cambiarContraseña2}
+            tipo="password" 
+            label="Confirmar contraseña" 
+            placeholder="Confirme la contraseña"
+            name="confirmarContraseña" 
+            funcion={validarContraseña2}
+            textoTooltip="Las contraseñas no coinciden"
+        />
 
       <DivTextoCampoObligatorio>
         <p>Todos los campos son obligatorios</p>
