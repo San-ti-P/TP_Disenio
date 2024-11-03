@@ -70,6 +70,14 @@ const Input = styled.input`
     }
 `;
 
+const LeyendaError = styled.p`
+  font-size: 13px;
+  margin: -22px 0 0 0;
+  color: ${colores.error};
+  grid-column: 2;
+  display: block;
+`;
+
 const DivTextoCampoObligatorio = styled.div`
   display: flex;
   justify-content: space-between; 
@@ -164,4 +172,4 @@ const IconoPassword = styled.div`
     }
 `;
 
-export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC, BotonSubmit}
+export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC, BotonSubmit, LeyendaError}

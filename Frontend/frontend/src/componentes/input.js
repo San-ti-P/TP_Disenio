@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Input, Label, GrupoInput, Select, IconoPassword } from "./../elementos/formularios";
+import { Input, Label, GrupoInput, Select, IconoPassword, LeyendaError } from "./../elementos/formularios";
 import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 import { Eye, EyeOff } from 'lucide-react';
@@ -40,18 +40,19 @@ const ComponenteBaseInput = ({
     expresionRegular,
     funcion,
     textoTooltip,
-    comportamientoTooltip = "error" // "error" | "siempre" | "nunca"
+    comportamientoTooltip = "error",
+    leyendaError = "",
+    mostrarLeyenda,
+    cambiarMostrarLeyenda
 }) => {
     const [mostrarPassword, setMostrarPassword] = useState(false);
-    const [campoTocado, setCampoTocado] = useState(false);
+    const [campoTocado, setCampoTocado] = useState(false);    
     const inputRef = useRef(null);
-    const timeoutRef = useRef(null); // Definición de timeoutRef
-
 
     const validarCampo = (e) => {
         const siguienteElemento = e.relatedTarget;
 
-        if ( campoTocado && !(siguienteElemento && siguienteElemento.tagName === "BUTTON")) {
+        if (campoTocado && !(siguienteElemento && siguienteElemento.tagName === "BUTTON")) {
             if (expresionRegular) {
                 const esValido = expresionRegular.test(estado.campo);
                 cambiarEstado({ ...estado, valido: esValido ? 'true' : 'false' });
@@ -62,9 +63,13 @@ const ComponenteBaseInput = ({
 
     const manejarCambio = (e) => {
         setCampoTocado(true);
-        if (name === "contraseña") { cambiarEstado({ ...estado, campo: e.target.value, valido: "true"}); }
-        else { cambiarEstado({ ...estado, campo: e.target.value}); }
-        //if (funcion) funcion();
+        if (cambiarMostrarLeyenda) cambiarMostrarLeyenda(false);
+        
+        if (name === "contraseña") {
+            cambiarEstado({ ...estado, campo: e.target.value, valido: "true"});
+        } else {
+            cambiarEstado({ ...estado, campo: e.target.value});
+        }
     }
 
     const tipoInput = tipo === "password" ? (mostrarPassword ? "text" : "password") : tipo;
@@ -78,8 +83,13 @@ const ComponenteBaseInput = ({
             value={estado.campo}
             onChange={manejarCambio}
             onBlur={validarCampo}
-            onKeyUp={funcion? funcion : null}
+            onKeyUp={funcion && name === "confirmarContraseña"? funcion : null}
             onFocus={funcion? funcion : null}
+            onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                }
+            }}
             valido={estado.valido}
         />
     );
@@ -133,9 +143,11 @@ const ComponenteBaseInput = ({
                     </IconoPassword>
                 )}
             </GrupoInput>
+            {mostrarLeyenda && leyendaError !== "" && <LeyendaError>{leyendaError}</LeyendaError>}
         </React.Fragment>
     );
 };
+
 
 const ComponenteNyAP = (props) => (
     <ComponenteBaseInput {...props} />
@@ -146,13 +158,6 @@ const ComponenteOtro = (props) => (
 );
 
 const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeholder, name}) => {
-    const validarSeleccion = (e) => {
-        cambiarEstado({
-            ...estado,
-            valido: e.target.value === 'Seleccione una opcion' ? 'false' : 'true'
-        });
-    }
-
     const manejarCambio = (e) => {
         cambiarEstado({ ...estado, campo: e.target.value, valido: 'true' });
     };
@@ -166,7 +171,6 @@ const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeho
                     id={name}
                     value={estado.campo}
                     placeholder={placeholder}
-                    onBlur={validarSeleccion}
                     onChange={manejarCambio}
                     valido={estado.valido}
                 >
