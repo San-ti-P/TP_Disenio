@@ -45,6 +45,8 @@ const App = () => {
     
     let hayErrores = false;
 
+    validarContraseña2();
+
     // Validación de cada campo
     if (nombre.valido !== 'true') {
         cambiarNombre({ campo: nombre.campo, valido: 'false' });
@@ -66,7 +68,7 @@ const App = () => {
         cambiarContraseña1({ campo: contraseña1.campo, valido: 'false' });
         hayErrores = true;
     }
-    if (contraseña2.valido !== 'true' || !validarContraseña2) {
+    if (contraseña2.valido !== 'true') {
         cambiarContraseña2({ campo: contraseña2.campo, valido: 'false' });
         hayErrores = true;
     }
@@ -166,10 +168,10 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
           />
 
         <ComponenteOtro 
-          estado={contraseña1}
-          cambiarEstado={cambiarContraseña1}
+          estado = {contraseña1}
+          cambiarEstado = {cambiarContraseña1}
           tipo = "password" 
-          label="Contraseña" 
+          label ="Contraseña" 
           placeholder="Ingrese su contraseña"
           name = "contraseña" 
           //expresionRegular = {expresiones.contraseña}
@@ -178,12 +180,12 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
           />
 
         <ComponenteOtro 
-            estado={contraseña2}
-            cambiarEstado={cambiarContraseña2}
-            tipo="password" 
-            label="Confirmar contraseña" 
-            placeholder="Confirme la contraseña"
-            name="confirmarContraseña" 
+            estado = {contraseña2}
+            cambiarEstado = {cambiarContraseña2}
+            tipo = "password" 
+            label = "Confirmar contraseña" 
+            placeholder = "Confirme la contraseña"
+            name = "confirmarContraseña" 
             funcion={validarContraseña2}
             textoTooltip="Las contraseñas no coinciden"
         />

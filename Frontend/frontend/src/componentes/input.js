@@ -62,9 +62,9 @@ const ComponenteBaseInput = ({
 
     const manejarCambio = (e) => {
         setCampoTocado(true);
-        if (name == "contraseña") { cambiarEstado({ ...estado, campo: e.target.value, valido: "true"}); }
+        if (name === "contraseña") { cambiarEstado({ ...estado, campo: e.target.value, valido: "true"}); }
         else { cambiarEstado({ ...estado, campo: e.target.value}); }
-        if (funcion) funcion();
+        //if (funcion) funcion();
     }
 
     const tipoInput = tipo === "password" ? (mostrarPassword ? "text" : "password") : tipo;
@@ -78,6 +78,8 @@ const ComponenteBaseInput = ({
             value={estado.campo}
             onChange={manejarCambio}
             onBlur={validarCampo}
+            onKeyUp={funcion? funcion : null}
+            onFocus={funcion? funcion : null}
             valido={estado.valido}
         />
     );
