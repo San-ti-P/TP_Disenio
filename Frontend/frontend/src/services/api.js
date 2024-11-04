@@ -15,13 +15,15 @@ const enviarFormulario = async (datosFormulario) => {
 };
 
   
-  // const manejarRespuesta = (respuesta, funcion) => {
-  //   if (respuesta.length === 0) funcion();
-  //   else {
-  //     if (respuesta.includes("campos_invalidos"))     { alert("Eror de campo")}; // mostrar leyenda de Campo
-  //     if (respuesta.includes("contrasenia_invalida")) { alert("Error de contrasenia")}; // mostrar leyenda de Contrasenia
-  //     if (respuesta.includes("id_existente"))         { alert("ID existente")}; // mostrar leyenda de ID
-  //   }
-  // }
+const getPoliticas = async () => {
+  try {
+    const url = "http://127.0.0.1:8000/tpdisenio/RegistrarBedel";
+    const respuesta = await axios.get(url);
+    return respuesta.data;
+  } catch (error) {
+    console.error('Error al obtener políticas:', error);
+    throw error;
+  }
+};
 
-export {enviarFormulario}
+export {enviarFormulario, getPoliticas}

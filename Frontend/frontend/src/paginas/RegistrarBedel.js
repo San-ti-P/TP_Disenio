@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Formulario, DivTextoCampoObligatorio, DivBotonesSC } from "../elementos/formularios.js";
 import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "../componentes/input.js"
 import { CancelarModal, mostrarModalExito } from "../componentes/modal.js"
-import { enviarFormulario } from "../services/api.js"
-import { getPoliticas } from "../componentes/menu.js";
+import {enviarFormulario, getPoliticas} from "../services/api.js"
 import { BotonSC, BotonSubmit, LeyendaError } from '../elementos/formularios'; 
 
 const App = () => {
@@ -18,6 +17,7 @@ const App = () => {
   const [animarErrores, cambiarAnimarErrores] = useState(false);
   const [mostrarIDLeyenda, cambiarMostrarIDLeyenda] = useState(false);
   const [mostrarContraLeyenda, cambiarMostrarContraLeyenda] = useState(false);
+  const [politicasTooltip, setPoliticasTooltip] = useState('');
 
   const expresiones = {
     nombre: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
@@ -112,18 +112,13 @@ const App = () => {
     }
 };
 
-const [politicasTooltip, setPoliticasTooltip] = useState('');
   useEffect(() => {
-    const   fetchPoliticas = async () => {
-      try {
-        const politicas = await getPoliticas();
-        setPoliticasTooltip(politicas);
-      } catch (error) {
-        console.error('Error al obtener políticas:', error);
-      }
+    const obtenerPoliticas = async () => {
+      const politicas = await getPoliticas();
+      if (politicas) setPoliticasTooltip(politicas);
     };
 
-    fetchPoliticas();
+    obtenerPoliticas();
   }, []);
 
   return (
