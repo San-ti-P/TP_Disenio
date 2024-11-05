@@ -172,4 +172,21 @@ const IconoPassword = styled.div`
     }
 `;
 
-export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC, BotonSubmit, LeyendaError}
+const DivLogin = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 25px;
+  align-items: center;
+
+  button {
+      grid-column: 2;         
+      margin-left: auto;      
+      width: auto;            
+      display: flex;
+      justify-content: flex-end;
+  }
+`;
+
+
+
+export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC, BotonSubmit, LeyendaError, DivLogin}

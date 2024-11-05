@@ -3,7 +3,7 @@ import { Formulario, DivTextoCampoObligatorio, DivBotonesSC } from "../elementos
 import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "../componentes/input.js"
 import { CancelarModal, mostrarModalExito } from "../componentes/modal.js"
 import {enviarFormulario, getPoliticas} from "../services/api.js"
-import { BotonSC, BotonSubmit, LeyendaError } from '../elementos/formularios'; 
+import { BotonSC, BotonSubmit, LeyendaError } from '../elementos/formularios.js'; 
 
 const App = () => {
 

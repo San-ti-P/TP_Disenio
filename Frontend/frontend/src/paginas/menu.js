@@ -1,5 +1,5 @@
 import React from 'react';
-import { BotonMenu, DivMenu, ImgMenu } from '../elementos/menuEl';
+import { BotonMenu, DivMenu, ImgMenu } from '../elementos/menuEl.js';
 import { useNavigate } from 'react-router-dom';
 import { getPoliticas } from '../services/api.js'; 
 
