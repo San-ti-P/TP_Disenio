@@ -172,7 +172,7 @@ const IconoPassword = styled.div`
     }
 `;
 
-const DivLogin = styled.div`
+const FormLogin = styled.form`
   display: grid;
   grid-template-columns: 1fr 4fr;
   gap: 25px;
@@ -189,4 +189,4 @@ const DivLogin = styled.div`
 
 
 
-export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC, BotonSubmit, LeyendaError, DivLogin}
+export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC, BotonSubmit, LeyendaError, FormLogin}

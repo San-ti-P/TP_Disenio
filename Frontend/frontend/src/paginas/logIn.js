@@ -1,20 +1,33 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {ComponenteOtro} from "../componentes/input"
-import {DivLogin, BotonSC} from "../elementos/formularios"
+import {FormLogin, BotonSC} from "../elementos/formularios"
 
 const App = () => {
     const [idUsuario, cambiarIdUsuario] = useState({campo:'', valido: null});
     const [mostrarIDLeyenda, cambiarMostrarIDLeyenda] = useState(false);
     const [contraseña1, cambiarContraseña1] = useState({campo:'', valido: null});
     const [mostrarContraLeyenda, cambiarMostrarContraLeyenda] = useState(false);
-
     const navigate = useNavigate();
+
+    const datosLogin = {
+        id: idUsuario.campo,
+        contrasenia: contraseña1.campo
+    }
+    
+    const onSubmit = () => {
+     let rutaAdm = "/menuAdm";
+     let rutaBedel = "/menuBedel";   
+     navigate(rutaAdm);
+    //  si el backend devuelve que es Adm, voy a rutaAdm,
+    //  si el backend devuelve que es Bedel, voy a rutaBedel
+    
+    }
 
     return (
       <main>
         <h1>Login</h1>
-        <DivLogin>
+        <FormLogin onSubmit={onSubmit}>
             <ComponenteOtro 
             estado={idUsuario}
             cambiarEstado={cambiarIdUsuario}
@@ -37,8 +50,8 @@ const App = () => {
             mostrarLeyenda={mostrarContraLeyenda}
             cambiarMostrarLeyenda={cambiarMostrarContraLeyenda}
             />
-            <BotonSC onClick={() => navigate('/menu')}>Aceptar</BotonSC>
-        </DivLogin>
+            <BotonSC>Aceptar</BotonSC>
+        </FormLogin>
     </main>
     );
 }

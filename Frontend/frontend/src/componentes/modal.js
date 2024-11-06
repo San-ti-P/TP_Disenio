@@ -100,7 +100,7 @@ const CancelarModal = ({
       width: width
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate('/menu');
+        navigate('/menuAdm');
       }
     });
   };
