@@ -1,0 +1,34 @@
+cd frontend
+cd frontend
+npm start
+
+(nueva consola)
+
+cd backend
+Set-ExecutionPolicy RemoteSigned -Scope Process
+./tpenv/Scripts/activate
+cd back
+python manage.py runserver
+
+
+////////////////////////////
+Instalar Node.js
+Instalar React
+Instalar Postgre V17
+
+npm install
+
+pip install virtualenv
+python -m venv tpenv
+Set-ExecutionPolicy RemoteSigned -Scope Process
+./tpenv/Scripts/activate
+cd back -> python manage.py runserver	
+
+pip install django
+pip install djangorestframework
+pip install django-cors-headers
+pip install "psycopg[binary]"
+
+borrar carpeta pycache de migrations
+python manage.py makemigrations
+python manage.py migrate

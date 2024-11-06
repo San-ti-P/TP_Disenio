@@ -10,6 +10,13 @@ const App = () => {
     const [mostrarContraLeyenda, cambiarMostrarContraLeyenda] = useState(false);
     const navigate = useNavigate();
 
+    const expresiones = {
+        //nombre: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
+        //apellido: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
+        idUsuario: /^utn-\d{6}$/, // Formato: utn- seguido de exactamente 6 dígitos.
+        //contraseña: /^(?=.*[@#$%&*])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$%&*]{8,50}$/ // Mínimo 8 y máximo 50 caracteres
+      };
+
     const datosLogin = {
         id: idUsuario.campo,
         contrasenia: contraseña1.campo
@@ -38,6 +45,7 @@ const App = () => {
             leyendaError={"ID de usuario no existe"}
             mostrarLeyenda={mostrarIDLeyenda}
             cambiarMostrarLeyenda={cambiarMostrarIDLeyenda}
+            expresionRegular = {expresiones.idUsuario}
             />
             <ComponenteOtro 
             estado={contraseña1}
