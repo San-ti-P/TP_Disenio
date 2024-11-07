@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("BuscarBedel", buscar_bedel_api_view, name="buscador bedeles"),
-    path("RegistrarBedel", registrar_bedel_api_view, name="registrador bedeles"),
+    path("buscar_bedel", buscar_bedel_api_view, name="buscador bedeles"),
+    path("registrar_bedel", registrar_bedel_api_view, name="registrador bedeles"),
     path("login", login, name="login usuarios")
 ]
