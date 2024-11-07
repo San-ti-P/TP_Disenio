@@ -1,6 +1,9 @@
-from abc import ABC     #, abstractclassmethod
+from datetime import date
 #from .serializers import RespuestaRegistrarBedelSerializer
 from ..models import Bedel
+import hashlib
+import random
+import string
 
 class RespuestaRegistrarBedel(object):
     """Se usa para construir el objeto respuesta del método .alta_bedel() de GestorBedel"""
@@ -12,6 +15,39 @@ class RespuestaRegistrarBedel(object):
             self.errors.append("contrasenia_invalida")
         if not id_valido:
             self.errors.append("id_existente")
+
+class RespuestaLogin(object):
+
+    def __init__(self, rango, nombre, cookie):
+        self.rango = rango
+        self.nombre = nombre
+        self.cookie = cookie
+
+class Sesion(object):
+    def __init__(self, id_sesion, fecha_entrada, es_admin, id_usuario):
+        self.id_sesion = id_sesion
+        self.fecha_entrada = fecha_entrada
+        self.es_admin = es_admin
+        self.cookie = hashlib.md5(''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(32)).encode('utf-8')).hexdigest()
+        self.id_usuario = id_usuario
+    
+    def get_id_sesion(self):
+        return self.id_sesion
+    def get_fecha_entrada(self):
+        return self.fecha_entrada
+    def get_es_admin(self):
+        return self.es_admin
+    def get_cookie(self):
+        return self.cookie 
+    def set_id_sesion(self, id):
+        self.id_sesion = id
+    def set_fecha_entrada(self, fecha):
+        self.fecha_entrada = fecha
+    def set_es_admin(self, es_admin):
+        self.es_admin = es_admin
+    def set_cookie(self, cookie):
+        self.cookie = cookie
+
 
 class GestorBedel():
     """Clase encargada de suministrar todo la lógica concerniente a la clase Bedel"""
@@ -87,10 +123,8 @@ class GestorBedel():
             contrasenia_valida = True
 
         if campos_validos and contrasenia_valida and id_unico:
-            bedel = Bedel(nombre=nombre, apellido=apellido, turno=turno, id_usuario=id_usuario, contrasenia=contrasenia)
+            bedel = Bedel(nombre=nombre, apellido=apellido, turno=turno, id_usuario=id_usuario, contrasenia=contrasenia, activo=True, fecha_baja=None)
             self.bedel_DAO.create_bedel(bedel)
-            # Registrar Bedel en BDD
-            pass
         
         response = RespuestaRegistrarBedel(campos_validos, contrasenia_valida, id_unico)
         return response
@@ -233,5 +267,39 @@ class GestorContrasenia():
 
 class GestorSesion():
     """Clase encargada de suministrar todo la lógica concerniente a la clase Sesion"""
-    pass
+    def __init__(self, bedel_DAO, administrador_DAO):
+        self.bedel_DAO = bedel_DAO
+        self.administrador_DAO = administrador_DAO
+        self.sesiones = []
+
+    def inicio_sesion(self, id_usuario, contrasenia):
+        administrador = self.administrador_DAO.get_administrador(id_usuario)
+        if administrador != None:
+            if contrasenia == administrador.get_contrasena():
+                if len(self.sesiones) != 0:
+                    id_sesion = str(int(self.sesiones[len(self.sesiones)-1].get_id_sesion())+1)
+                else: id_sesion = "1"
+                sesion = Sesion(id_sesion, date.today(), True, id_usuario)
+                self.sesiones.append(sesion)
+                return RespuestaLogin("admin", administrador.get_nombre(), sesion.get_cookie())
+            #else: return "acceso denegado"
+        else:
+            bedel = self.bedel_DAO.get_bedel(id_usuario)
+            if bedel != None:
+                if contrasenia == bedel.get_contrasena():
+                    if len(self.sesiones) != 0:
+                        id_sesion = str(int(self.sesiones[len(self.sesiones)-1].get_id_sesion())+1)
+                    else: id_sesion = "1"
+                    sesion = Sesion(id_sesion, date.today(), True, id_usuario)
+                    self.sesiones.append(sesion)
+                    return RespuestaLogin("bedel", bedel.get_nombre(), sesion.get_cookie())
+                #else: return "acceso denegado"
+            #else: return "acceso denegado"
+        return RespuestaLogin("acceso denegado", None, None)
+    
+    def cerrar_sesion(self, id_sesion):
+        pass
+
+    def consultar_sesion(self, id_sesion):
+        pass
 

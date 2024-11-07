@@ -3,7 +3,21 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from . import services
 from .models import Bedel
-from .serializers import BedelSerializer, ErrorsListSerializer
+from .serializers import BedelSerializer, ErrorsListSerializer, LoginRequestSerializer, LoginResponseSerializer
+
+@api_view(['POST'])
+def login(request):
+    if request.method == 'POST':
+        print("LLegó post a login")
+        login_request_serializer = LoginRequestSerializer(data=request.data)
+        data = login_request_serializer.initial_data
+        id_usuario = data['id_usuario']
+        contrasenia = data['contrasenia']
+        print(id_usuario, contrasenia)
+        response = services.gestor_sesion.inicio_sesion(id_usuario, contrasenia)
+        response_serializer = LoginResponseSerializer(response)
+        return Response(response_serializer.data)
+
 
 @api_view(['GET'])
 def buscar_bedel_api_view(request):

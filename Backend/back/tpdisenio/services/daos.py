@@ -47,7 +47,7 @@ class SQLAdministradorDAO(AdministradorDAO):
     #@staticmethod
     def get_administrador(self, id_administrador):
         try:
-            return Administrador.objects.get(id=id_administrador)
+            return Administrador.objects.get(id_usuario=id_administrador)
         except ObjectDoesNotExist:
             return None
 
@@ -73,7 +73,7 @@ class SQLBedelDAO(BedelDAO):
     #@staticmethod
     def get_bedel(self, id_bedel):
         try:
-            return Bedel.objects.get(id=id_bedel)
+            return Bedel.objects.get(id_usuario=id_bedel)
         except ObjectDoesNotExist:
             return None
 
