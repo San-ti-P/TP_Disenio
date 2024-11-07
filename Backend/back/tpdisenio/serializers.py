@@ -23,6 +23,6 @@ class LoginRequestSerializer(serializers.Serializer):
     contrasenia = serializers.CharField(max_length=50)
 
 class LoginResponseSerializer(serializers.Serializer):
-    rango = serializers.CharField(max_length=5)
+    rango = serializers.CharField(max_length=15)
     nombre = serializers.CharField(max_length=30)
     cookie = serializers.CharField(max_length=32)
