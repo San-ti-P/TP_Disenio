@@ -4,11 +4,39 @@ from django.core.exceptions import ObjectDoesNotExist
 
 class AdministradorDAO(ABC):
     """Interfaz encargada de definir el protocolo para persistir datos de la clase Administrador"""
-    pass
+    #@staticmethod
+    def create_administrador(self, bedel):
+        pass
+
+    #@staticmethod
+    def get_administrador(self, id_bedel):
+        pass
+
+    #@staticmethod
+    def get_id_administrador(self):
+        pass
+
+    #@staticmethod
+    def update_administrador(self, **kwargs):
+       pass
 
 class BedelDAO(ABC):
     """Interfaz encargada de definir el protocolo para persistir datos de la clase Bedel"""
-    pass
+    #@staticmethod
+    def create_bedel(self, bedel):
+        pass
+
+    #@staticmethod
+    def get_bedel(self, id_bedel):
+        pass
+
+    #@staticmethod
+    def get_id_bedel(self):
+        pass
+
+    #@staticmethod
+    def update_bedel(self, **kwargs):
+       pass
 
 class SQLAdministradorDAO(AdministradorDAO):
     """Clase encargada de implementar el protocolo para persistir datos de la clase Administrador en una BDD SQL (PostgreSQL)"""
