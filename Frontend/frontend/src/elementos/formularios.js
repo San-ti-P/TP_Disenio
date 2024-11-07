@@ -70,6 +70,14 @@ const Input = styled.input`
     }
 `;
 
+const LeyendaError = styled.p`
+  font-size: 13px;
+  margin: -22px 0 0 0;
+  color: ${colores.error};
+  grid-column: 2;
+  display: block;
+`;
+
 const DivTextoCampoObligatorio = styled.div`
   display: flex;
   justify-content: space-between; 
@@ -113,6 +121,7 @@ const BotonSC = styled.button`
     transform: scale(0.98);
   }
 `;
+const BotonSubmit = () => <BotonSC as="input" type="submit" value="Siguiente" />;
 
 const Select = styled.select`
   width: 100%;
@@ -163,4 +172,21 @@ const IconoPassword = styled.div`
     }
 `;
 
-export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC}
+const FormLogin = styled.form`
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  gap: 25px;
+  align-items: center;
+
+  button {
+      grid-column: 2;         
+      margin-left: auto;      
+      width: auto;            
+      display: flex;
+      justify-content: flex-end;
+  }
+`;
+
+
+
+export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC, BotonSubmit, LeyendaError, FormLogin}

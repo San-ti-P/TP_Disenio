@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Input, Label, GrupoInput, Select, IconoPassword } from "./../elementos/formularios";
+import { Input, Label, GrupoInput, Select, IconoPassword, LeyendaError } from "./../elementos/formularios";
 import Tooltip from '@mui/material/Tooltip';
 import { styled } from '@mui/material/styles';
 import { Eye, EyeOff } from 'lucide-react';
@@ -11,7 +11,7 @@ const TooltipPersonalizado = styled(({ className, ...props }) => (
         backgroundColor: "#f5f5f5",
         color: "#333",
         fontSize: "0.875rem",
-        border: "px solid #dadde9",
+        border: "1px solid #dadde9",
         padding: "15px",
         borderRadius: "4px",
     },
@@ -40,18 +40,18 @@ const ComponenteBaseInput = ({
     expresionRegular,
     funcion,
     textoTooltip,
-    comportamientoTooltip = "error" // "error" | "siempre" | "nunca"
+    comportamientoTooltip = "error",
+    leyendaError = "",
+    mostrarLeyenda,
+    cambiarMostrarLeyenda
 }) => {
     const [mostrarPassword, setMostrarPassword] = useState(false);
-    const [campoTocado, setCampoTocado] = useState(false);
-
-    // Referencia para el input
+    const [campoTocado, setCampoTocado] = useState(false);    
     const inputRef = useRef(null);
 
     const validarCampo = (e) => {
         const siguienteElemento = e.relatedTarget;
 
-        // Realizamos la validación solo si el campo fue tocado y el siguiente elemento no es un botón 
         if (campoTocado && !(siguienteElemento && siguienteElemento.tagName === "BUTTON")) {
             if (expresionRegular) {
                 const esValido = expresionRegular.test(estado.campo);
@@ -63,8 +63,13 @@ const ComponenteBaseInput = ({
 
     const manejarCambio = (e) => {
         setCampoTocado(true);
-        cambiarEstado({ ...estado, campo: e.target.value });
-        if (funcion) funcion();
+        if (cambiarMostrarLeyenda) cambiarMostrarLeyenda(false);
+        
+        if (name === "contraseña") {
+            cambiarEstado({ ...estado, campo: e.target.value, valido: "true"});
+        } else {
+            cambiarEstado({ ...estado, campo: e.target.value});
+        }
     }
 
     const tipoInput = tipo === "password" ? (mostrarPassword ? "text" : "password") : tipo;
@@ -78,8 +83,13 @@ const ComponenteBaseInput = ({
             value={estado.campo}
             onChange={manejarCambio}
             onBlur={validarCampo}
-            onKeyUp={tipo === "password" ? validarCampo : null}
-            //onKeyUp={funcion ? funcion():undefined}
+            onKeyUp={funcion && name === "confirmarContraseña"? funcion : null}
+            onFocus={funcion? funcion : null}
+            onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                    e.preventDefault();
+                }
+            }}
             valido={estado.valido}
         />
     );
@@ -115,7 +125,6 @@ const ComponenteBaseInput = ({
                 {textoTooltip ? (
                     <TooltipPersonalizado
                         title={<React.Fragment>{formatearTextoTooltip(textoTooltip)}</React.Fragment>}
-                        // title = {textoTooltip}
                         placement="right"
                         arrow
                         {...obtenerConfiguracionTooltip()}
@@ -134,9 +143,11 @@ const ComponenteBaseInput = ({
                     </IconoPassword>
                 )}
             </GrupoInput>
+            {mostrarLeyenda && leyendaError !== "" && <LeyendaError>{leyendaError}</LeyendaError>}
         </React.Fragment>
     );
 };
+
 
 const ComponenteNyAP = (props) => (
     <ComponenteBaseInput {...props} />
@@ -147,13 +158,6 @@ const ComponenteOtro = (props) => (
 );
 
 const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeholder, name}) => {
-    const validarSeleccion = (e) => {
-        cambiarEstado({
-            ...estado,
-            valido: e.target.value === 'Seleccione una opcion' ? 'false' : 'true'
-        });
-    }
-
     const manejarCambio = (e) => {
         cambiarEstado({ ...estado, campo: e.target.value, valido: 'true' });
     };
@@ -167,11 +171,10 @@ const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeho
                     id={name}
                     value={estado.campo}
                     placeholder={placeholder}
-                    onBlur={validarSeleccion}
                     onChange={manejarCambio}
                     valido={estado.valido}
                 >
-                    <option value="" disabled selected>Seleccione una opcion</option>
+                    <option value="" disabled>Seleccione una opcion</option>
                     <option value="Mañana">Mañana</option>
                     <option value="Tarde">Tarde</option>
                     <option value="Noche">Noche</option>

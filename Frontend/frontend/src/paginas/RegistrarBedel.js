@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Formulario, DivTextoCampoObligatorio, DivBotonesSC } from "../elementos/formularios.js";
 import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "../componentes/input.js"
-import { SiguienteModal, CancelarModal} from "../componentes/modal.js"
-import { enviarFormulario } from "../componentes/modal.js"
-import { getPoliticas } from "../componentes/menu.js";
-import { BotonSC } from '../elementos/formularios'; 
+import { CancelarModal, mostrarModalExito } from "../componentes/modal.js"
+import {enviarFormulario, getPoliticas} from "../services/api.js"
+import { BotonSC, BotonSubmit, LeyendaError } from '../elementos/formularios.js'; 
 
 const App = () => {
 
@@ -16,13 +15,15 @@ const App = () => {
   const [contraseña2, cambiarContraseña2] = useState({campo:'', valido: null});
   const [formularioValido, cambiarFormularioValido] = useState(null)
   const [animarErrores, cambiarAnimarErrores] = useState(false);
+  const [mostrarIDLeyenda, cambiarMostrarIDLeyenda] = useState(false);
+  const [mostrarContraLeyenda, cambiarMostrarContraLeyenda] = useState(false);
+  const [politicasTooltip, setPoliticasTooltip] = useState('');
 
   const expresiones = {
     nombre: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
     apellido: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
     idUsuario: /^utn-\d{6}$/, // Formato: utn- seguido de exactamente 6 dígitos.
-    contraseña: /^(?=.*[!@#$%^&*()_\-+={[}\]|:;"'<>,.?/~`])(?=.*[A-Z])(?=.*\d)[A-Za-z\d!@#$%^&*()_\-+={[}\]|:;"'<>,.?/~`]{6,64}$/
-    // Mínimo 6 y máximo 64 caracteres, al menos un signo especial, una letra mayúscula y un dígito
+    //contraseña: /^(?=.*[@#$%&*])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$%&*]{8,50}$/ // Mínimo 8 y máximo 50 caracteres
   };
 
   const validarContraseña2 = () =>{
@@ -45,6 +46,8 @@ const App = () => {
     
     let hayErrores = false;
 
+    validarContraseña2();
+
     // Validación de cada campo
     if (nombre.valido !== 'true') {
         cambiarNombre({ campo: nombre.campo, valido: 'false' });
@@ -66,7 +69,7 @@ const App = () => {
         cambiarContraseña1({ campo: contraseña1.campo, valido: 'false' });
         hayErrores = true;
     }
-    if (contraseña2.valido !== 'true' || !validarContraseña2) {
+    if (contraseña2.valido !== 'true') {
         cambiarContraseña2({ campo: contraseña2.campo, valido: 'false' });
         hayErrores = true;
     }
@@ -83,28 +86,39 @@ const App = () => {
         id_usuario: idUsuario.campo,
         contrasenia: contraseña1.campo
       };
-      await enviarFormulario(datosFormulario);
-      cambiarNombre({ campo: '', valido: null });
-      cambiarApellido({ campo: '', valido: null });
-      cambiarTurno({ campo: '', valido: null });
-      cambiarIdUsuario({ campo: '', valido: null });
-      cambiarContraseña1({ campo: '', valido: null });
-      cambiarContraseña2({ campo: '', valido: null });
+      
+      const respuesta = await enviarFormulario(datosFormulario);
+
+      if (respuesta.error) {
+        alert("Ocurrió un error al enviar el formulario");
+      } else {
+        const respuestaErrores = respuesta.data.errors;
+        if (respuestaErrores.length === 0) {
+          mostrarModalExito();
+        } else {
+          if (respuestaErrores.includes("campos_invalidos")) { 
+            alert("Error de campo"); 
+          }
+          if (respuestaErrores.includes("contrasenia_invalida")){
+            cambiarMostrarContraLeyenda(true);
+            cambiarContraseña1({ campo: contraseña1.campo, valido: "false" });
+          }
+          if (respuestaErrores.includes("id_existente")) {
+            cambiarMostrarIDLeyenda(true);
+            cambiarIdUsuario({ campo: idUsuario.campo, valido: 'false' });
+          }
+        }
+      }
     }
 };
 
-const [politicasTooltip, setPoliticasTooltip] = useState('');
   useEffect(() => {
-    const fetchPoliticas = async () => {
-      try {
-        const politicas = await getPoliticas();
-        setPoliticasTooltip(politicas);
-      } catch (error) {
-        console.error('Error al obtener políticas:', error);
-      }
+    const obtenerPoliticas = async () => {
+      const politicas = await getPoliticas();
+      if (politicas) setPoliticasTooltip(politicas);
     };
 
-    fetchPoliticas();
+    obtenerPoliticas();
   }, []);
 
   return (
@@ -120,9 +134,9 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
               placeholder="Ingrese su nombre"
               name="nombre"
               expresionRegular={expresiones.nombre}
-              textoTooltip={nombre.valido === 'false' ? "El nombre debe tener mínimo 2 letras y no tener números" : null}
+              textoTooltip={nombre.valido === "false" ? "El nombre debe tener mínimo 2 letras y no tener números" : null}
           />
-          <ComponenteNyAP
+        <ComponenteNyAP
             estado = {apellido}
             cambiarEstado = {cambiarApellido}
             tipo = "text"
@@ -130,7 +144,7 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
             placeholder = "Ingrese su apellido"
             name = "apellido"
             expresionRegular = {expresiones.apellido}
-            textoTooltip = {apellido.valido === 'false' ? "El apellido debe tener mínimo 2 letras y no tener números" : null}
+            textoTooltip = {apellido.valido === "false" ? "El apellido debe tener mínimo 2 letras y no tener números" : null}
           />
         <ComponenteDesplegableInput 
           estado = {turno}
@@ -140,59 +154,54 @@ const [politicasTooltip, setPoliticasTooltip] = useState('');
           placeholder = "Seleccione un turno"
           name = "turno" 
         />
-
-          <ComponenteOtro
-          estado = {idUsuario}
-          cambiarEstado = {cambiarIdUsuario}
-          tipo = "text" 
-          label= "ID usuario" 
-          placeholder = "ID de usuario"
-          name = "idUsuario" 
-          expresionRegular = {expresiones.idUsuario}
-          textoTooltip = {`El campo debe comenzar con las letras "utn-" seguidas de exactamente seis dígitos numéricos. \n Ejemplo: utn-123456`}
-          comportamientoTooltip = "siempre"
-          />
+        <ComponenteOtro
+          estado={idUsuario}
+          cambiarEstado={cambiarIdUsuario}
+          tipo="text" 
+          label="ID usuario" 
+          placeholder="ID de usuario"
+          name="idUsuario" 
+          expresionRegular={expresiones.idUsuario}
+          textoTooltip={`El campo debe comenzar con las letras "utn-" seguidas de exactamente seis dígitos numéricos. \n Ejemplo: utn-123456`}
+          comportamientoTooltip="siempre"
+          leyendaError={"ID de usuario ya existe"}
+          mostrarLeyenda={mostrarIDLeyenda}
+          cambiarMostrarLeyenda={cambiarMostrarIDLeyenda}
+        />
 
         <ComponenteOtro 
           estado={contraseña1}
           cambiarEstado={cambiarContraseña1}
-          tipo = "password" 
+          tipo="password" 
           label="Contraseña" 
           placeholder="Ingrese su contraseña"
-          name = "contraseña" 
-          expresionRegular = {expresiones.contraseña}
-          // textoTooltip = {`La contraseña debe: \n -Tener una longitud mínima de 6 caracteres. \n -Contener al menos un signo especial. \n -Contener al menos una letra mayúscula.\n -Contener al menos un digito.\n -No ser igual a una contraseña utilizada anteriormente por el usuario.`}
-          textoTooltip = {politicasTooltip}
-          comportamientoTooltip = "siempre"
-          />
+          name="contraseña" 
+          funcion={validarContraseña2}
+          textoTooltip={politicasTooltip}
+          comportamientoTooltip="siempre"
+          leyendaError={"Contraseña inválida"}
+          mostrarLeyenda={mostrarContraLeyenda}
+          cambiarMostrarLeyenda={cambiarMostrarContraLeyenda}
+        />
 
         <ComponenteOtro 
-          estado={contraseña2}
-          cambiarEstado={cambiarContraseña2}
-          tipo = "password" 
-          label="Confirmar contraseña" 
-          placeholder="Confirme la contraseña"
-          name = "confiarmarContraseña" 
-          expresionRegular = {expresiones.contraseña}
-          funcion={validarContraseña2}
-          textoTooltip="Las contraseñas no coinciden"
-          />
+            estado = {contraseña2}
+            cambiarEstado = {cambiarContraseña2}
+            tipo = "password" 
+            label = "Confirmar contraseña" 
+            placeholder = "Confirme la contraseña"
+            name = "confirmarContraseña" 
+            funcion={validarContraseña2}
+            textoTooltip="Las contraseñas no coinciden"
+        />
 
       <DivTextoCampoObligatorio>
         <p>Todos los campos son obligatorios</p>
         <DivBotonesSC>
-          {/* <SiguienteModal
-            titulo="Bedel registrado satisfactoriamente"
-            texto=""
-            icono="info"
-            mostrarCancelar={false}
-            confirmarTexto="Confirmar"
-            labelBoton="Siguiente"
-          /> */}
-          <BotonSC>Siguiente</BotonSC>
+          <BotonSubmit>Siguiente</BotonSubmit>
           <CancelarModal 
             titulo="¿Está seguro que desea cancelar el registro?"
-            texto="No podras deshacer esta accion"
+            texto="No podrá deshacer esta acción"
             icono="question"
             mostrarCancelar={true}
             confirmarTexto="Confirmar"
