@@ -48,7 +48,7 @@ const App = () => {
             mostrarLeyenda={mostrarContraLeyenda}
             cambiarMostrarLeyenda={cambiarMostrarContraLeyenda}
             />
-            <BotonSC>Aceptar</BotonSC>
+            <BotonSC>Acceder</BotonSC>
         </FormLogin>
     </main>
     );
