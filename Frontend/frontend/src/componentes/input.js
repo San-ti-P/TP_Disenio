@@ -157,7 +157,7 @@ const ComponenteOtro = (props) => (
     <ComponenteBaseInput {...props}  />
 );
 
-const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeholder, name}) => {
+const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeholder, name, valorPorDefecto, valores}) => {
     const manejarCambio = (e) => {
         cambiarEstado({ ...estado, campo: e.target.value, valido: 'true' });
     };
@@ -172,12 +172,24 @@ const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeho
                     value={estado.campo}
                     placeholder={placeholder}
                     onChange={manejarCambio}
-                    valido={estado.valido}
-                >
-                    <option value="" disabled>Seleccione una opcion</option>
+                    valido={estado.valido}>
+                    
+                    <option 
+                            value="" disabled>{valorPorDefecto ? 
+                            valorPorDefecto : "Seleccione una opcion"}
+                    </option>
+                    {
+                        valores.length > 0 &&  
+                        valores.map((valor) => {
+                            return (
+                                <option key={valor} value={valor}>{valor}</option>
+                            )
+                        })
+                    }
+                {/* 
                     <option value="Mañana">Mañana</option>
                     <option value="Tarde">Tarde</option>
-                    <option value="Noche">Noche</option>
+                    <option value="Noche">Noche</option> */}
                 </Select>
             </GrupoInput>
         </React.Fragment>

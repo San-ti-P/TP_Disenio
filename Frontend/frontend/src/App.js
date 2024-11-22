@@ -9,6 +9,7 @@ import ListarReservasCurso from './paginas/ListarReservasCurso';
 import BuscarBedel from './paginas/BuscarBedel';
 import RegistrarBedel from './paginas/RegistrarBedel';
 import Login from "./paginas/logIn.js";
+import ModificarEliminarBedel from "./paginas/ModificarEliminarBedel.js"
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/listar-reservas-curso" element={<ListarReservasCurso />} />
         <Route path="/buscar-bedel" element={<BuscarBedel />} />
         <Route path="/registrar-bedel" element={<RegistrarBedel />} />
+        <Route path="/modificar-eliminar-bedel" element={<ModificarEliminarBedel />} />
       </Routes>
     </Router>
   );

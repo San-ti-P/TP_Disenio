@@ -153,6 +153,7 @@ const App = () => {
           label = "Turno" 
           placeholder = "Seleccione un turno"
           name = "turno" 
+          valores={["Mañana", "Tarde", "Noche"]}
         />
         <ComponenteOtro
           estado={idUsuario}
@@ -198,7 +199,7 @@ const App = () => {
       <DivTextoCampoObligatorio>
         <p>Todos los campos son obligatorios</p>
         <DivBotonesSC>
-          <BotonSubmit>Siguiente</BotonSubmit>
+          <BotonSubmit label="Siguiente">Siguiente</BotonSubmit>
           <CancelarModal 
             titulo="¿Está seguro que desea cancelar el registro?"
             texto="No podrá deshacer esta acción"

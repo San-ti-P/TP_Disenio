@@ -121,7 +121,12 @@ const BotonSC = styled.button`
     transform: scale(0.98);
   }
 `;
-const BotonSubmit = () => <BotonSC as="input" type="submit" value="Siguiente" />;
+
+const BotonSubmit = ({label}) => {
+  return (
+          <BotonSC as="input" type="submit" value={label} />
+    );
+}
 
 const Select = styled.select`
   width: 100%;

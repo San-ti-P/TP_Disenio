@@ -128,7 +128,6 @@ class GestorBedel():
         
         response = RespuestaRegistrarBedel(campos_validos, contrasenia_valida, id_unico)
         return response
-        '''Terminar'''
 
     def baja_bedel(self, id_usuario):
         """
