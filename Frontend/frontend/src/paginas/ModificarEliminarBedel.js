@@ -2,100 +2,48 @@ import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { styled } from '@mui/material/styles';
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
-  },
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
-
-const StyledIconButton = styled(IconButton)(({ theme }) => ({
-  backgroundColor: theme.palette.primary.main,
-  color: 'white',
-  padding: '8px',
-  '&:hover': {
-    backgroundColor: theme.palette.primary.dark,
-  },
-}));
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Paper from '@mui/material/Paper';
+import { StyledContainer, StyledHeader, StyledHeading, StyledIconButton, StyledTableContainer, StyledTableCell, StyledTableRow } from '../elementos/tablaResultados';
+import { manejoEliminar } from '../services/logicEliminar';
+import { manejoModificar } from '../services/logModificar';
 
 export default function ModificarEliminarBedel() {
   const location = useLocation();
   const navigate = useNavigate();
   const { valores } = location.state || { valores: [] };
-
-  const handleElimimar = () => {
-    alert("Eliminaste");
-  }
-
+  
+  const handleEliminar = async (bedel) => {
+    manejoEliminar(bedel);
+  };
+  
   const handleModificar = () => {
-    alert("Modificaste");
-  }
+    manejoModificar();
+  };
 
   return (
-    <div style={{ height: '90vh', width: "100vh", display: 'flex', flexDirection: 'column', marginBottom: "2%"}}>
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        marginBottom: '10px',
-        position: 'relative',
-        paddingLeft: '8px' 
-      }}>
-        <StyledIconButton 
-          onClick={() => navigate("/buscar-bedel")}
-          size="medium"
-          style={{ 
-            position: 'absolute',
-            left: -230,
-            width: '35px',
-            height: '35px'
-          }}
-        >
+    <StyledContainer>
+      <StyledHeader>
+        <StyledIconButton onClick={() => navigate("/buscar-bedel")} size="medium">
           <ArrowBackIcon style={{ fontSize: '25px' }} />
         </StyledIconButton>
-        <h2 style={{ 
-          margin: '0 auto',
-        }}>
-          Resultados de la búsqueda
-        </h2>
-      </div>
+        <StyledHeading>Resultados de la búsqueda</StyledHeading>
+      </StyledHeader>
 
-      <TableContainer
-        component={Paper}
-        style={{
-          flexGrow: 1,
-          overflow: 'auto',
-        }}
-      >
-        <Table stickyHeader aria-label="customized table" style={{ height: "99%" }}>
+      <StyledTableContainer component={Paper}>
+        <Table stickyHeader aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Nombre</StyledTableCell>
-              <StyledTableCell>Apellido</StyledTableCell>
-              <StyledTableCell>Turno</StyledTableCell>
-              <StyledTableCell>Identificador</StyledTableCell>
-              <StyledTableCell align="center">Acciones</StyledTableCell>
+              <StyledTableCell width="17%">Nombre</StyledTableCell>
+              <StyledTableCell width="17%">Apellido</StyledTableCell>
+              <StyledTableCell width="17%">Turno</StyledTableCell>
+              <StyledTableCell width="5%">Identificador</StyledTableCell>
+              <StyledTableCell width="25%" align="center">Acciones</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -105,25 +53,26 @@ export default function ModificarEliminarBedel() {
                 <StyledTableCell>{row.apellido}</StyledTableCell>
                 <StyledTableCell>{row.turno}</StyledTableCell>
                 <StyledTableCell>{row.identificador}</StyledTableCell>
-                <StyledTableCell align="center">
-                  <Button
-                    onClick = {handleModificar}
-                    variant="contained"
+                <StyledTableCell width="5fr" align="center">
+                  <Button 
+                    onClick={handleModificar}
                     color="info"
-                    size="small"
-                    style={{ marginRight: '8px' }}
+                    style={{ marginRight: '0px' }}
                   >
-                    Modificar
+                    <EditIcon />
                   </Button>
-                  <Button onClick={handleElimimar} variant="contained" color="error" size="small">
-                    Eliminar
+                  <Button 
+                    onClick={() => handleEliminar(row)} 
+                    color="error"
+                  >
+                    <DeleteIcon />
                   </Button>
                 </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>
         </Table>
-      </TableContainer>
-    </div>
+      </StyledTableContainer>
+    </StyledContainer>
   );
 }

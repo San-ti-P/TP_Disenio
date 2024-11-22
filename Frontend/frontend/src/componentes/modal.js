@@ -120,4 +120,4 @@ const mostrarModalExito = () => {
   });
 };
 
-export { CancelarModal, mostrarModalExito };
+export { CancelarModal, mostrarModalExito, tuneoModal };
