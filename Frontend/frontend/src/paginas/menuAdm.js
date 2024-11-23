@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getPoliticas } from '../services/api.js';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {StyledIconButton} from '../elementos/tablaResultados';
-
+import BackButton from '../componentes/backButton';
 // Menu dirigido al ADMINISTRADOR
 // El administrador puede: RegistrarBedel, ModificarBedel, EliminarBedel, BuscarBedel
 
@@ -13,9 +13,7 @@ function MenuAdm() {
   
   return (
     <DivMenu>
-      <StyledIconButton onClick={() => navigate("/login")} size="medium" >
-          <ArrowBackIcon style={{ fontSize: '25px' }} />
-      </StyledIconButton>
+      <BackButton route="/login"/>
 
       <ImgMenu src="../../utn-menu.png" />
       <div className="contenedor-botones">

@@ -12,6 +12,7 @@ import Paper from '@mui/material/Paper';
 import { StyledContainer, StyledHeader, StyledHeading, StyledIconButton, StyledTableContainer, StyledTableCell, StyledTableRow } from '../elementos/tablaResultados';
 import { manejoEliminar } from '../services/logicEliminar';
 import { manejoModificar } from '../services/logModificar';
+import BackButton from '../componentes/backButton';
 
 export default function ModificarEliminarBedel() {
   const location = useLocation();
@@ -29,9 +30,7 @@ export default function ModificarEliminarBedel() {
   return (
     <StyledContainer>
       <StyledHeader>
-        <StyledIconButton onClick={() => navigate("/buscar-bedel")} size="medium">
-          <ArrowBackIcon style={{ fontSize: '25px' }} />
-        </StyledIconButton>
+        <BackButton route="/buscar-bedel"/>
         <StyledHeading>Resultados de la búsqueda</StyledHeading>
       </StyledHeader>
 
@@ -39,10 +38,10 @@ export default function ModificarEliminarBedel() {
         <Table stickyHeader aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell width="17%">Nombre</StyledTableCell>
+              <StyledTableCell width="15%">Nombre</StyledTableCell>
               <StyledTableCell width="17%">Apellido</StyledTableCell>
               <StyledTableCell width="17%">Turno</StyledTableCell>
-              <StyledTableCell width="5%">Identificador</StyledTableCell>
+              <StyledTableCell width="15%">Identificador</StyledTableCell>
               <StyledTableCell width="25%" align="center">Acciones</StyledTableCell>
             </TableRow>
           </TableHead>

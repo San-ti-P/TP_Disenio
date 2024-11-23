@@ -1,8 +1,12 @@
-import React from "react"
+import React from "react";
+import BackButton from "../componentes/backButton"; 
 
 const App = () => {
     return (
-        <h1>Registrar Reserva</h1>
+        <>
+            <BackButton route="/menuBedel" />
+            <h1>Registrar Reserva</h1>
+        </>
     );
 }
 
