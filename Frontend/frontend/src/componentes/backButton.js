@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+
 const StyledBackButton = styled.button`
   position: fixed;
   top: 30px;  // Aumentado de 20px
