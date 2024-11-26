@@ -11,6 +11,8 @@ import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "../c
 import { CancelarModal, mostrarModalExito } from "../componentes/modal.js";
 import { enviarFormulario, getPoliticas } from "./api.js";
 import { BotonSubmit, LeyendaError } from '../elementos/formularios.js';
+import Button from '@mui/material/Button';
+import EditIcon from '@mui/icons-material/Edit';
 
 export const ModificarModal = ({ open, handleClose, bedel }) => {
   const [nombre, cambiarNombre] = useState({campo: bedel.nombre, valido: null});
@@ -183,8 +185,8 @@ export const ModificarModal = ({ open, handleClose, bedel }) => {
             estado={contraseña1}
             cambiarEstado={cambiarContraseña1}
             tipo="password" 
-            label="Nueva Contraseña (opcional)" 
-            placeholder="Ingrese nueva contraseña"
+            label="Contraseña" 
+            placeholder="Ingrese su contraseña"
             name="contraseña" 
             funcion={validarContraseña2}
             textoTooltip={politicasTooltip}
@@ -197,8 +199,8 @@ export const ModificarModal = ({ open, handleClose, bedel }) => {
             estado={contraseña2}
             cambiarEstado={cambiarContraseña2}
             tipo="password" 
-            label="Confirmar nueva contraseña" 
-            placeholder="Confirme la nueva contraseña"
+            label="Confirmar contraseña" 
+            placeholder="Confirmar contraseña"
             name="confirmarContraseña" 
             funcion={validarContraseña2}
             textoTooltip="Las contraseñas no coinciden"
@@ -232,7 +234,13 @@ export const ManejoModificar = (bedel) => {
 
   return (
     <>
-      <button onClick={handleOpen}>Modificar</button>
+    <Button 
+        onClick={handleOpen}
+        color="info"
+        style={{ marginRight: '-15px' }}>
+       <EditIcon />
+    </Button>
+      {/* <button onClick={handleOpen}>Modificar</button> */}
       <ModificarModal open={open} handleClose={handleClose} bedel={bedel} />
     </>
   );
