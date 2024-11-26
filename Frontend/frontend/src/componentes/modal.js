@@ -2,6 +2,7 @@ import React from 'react';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { BotonSC } from '../elementos/formularios'; 
+import zIndex from '@mui/material/styles/zIndex';
 
 const tuneoModal = (config) => {
   const existingStyle = document.getElementById('swal-custom-styles');
@@ -18,6 +19,7 @@ const tuneoModal = (config) => {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    z-index: 11000 !important;
   }
   .swal2-html-container {
     margin: 1em 1.6em 0.3em !important;
@@ -73,6 +75,7 @@ const tuneoModal = (config) => {
     position: 'center',
     scrollbarPadding: false,
     heightAuto: false
+    
   };
 
   const finalConfig = { ...defaultConfig, ...config };
@@ -86,7 +89,9 @@ const CancelarModal = ({
   confirmarTexto = 'Confirmar',
   cancelarTexto = 'Regresar',
   labelBoton, width = 320,
-  type = "button"
+  type = "button",
+  url = '/menuAdm',
+  onConfirm
 }) => {
   const navigate = useNavigate();
   const mostrarAlerta = () => {
@@ -97,13 +102,22 @@ const CancelarModal = ({
       showCancelButton: mostrarCancelar,
       confirmButtonText: confirmarTexto,
       cancelButtonText: cancelarTexto,
-      width: width
+      width: width,
+      zIndex: 12000 // Asegura que esté por encima
     }).then((result) => {
       if (result.isConfirmed) {
-        navigate('/menuAdm');
+        if (onConfirm) {
+          onConfirm();
+        }
+        if (url !== '') {
+          navigate(url);
+        }
+      } else if (url === '') {
+        Swal.close();
       }
     });
   };
+
   return <BotonSC onClick={mostrarAlerta} type={type}>{labelBoton}</BotonSC>;
 };
 

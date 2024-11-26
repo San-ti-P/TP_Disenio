@@ -44,23 +44,30 @@ const Input = styled.input`
     height: 45px;
     line-height: 45px;
     padding: 0 40px 0 10px;
-    transition: .3s ease all;
+    transition: 0.3s ease all;
     border: 2px solid transparent;
+    cursor: ${props => props.readOnly ? 'not-allowed' : 'auto'};  // Cambio el cursor para indicar que no es editable
 
     &:focus {
-        border: 2px solid ${colores.borde};
+        border: ${props => props.readOnly ? '2px solid transparent' : `2px solid ${colores.borde}`};
         outline: none;
-        box-shadow: 0 0 0 3px rgba(0, 117, 255, 0.1);
+        box-shadow: ${props => props.readOnly ? 'none' : '0 0 0 3px rgba(0, 117, 255, 0.1)'};
     }
 
     ${props => props.valido === 'true' && css`
-      border: 2px solid transparent;
-      `}
-    ${props => props.valido === 'false' && css`
-      border: 2px solid ${colores.error} !important;
-      animation: shake 0.5s; // Aquí se aplica la animación
+        border: 2px solid transparent;
     `}
 
+    ${props => props.valido === 'false' && css`
+        border: 2px solid ${colores.error} !important;
+        animation: shake 0.5s;
+    `}
+
+    ${props => props.readOnly && css`
+        pointer-events: none; // Desactiva todas las interacciones
+        background: lightgrey; 
+    `}
+    
     @keyframes shake {
         0% { transform: translate(0); }
         25% { transform: translate(-5px); }
@@ -69,6 +76,8 @@ const Input = styled.input`
         100% { transform: translate(0); }
     }
 `;
+
+
 
 const LeyendaError = styled.p`
   font-size: 13px;

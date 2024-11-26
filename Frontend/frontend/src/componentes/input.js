@@ -43,10 +43,11 @@ const ComponenteBaseInput = ({
     comportamientoTooltip = "error",
     leyendaError = "",
     mostrarLeyenda,
-    cambiarMostrarLeyenda
+    cambiarMostrarLeyenda,
+    editable = true, // Nueva prop
 }) => {
     const [mostrarPassword, setMostrarPassword] = useState(false);
-    const [campoTocado, setCampoTocado] = useState(false);    
+    const [campoTocado, setCampoTocado] = useState(false);
     const inputRef = useRef(null);
 
     const validarCampo = (e) => {
@@ -64,13 +65,15 @@ const ComponenteBaseInput = ({
     const manejarCambio = (e) => {
         setCampoTocado(true);
         if (cambiarMostrarLeyenda) cambiarMostrarLeyenda(false);
-        
-        if (name === "contraseña") {
-            cambiarEstado({ ...estado, campo: e.target.value, valido: "true"});
-        } else {
-            cambiarEstado({ ...estado, campo: e.target.value});
+
+        if (editable) { // Solo cambia el estado si el input es editable
+            if (name === "contraseña") {
+                cambiarEstado({ ...estado, campo: e.target.value, valido: "true" });
+            } else {
+                cambiarEstado({ ...estado, campo: e.target.value });
+            }
         }
-    }
+    };
 
     const tipoInput = tipo === "password" ? (mostrarPassword ? "text" : "password") : tipo;
 
@@ -83,44 +86,48 @@ const ComponenteBaseInput = ({
             value={estado.campo}
             onChange={manejarCambio}
             onBlur={validarCampo}
-            onKeyUp={funcion && name === "confirmarContraseña"? funcion : null}
-            onFocus={funcion? funcion : null}
+            onKeyUp={funcion && name === "confirmarContraseña" ? funcion : null}
+            onFocus={funcion ? funcion : null}
             onKeyDown={(e) => {
                 if (e.key === "Enter") {
                     e.preventDefault();
                 }
             }}
             valido={estado.valido}
+            readOnly={!editable} // Desactiva la edición
         />
     );
+    
 
     const obtenerConfiguracionTooltip = () => {
         switch (comportamientoTooltip) {
             case "error":
                 return {
                     open: estado.valido === "false" && campoTocado,
-                    disableHoverListener: true
+                    disableHoverListener: true,
                 };
             case "siempre":
                 return {
-                    disableHoverListener: true
+                    disableHoverListener: true,
                 };
             case "nunca":
                 return {
                     open: false,
-                    disableHoverListener: true
+                    disableHoverListener: true,
                 };
             default:
                 return {
                     open: false,
-                    disableHoverListener: true
+                    disableHoverListener: true,
                 };
         }
     };
 
     return (
         <React.Fragment>
-            <Label htmlFor={name} valido={estado.valido}>{label}</Label>
+            <Label htmlFor={name} valido={estado.valido}>
+                {label}
+            </Label>
             <GrupoInput>
                 {textoTooltip ? (
                     <TooltipPersonalizado
@@ -136,10 +143,7 @@ const ComponenteBaseInput = ({
                 )}
                 {tipo === "password" && (
                     <IconoPassword onClick={() => setMostrarPassword(!mostrarPassword)}>
-                        {mostrarPassword ?
-                            <EyeOff size={20} color="#555" /> :
-                            <Eye size={20} color="#555" />
-                        }
+                        {mostrarPassword ? <EyeOff size={20} color="#555" /> : <Eye size={20} color="#555" />}
                     </IconoPassword>
                 )}
             </GrupoInput>
@@ -147,6 +151,7 @@ const ComponenteBaseInput = ({
         </React.Fragment>
     );
 };
+
 
 
 const ComponenteNyAP = (props) => (

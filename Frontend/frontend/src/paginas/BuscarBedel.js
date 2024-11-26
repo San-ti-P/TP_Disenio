@@ -6,6 +6,7 @@ import { BotonSubmit } from '../elementos/formularios.js';
 import { CancelarModal } from "../componentes/modal.js"
 import { getResultadosBusqueda } from "../services/api.js";
 
+
 const App = () => {
     const [apellido, setApellido] = useState({campo:'', valido: null});
     const [turno, setTurno] = useState({campo:'', valido: null});
@@ -19,7 +20,6 @@ const App = () => {
 
     return (
         <main style={{ width: "100%", paddingRight: 35 }}>
-            <h1>Buscar Bedel</h1>
             <Formulario onSubmit={handleSubmit}> 
                 <ComponenteNyAP
                 estado = {apellido}

@@ -1,6 +1,6 @@
 import React from "react";
 import { tuneoModal } from '../componentes/modal';
-import { eliminarBedel } from '../services/api';
+import { eliminarBedel } from './api';
 
 export const manejoEliminar = async (bedel) => {
     tuneoModal({

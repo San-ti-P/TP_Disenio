@@ -83,8 +83,6 @@ import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Paper from '@mui/material/Paper';
 import { StyledContainer, StyledHeader, StyledHeading, StyledIconButton, StyledTableContainer, StyledTableCell, StyledTableRow } from '../elementos/tablaResultados';
@@ -98,7 +96,7 @@ export default function ModificarEliminarBedel() {
   const { valores } = location.state || { valores: [] };
   
   const handleEliminar = async (bedel) => {
-    ManejoModificar(bedel);
+    manejoEliminar(bedel);
   };
 
   return (
@@ -127,7 +125,7 @@ export default function ModificarEliminarBedel() {
                 <StyledTableCell>{row.turno}</StyledTableCell>
                 <StyledTableCell>{row.identificador}</StyledTableCell>
                 <StyledTableCell width="5fr" align="center">
-                  {ManejoModificar(row)}
+                  {ManejoModificar(row)} {/* tenemos que agregar las contraseñas */}
                   <Button 
                     onClick={() => handleEliminar(row)} 
                     color="error"
