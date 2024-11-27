@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Usuario, Bedel
+from .models.Bedel import Bedel
+from .models.Usuario import Usuario
 #import services
 
 class UsuarioSerializer(serializers.ModelSerializer):

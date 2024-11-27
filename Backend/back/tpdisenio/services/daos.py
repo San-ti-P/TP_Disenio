@@ -1,4 +1,5 @@
-from ..models import Bedel, Administrador
+from ..models.Bedel import Bedel
+from ..models.Administrador import Administrador
 from abc import ABC
 from django.core.exceptions import ObjectDoesNotExist
 

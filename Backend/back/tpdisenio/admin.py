@@ -1,6 +1,14 @@
 from django.contrib import admin
-from .models import Usuario, Administrador, Bedel, Periodo, TipoActividad, TipoPizarron, Aula, AulaInformatica, AulaMultimedios, AulaSinRecursosAdicionales
-
+from .models.Usuario import Usuario
+from .models.Administrador import Administrador
+from .models.Bedel import Bedel
+from .models.Periodo import Periodo
+from .models.TipoActividad import TipoActividad
+from .models.TipoPizarron import TipoPizarron
+from .models.Aula import Aula
+from .models.AulaInformatica import AulaInformatica
+from .models.AulaMultimedios import AulaMultimedios
+from .models.AulaSinRecursosAdicionales import AulaSinRecursosAdicionales
 # Register your models here.
 
 admin.site.register(Usuario)

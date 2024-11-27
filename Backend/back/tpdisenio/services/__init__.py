@@ -1,4 +1,7 @@
-from .logic import *
+from .GestorBedel import GestorBedel
+from .GestorContrasenia import GestorContrasenia
+from .GestorSesion import GestorSesion
+from .GestorUsuario import GestorUsuario
 from .daos import *
 
 
