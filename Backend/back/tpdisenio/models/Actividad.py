@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-import Docente
-import TipoActividad
+from .Docente import Docente
+from .TipoActividad import TipoActividad
 
 class Actividad(models.Model):
     class Meta:

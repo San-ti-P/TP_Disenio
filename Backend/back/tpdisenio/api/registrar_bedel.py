@@ -1,44 +1,18 @@
 from rest_framework.response import Response
 #from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from . import services
-from .models.Bedel import Bedel
-from .serializers import BedelSerializer, ErrorsListSerializer, LoginRequestSerializer, LoginResponseSerializer
+from ..services import gestor_contrasenia, gestor_bedel
+from ..serializers import BedelSerializer, ErrorsListSerializer
 
-@api_view(['POST'])
-def login(request):
-    if request.method == 'POST':
-        print("LLegó post a login")
-        login_request_serializer = LoginRequestSerializer(data=request.data)
-        data = login_request_serializer.initial_data
-        id_usuario = data['id_usuario']
-        contrasenia = data['contrasenia']
-        print(id_usuario, contrasenia)
-        response = services.gestor_sesion.inicio_sesion(id_usuario, contrasenia)
-        response_serializer = LoginResponseSerializer(response)
-        return Response(response_serializer.data)
-
-
-@api_view(['GET'])
-def buscar_bedel_api_view(request):
-    """
-    Define el comportamiento de .../BuscarBedel. Acepta solicitudes GET
-    """
-    if request.method == 'GET':
-        #usuarios = Usuario.objects.all()
-        bedeles = Bedel.objects.all()
-        #usuarios_serializer = UsuarioSerializer(usuarios, many=True)
-        bedeles_serializer = BedelSerializer(bedeles, many=True)
-        return Response(bedeles_serializer.data)
 
 @api_view(['GET', 'POST'])
-def registrar_bedel_api_view(request):
+def registrar_bedel(request):
     """
     Define el comportamiento de .../RegistrarBedel. Acepta solicitudes GET, y POST
     """
         
     if request.method == 'GET':
-        lista_politicas = services.gestor_contrasenia.get_politicas()
+        lista_politicas = gestor_contrasenia.get_politicas()
         politicas = "- Longitud mínima de la contraseña: "+str(lista_politicas[0])+".\n"
         if lista_politicas[1]:
             politicas+="- La contraseña debe contener signos especiales.\n"
@@ -63,6 +37,6 @@ def registrar_bedel_api_view(request):
         turno = data['turno']
         id_usuario = data['id_usuario']
         contrasenia = data['contrasenia']
-        response = services.gestor_bedel.alta_bedel(nombre, apellido, turno, id_usuario, contrasenia)
+        response = gestor_bedel.alta_bedel(nombre, apellido, turno, id_usuario, contrasenia)
         response_serializer = ErrorsListSerializer(response)
         return Response(response_serializer.data)

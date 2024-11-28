@@ -1,4 +1,5 @@
-from ..models.Bedel import Bedel
+import datetime
+from ..models import Bedel
 
 class RespuestaRegistrarBedel(object):
     """Se usa para construir el objeto respuesta del método .alta_bedel() de GestorBedel"""
@@ -10,6 +11,17 @@ class RespuestaRegistrarBedel(object):
             self.errors.append("contrasenia_invalida")
         if not id_valido:
             self.errors.append("id_existente")
+
+class RespuestaModificarBedel(object):
+    """Se usa para construir el objeto respuesta del método .alta_bedel() de GestorBedel"""
+    def __init__(self, campos_validos, contrasenia_valida, id_valido):
+        self.errors = []
+        if not campos_validos:
+            self.errors.append("campos_invalidos")
+        if not contrasenia_valida:
+            self.errors.append("contrasenia_invalida")
+        if not id_valido:
+            self.errors.append("id_inexistente")
 
 class GestorBedel():
     """Clase encargada de suministrar todo la lógica concerniente a la clase Bedel"""
@@ -90,7 +102,7 @@ class GestorBedel():
         
         response = RespuestaRegistrarBedel(campos_validos, contrasenia_valida, id_unico)
         return response
-        '''Terminar'''
+
 
     def baja_bedel(self, id_usuario):
         """
@@ -99,7 +111,19 @@ class GestorBedel():
         id_usuario: str
             -- ID del bedel a eliminar
         """
-        pass
+
+        id_existente = False
+        if not self.gestor_usuario.validacion_id_unico(id_usuario):
+            id_existente = True
+
+        if id_existente:
+            bedel = self.bedel_DAO.get_bedel(id_usuario)
+            bedel.set_activo(False)
+            bedel.set_fecha_baja(datetime.date.today())
+            bedel.save()
+
+        return id_existente
+
 
     def modificar_bedel(self, nombre, apellido, turno, id_usuario, contrasenia):
         """
@@ -116,7 +140,26 @@ class GestorBedel():
         contrasenia: str
             -- contraseña del bedel
         """
-        pass
+
+        campos_validos = False
+        contrasenia_valida = False
+        id_existente = False
+        if self.validar_datos(nombre, apellido, turno, id_usuario):
+            campos_validos = True
+        
+        if not self.gestor_usuario.validacion_id_unico(id_usuario):
+            id_existente = True
+        
+        if self.gestor_contrasenia.validar_politicas(contrasenia):
+            contrasenia_valida = True
+
+        if campos_validos and contrasenia_valida and id_existente:
+            #bedel = self.bedel_DAO.get_bedel(id_usuario)
+            bedel = Bedel(nombre=nombre, apellido=apellido, turno=turno, id_usuario=id_usuario, contrasenia=contrasenia, activo=True, fecha_baja=None)
+            self.bedel_DAO.update_bedel(bedel)
+        
+        response = RespuestaModificarBedel(campos_validos, contrasenia_valida, id_existente)
+        return response
 
     def buscar_bedel(self, apellido, turno):
         """
@@ -127,4 +170,5 @@ class GestorBedel():
         turno: TipoTurno
             -- turno del bedel a buscar. Por defecto es None
         """
-        pass
+        return self.bedel_DAO.get_bedel_criterio(apellido, turno)
+        
