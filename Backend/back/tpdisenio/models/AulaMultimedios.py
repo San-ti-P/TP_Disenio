@@ -11,3 +11,21 @@ class AulaMultimedios(Aula):
     canion = models.BooleanField()
     ventilador = models.BooleanField()
     computadora = models.BooleanField()
+
+    def get_televisor(self):
+        return self.televisor
+    def get_canion(self):
+        return self.canion
+    def get_ventilador(self):
+        return self.ventilador
+    def get_computadora(self):
+        return self.computadora
+    
+    def set_televisor(self, televisor):
+        self.televisor = televisor
+    def set_canion(self, canion):
+        self.canion = canion
+    def set_ventilador(self, ventilador):
+        self.ventilador = ventilador
+    def set_computadora(self, computadora):
+        self.computadora = computadora

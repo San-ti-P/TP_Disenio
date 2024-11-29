@@ -16,6 +16,42 @@ class Aula(models.Model):
     aire_acondicionado = models.BooleanField()
     estado_aula = models.CharField(max_length=15, choices=EstadoAula)
     tiene_pizarrones = models.ManyToManyField(TipoPizarron, through="Tiene", related_name="aulas")
+    activo = models.BooleanField(default=True)
+    fecha_baja = models.DateField(blank=True, default=None, null=True)
+
+    def get_nro_aula(self):
+        return self.nro_aula
+    def get_capacidad(self):
+        return self.capacidad
+    def get_piso(self):
+        return self.piso
+    def get_aire_acondicionado(self):
+        return self.aire_acondicionado
+    def get_estado_aula(self):
+        return self.estado_aula
+    def get_pizarrones(self):
+        return self.tiene_pizarrones
+    def get_activo(self):
+        return self.activo
+    def get_fecha_baja(self):
+        return self.fecha_baja
+    
+    def set_nro_aula(self, nro_aula):
+        self.nro_aula = nro_aula
+    def set_capacidad(self, capacidad):
+        self.capacidad = capacidad
+    def set_piso(self, piso):
+        self.piso = piso
+    def set_aire_acondicionado(self, aire_acondicionado):
+        self.aire_acondicionado = aire_acondicionado
+    def set_estado_aula(self, estado_aula):
+        self.estado_aula = estado_aula
+    def set_pizarrones(self, pizarrones):
+        self.tiene_pizarrones = pizarrones
+    def set_activo(self, activo):
+        self.activo = activo
+    def set_fecha_baja(self, fecha_baja):
+        self.fecha_baja = fecha_baja
 
 class Tiene(models.Model):
     class Meta:

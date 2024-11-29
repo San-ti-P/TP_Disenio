@@ -14,3 +14,10 @@ class Bedel(Usuario):
     usuario_ptr = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True, db_column="id_usuario", parent_link=True)
     turno = models.CharField(max_length=10, choices=TipoTurno)
 
+    def get_turno(self):
+        return self.turno
+    
+    def set_turno(self, turno):
+        self.turno = turno
+    
+    

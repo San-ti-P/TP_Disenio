@@ -8,3 +8,9 @@ class AulaSinRecursosAdicionales(Aula):
 
     aula_ptr = models.OneToOneField(Aula, on_delete=models.CASCADE, primary_key=True, db_column="nro_aula", parent_link=True)
     ventilador = models.BooleanField()
+
+    def get_ventilador(self):
+        return self.ventilador
+    
+    def set_ventilador(self, ventilador):
+        self.ventilador = ventilador

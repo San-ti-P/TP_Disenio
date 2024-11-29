@@ -24,6 +24,7 @@ class Usuario(models.Model):
         return self.activo
     def get_fecha_baja(self):
         return self.fecha_baja
+    
     def set_id_usuario(self, id):
         self.id_usuario = id
     def set_contrasena(self, contrasena):
