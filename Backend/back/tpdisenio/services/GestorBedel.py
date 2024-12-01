@@ -1,4 +1,3 @@
-import datetime
 from ..models import Bedel
 
 class RespuestaRegistrarBedel(object):
@@ -117,10 +116,7 @@ class GestorBedel():
             id_existente = True
 
         if id_existente:
-            bedel = self.bedel_DAO.get_bedel(id_usuario)
-            bedel.set_activo(False)
-            bedel.set_fecha_baja(datetime.date.today())
-            bedel.save()
+            self.bedel_DAO.delete_bedel(id_existente)
 
         return id_existente
 

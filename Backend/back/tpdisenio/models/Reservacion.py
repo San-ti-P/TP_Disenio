@@ -23,8 +23,8 @@ class Reservacion(models.Model):
     hora_inicio = models.TimeField()
     activo = models.BooleanField(default=True)
     fecha_baja = models.DateField(blank=True, default=None, null=True)
-    nro_aula = models.ForeignKey(Aula, on_delete=models.PROTECT, db_column="nro_aula")
-    id_reserva = models.ForeignKey(Reserva, on_delete=models.PROTECT, db_column="id_reserva")
+    aula = models.ForeignKey(Aula, on_delete=models.PROTECT, db_column="nro_aula")
+    reserva = models.ForeignKey(Reserva, on_delete=models.PROTECT, db_column="id_reserva")
     
     def get_id_reservacion(self):
         return self.id_reservacion
@@ -41,9 +41,9 @@ class Reservacion(models.Model):
     def get_fecha_baja(self):
         return self.fecha_baja
     def get_aula(self):
-        return self.nro_aula
+        return self.aula
     def get_reserva(self):
-        return self.id_reserva
+        return self.reserva
     
     def set_id_reservacion(self, id):
         self.id_reservacion = id
@@ -60,7 +60,7 @@ class Reservacion(models.Model):
     def set_fecha_baja(self, fecha_baja):
         self.fecha_baja = fecha_baja
     def set_aula(self, aula):
-        self.nro_aula = aula
+        self.aula = aula
     def set_reserva(self, reserva):
-        self.id_reserva = reserva
+        self.reserva = reserva
     

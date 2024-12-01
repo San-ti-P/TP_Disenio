@@ -18,9 +18,9 @@ class Reserva(models.Model):
     tipo = models.CharField(max_length=15, choices=TipoReserva)
     activo = models.BooleanField(default=True)
     fecha_baja = models.DateField(blank=True, default=None, null=True)
-    id_periodo = models.ForeignKey(Periodo, on_delete=models.PROTECT, blank=True, null=True, db_column="id_periodo")
-    id_actividad = models.ForeignKey(Actividad, on_delete=models.PROTECT, db_column="id_actividad")
-    id_usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT, db_column="id_usuario")
+    periodo = models.ForeignKey(Periodo, on_delete=models.PROTECT, blank=True, null=True, db_column="id_periodo")
+    actividad = models.ForeignKey(Actividad, on_delete=models.PROTECT, db_column="id_actividad")
+    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT, db_column="id_usuario")
     
     def get_id_reserva(self):
         return self.id_reserva
@@ -35,11 +35,11 @@ class Reserva(models.Model):
     def get_fecha_baja(self):
         return self.fecha_baja
     def get_periodo(self):
-        return self.id_periodo
+        return self.periodo
     def get_actividad(self):
-        return self.id_actividad
+        return self.actividad
     def get_usuario(self):
-        return self.id_usuario
+        return self.usuario
     
     
     def set_id_reserva(self, id):
@@ -55,9 +55,9 @@ class Reserva(models.Model):
     def set_fecha_baja(self, fecha_baja):
         self.fecha_baja = fecha_baja
     def set_periodo(self, periodo):
-        self.id_periodo= periodo
+        self.periodo= periodo
     def set_actividad(self, actividad):
-        self.id_actividad = actividad
+        self.actividad = actividad
     def set_usuario(self, usuario):
-        self.id_usuario = usuario
+        self.usuario = usuario
     

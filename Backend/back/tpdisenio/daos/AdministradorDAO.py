@@ -2,18 +2,23 @@ from abc import ABC
 
 class AdministradorDAO(ABC):
     """Interfaz encargada de definir el protocolo para persistir datos de la clase Administrador"""
-    #@staticmethod
-    def create_administrador(self, bedel):
+
+    def create_administrador(self, administrador):
         pass
 
-    #@staticmethod
-    def get_administrador(self, id_bedel):
+    def delete_administrador(self, id_administrador):
         pass
 
-    #@staticmethod
+    def getAll_administrador(self):
+        pass
+
+    def update_administrador(self, administrador):
+        pass
+
+    def get_administrador(self, id_administrador):
+        pass
+
     def get_id_administrador(self):
         pass
 
-    #@staticmethod
-    def update_administrador(self, **kwargs):
-       pass
+

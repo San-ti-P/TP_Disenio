@@ -2,18 +2,24 @@ from abc import ABC
 
 class BedelDAO(ABC):
     """Interfaz encargada de definir el protocolo para persistir datos de la clase Bedel"""
-    #@staticmethod
+
     def create_bedel(self, bedel):
         pass
 
-    #@staticmethod
+    def delete_bedel(self, id_bedel):
+        pass
+
+    def getAll_bedel(self):
+        pass
+
+    def update_bedel(self, bedel):
+        pass
+
     def get_bedel(self, id_bedel):
         pass
 
-    #@staticmethod
     def get_id_bedel(self):
         pass
 
-    #@staticmethod
-    def update_bedel(self, **kwargs):
-       pass
+    def get_bedel_criterio(self, apellido, turno):
+        pass
