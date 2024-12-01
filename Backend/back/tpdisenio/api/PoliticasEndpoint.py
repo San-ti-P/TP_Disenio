@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from ..services import gestor_contrasenia
 
-
+@api_view(['GET'])
 def politicas(request):
     """
     Define el comportamiento de .../politicas. Acepta solicitudes GET
