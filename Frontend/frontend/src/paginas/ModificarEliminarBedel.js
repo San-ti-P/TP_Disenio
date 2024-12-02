@@ -89,25 +89,16 @@ import { StyledContainer, StyledHeader, StyledHeading, StyledIconButton, StyledT
 import { manejoEliminar } from '../services/logicEliminar';
 import { ManejoModificar } from '../services/logModificar';
 import BackButton from '../componentes/backButton';
-import { getResultadosBusqueda } from "../services/api.js";
 
 export default function ModificarEliminarBedel() {
   const location = useLocation();
   const [valores, setValores] = useState(location.state?.valores || []);
-  const { apellido, turno } = location.state || {};
-
-  const obtenerValores = async () => {
-    const nuevosValores = await getResultadosBusqueda(apellido, turno);
-    setValores(nuevosValores);
-  };
 
   const handleEliminar = async (bedel) => {
-    await manejoEliminar(bedel, obtenerValores);
+    await manejoEliminar(bedel, () => {
+      setValores((prevValores) => prevValores.filter((item) => item.id_usuario !== bedel.id_usuario));
+    });
   };
-
-  useEffect(() => {
-    obtenerValores();
-  }, [valores]); 
 
   return (
     <StyledContainer>
@@ -128,14 +119,21 @@ export default function ModificarEliminarBedel() {
             </TableRow>
           </TableHead>
           <TableBody>
-          {valores.filter(row => row.activo).map((row, index) => (
+          {valores.length === 0 ? (
+            <StyledTableRow>
+              <StyledTableCell colSpan={5} align="center">
+                No hay resultados para la búsqueda
+              </StyledTableCell>
+            </StyledTableRow>
+          ) : (
+            valores.filter(row => row.activo).map((row, index) => (
               <StyledTableRow key={index}>
                 <StyledTableCell>{row.nombre}</StyledTableCell>
                 <StyledTableCell>{row.apellido}</StyledTableCell>
                 <StyledTableCell>{row.turno}</StyledTableCell>
                 <StyledTableCell>{row.id_usuario}</StyledTableCell>
                 <StyledTableCell width="5fr" align="center">
-                  {ManejoModificar(row)}
+                  <ManejoModificar bedel={row} />
                   <Button 
                     onClick={() => handleEliminar(row)} 
                     color="error"
@@ -144,7 +142,8 @@ export default function ModificarEliminarBedel() {
                   </Button>
                 </StyledTableCell>
               </StyledTableRow>
-            ))}
+            ))
+          )}
           </TableBody>
         </Table>
       </StyledTableContainer>
