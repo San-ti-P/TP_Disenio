@@ -1,7 +1,12 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from drf_spectacular.utils import extend_schema, OpenApiTypes
 from ..services import gestor_contrasenia
 
+@extend_schema(
+    responses={200: OpenApiTypes.STR},
+    description="Login a la aplicación"
+)
 @api_view(['GET'])
 def politicas(request):
     """

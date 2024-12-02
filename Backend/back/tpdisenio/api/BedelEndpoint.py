@@ -1,8 +1,53 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter, OpenApiTypes
 from ..serializers import BedelSerializer, ErrorsListSerializer
 from ..services import gestor_bedel
+from ..models import Bedel
 
+@extend_schema_view(
+    get=extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name='apellido',
+                description='Apellido del bedel',
+                required=False,
+                type=OpenApiTypes.STR,
+            ),
+            OpenApiParameter(
+                name='turno',
+                description='Turno del bedel',
+                required=False,
+                type=OpenApiTypes.STR,
+                enum=[turno[1] for turno in Bedel.TipoTurno.choices],
+            ),
+        ],
+        responses=BedelSerializer,
+        description="Obtener bedeles"
+    ),
+    post=extend_schema(
+        request=BedelSerializer,
+        responses=ErrorsListSerializer,
+        description="Crear un nuevo bedel"
+    ),
+    put=extend_schema(
+        request=BedelSerializer,
+        responses=ErrorsListSerializer,
+        description="Modificar un bedel existente"
+    ),
+    delete=extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name='id',
+                description='ID del bedel',
+                required=False,
+                type=OpenApiTypes.STR,
+            ),
+        ],
+        responses={200: OpenApiTypes.BOOL},
+        description="Eliminar un bedel"
+    )
+)
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def bedeles(request):
@@ -21,6 +66,7 @@ def bedeles(request):
     
     if request.method == 'DELETE':
         return eliminar_bedel(request=request)
+
 
 
 def buscar_bedel(request):

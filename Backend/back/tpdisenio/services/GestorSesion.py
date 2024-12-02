@@ -15,7 +15,7 @@ class GestorSesion():
     def __init__(self, bedel_DAO, administrador_DAO):
         self.bedel_DAO = bedel_DAO
         self.administrador_DAO = administrador_DAO
-        self.sesiones = []
+        self.sesiones = {}
 
     def inicio_sesion(self, id_usuario, contrasenia):
         #hash_contrasenia = bcrypt.hashpw(contrasenia.encode('utf-8'), bcrypt.gensalt())
@@ -26,8 +26,8 @@ class GestorSesion():
                 if len(self.sesiones) != 0:
                     id_sesion = str(int(self.sesiones[len(self.sesiones)-1].get_id_sesion())+1)
                 else: id_sesion = "1"
-                sesion = Sesion(id_sesion, date.today(), True, id_usuario)
-                self.sesiones.append(sesion)
+                sesion = Sesion(id_sesion, date.today(), True, administrador)
+                self.sesiones[sesion.get_cookie()] = sesion
                 return RespuestaLogin("admin", administrador.get_nombre(), sesion.get_cookie())
             #else: return "acceso denegado"
         else:
@@ -38,16 +38,21 @@ class GestorSesion():
                     if len(self.sesiones) != 0:
                         id_sesion = str(int(self.sesiones[len(self.sesiones)-1].get_id_sesion())+1)
                     else: id_sesion = "1"
-                    sesion = Sesion(id_sesion, date.today(), True, id_usuario)
+                    sesion = Sesion(id_sesion, date.today(), True, bedel)
                     self.sesiones.append(sesion)
                     return RespuestaLogin("bedel", bedel.get_nombre(), sesion.get_cookie())
                 #else: return "acceso denegado"
             #else: return "acceso denegado"
         return RespuestaLogin("acceso denegado", None, None)
     
-    def cerrar_sesion(self, id_sesion):
-        pass
+    def cerrar_sesion(self, cookie):
+        if cookie in self.sesiones:
+            self.sesiones.pop(cookie)
 
-    def consultar_sesion(self, id_sesion):
-        pass
+    def consultar_sesion(self, cookie):
+        if cookie in self.sesiones:
+            sesion = self.sesiones[cookie]
+            return True, sesion
+        else:
+            return False, None
 
