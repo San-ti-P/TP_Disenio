@@ -2,7 +2,7 @@ import axios from "axios";
 
 const enviarFormulario = async (datosFormulario) => {
   try {
-    const url = "http://127.0.0.1:8000/tpdisenio/registrar_bedel";
+    const url = "http://127.0.0.1:8000/tpdisenio/bedeles";
     const respuesta = await axios.post(url, datosFormulario, {
       headers: { "Content-Type": "application/json" },
     });
@@ -17,7 +17,7 @@ const enviarFormulario = async (datosFormulario) => {
   
 const getPoliticas = async () => {
   try {
-    const url = "http://127.0.0.1:8000/tpdisenio/registrar_bedel";
+    const url = "http://127.0.0.1:8000/tpdisenio/politicas";
     const respuesta = await axios.get(url);
     return respuesta.data;
   } catch (error) {
@@ -58,30 +58,39 @@ const valores1 = [
 ];
 
 const getResultadosBusqueda = async (apellido, turno) => {
-  return valores1;
-  // try {
-  //   const url = "http://127.0.0.1:8000/tpdisenio/buscar_bedel";
-  //   const respuesta = await axios.post(url, apellido, turno);
-  //   return respuesta.data;
+  try {
+    let url = "http://127.0.0.1:8000/tpdisenio/bedeles";
 
-  // } catch (error) {
-  //   console.error("Error al realizar la busqueda: ", error);
-  //   throw error;
-  // }
+    if (apellido !== "" && turno !== "") {
+      url += `?apellido=${apellido}&turno=${turno}`;
+    } else if (apellido !== "") {
+      url += `?apellido=${apellido}`;
+    } else if (turno !== "") {
+      url += `?turno=${turno}`;
+    }
+
+    const respuesta = await axios.get(url);
+    return respuesta.data;
+
+  } catch (error) {
+    console.error("Error al realizar la busqueda: ", error);
+    throw error;
+  }
 }
 
 // LLAMADA A LA API PARA ELIMINAR EL BEDEL -------
 const eliminarBedel = async (datosBedel) => {
-  return true;
-  // try {
-  //   const url = "http://127.0.0.1:8000/tpdisenio/eliminar_bedel";
-  //   const respuesta = await axios.post(url, datosBedel);
-  //   return respuesta.data;
-  // } catch (error) {
-  //   console.error("Error al eliminar bedel: ", error);
-  //   throw error;
-  // }
-}
+  try {
+    const id = datosBedel.identificador;
+    const url = `http://127.0.0.1:8000/tpdisenio/bedeles?id=${id}`;
+    const respuesta = await axios.delete(url);
+    return respuesta.data;
+  } catch (error) {
+    console.error("Error al eliminar bedel: ", error.response?.data || error.message);
+    throw error;
+  }
+};
+
 
 
 export {enviarFormulario, getPoliticas, getUsuario, eliminarBedel, getResultadosBusqueda}

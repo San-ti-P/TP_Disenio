@@ -1,4 +1,4 @@
-import { React, useState } from "react"
+import React, { useState } from "react"
 import { useNavigate } from 'react-router-dom';
 import { Formulario, DivBotonesSC } from "../elementos/formularios.js";
 import { ComponenteNyAP, ComponenteDesplegableInput } from "../componentes/input.js"
@@ -6,17 +6,20 @@ import { BotonSubmit } from '../elementos/formularios.js';
 import { CancelarModal } from "../componentes/modal.js"
 import { getResultadosBusqueda } from "../services/api.js";
 
-
 const App = () => {
     const [apellido, setApellido] = useState({campo:'', valido: null});
     const [turno, setTurno] = useState({campo:'', valido: null});
     const navigate = useNavigate();
 
+    const fetchValores = async () => {
+        return await getResultadosBusqueda(apellido.campo, turno.campo);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const valores = await getResultadosBusqueda(apellido.campo, turno.campo);
-        navigate('/modificar-eliminar-bedel', {state: { valores }});
-    }
+        const valores = await fetchValores();
+        navigate('/modificar-eliminar-bedel', { state: { valores, apellido: apellido.campo, turno: turno.campo } });
+    };
 
     return (
         <main style={{ width: "100%", paddingRight: 35 }}>

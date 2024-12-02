@@ -76,7 +76,7 @@
 //   );
 // }
 
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -89,15 +89,25 @@ import { StyledContainer, StyledHeader, StyledHeading, StyledIconButton, StyledT
 import { manejoEliminar } from '../services/logicEliminar';
 import { ManejoModificar } from '../services/logModificar';
 import BackButton from '../componentes/backButton';
+import { getResultadosBusqueda } from "../services/api.js";
 
 export default function ModificarEliminarBedel() {
   const location = useLocation();
-  const navigate = useNavigate();
-  const { valores } = location.state || { valores: [] };
-  
-  const handleEliminar = async (bedel) => {
-    manejoEliminar(bedel);
+  const [valores, setValores] = useState(location.state?.valores || []);
+  const { apellido, turno } = location.state || {};
+
+  const obtenerValores = async () => {
+    const nuevosValores = await getResultadosBusqueda(apellido, turno);
+    setValores(nuevosValores);
   };
+
+  const handleEliminar = async (bedel) => {
+    await manejoEliminar(bedel, obtenerValores);
+  };
+
+  useEffect(() => {
+    obtenerValores();
+  }, [valores]); 
 
   return (
     <StyledContainer>
@@ -118,14 +128,14 @@ export default function ModificarEliminarBedel() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {valores.map((row, index) => (
+          {valores.filter(row => row.activo).map((row, index) => (
               <StyledTableRow key={index}>
                 <StyledTableCell>{row.nombre}</StyledTableCell>
                 <StyledTableCell>{row.apellido}</StyledTableCell>
                 <StyledTableCell>{row.turno}</StyledTableCell>
-                <StyledTableCell>{row.identificador}</StyledTableCell>
+                <StyledTableCell>{row.id_usuario}</StyledTableCell>
                 <StyledTableCell width="5fr" align="center">
-                  {ManejoModificar(row)} {/* tenemos que agregar las contraseñas */}
+                  {ManejoModificar(row)}
                   <Button 
                     onClick={() => handleEliminar(row)} 
                     color="error"
@@ -141,4 +151,5 @@ export default function ModificarEliminarBedel() {
     </StyledContainer>
   );
 }
+
 

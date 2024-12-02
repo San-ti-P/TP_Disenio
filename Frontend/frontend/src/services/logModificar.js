@@ -260,9 +260,9 @@ export const ModificarModal = ({ open, handleClose, bedel }) => {
   const [nombre, cambiarNombre] = useState({campo: bedel.nombre, valido: 'true'});
   const [apellido, cambiarApellido] = useState({campo: bedel.apellido, valido: 'true'});
   const [turno, cambiarTurno] = useState({campo: bedel.turno, valido: 'true'});
-  const [idUsuario, cambiarIdUsuario] = useState({campo: bedel.identificador, valido: 'true'});
-  const [contraseña1, cambiarContraseña1] = useState({campo:'', valido: 'true'});
-  const [contraseña2, cambiarContraseña2] = useState({campo:'', valido: 'true'});
+  const [idUsuario, cambiarIdUsuario] = useState({campo: bedel.id_usuario, valido: 'true'});
+  const [contraseña1, cambiarContraseña1] = useState({campo: bedel.contrasenia, valido: 'true'});
+  const [contraseña2, cambiarContraseña2] = useState({campo: bedel.contrasenia, valido: 'true'});
   const [formularioValido, cambiarFormularioValido] = useState(null);
   const [animarErrores, cambiarAnimarErrores] = useState(false);
   const [mostrarIDLeyenda, cambiarMostrarIDLeyenda] = useState(false);
@@ -351,10 +351,10 @@ export const ModificarModal = ({ open, handleClose, bedel }) => {
             cambiarMostrarContraLeyenda(true);
             cambiarContraseña1({ campo: contraseña1.campo, valido: "false" });
           }
-          if (respuestaErrores.includes("id_existente")) {
-            cambiarMostrarIDLeyenda(true);
-            cambiarIdUsuario({ campo: idUsuario.campo, valido: 'false' });
-          }
+          // if (respuestaErrores.includes("id_existente")) {
+          //   cambiarMostrarIDLeyenda(true);
+          //   cambiarIdUsuario({ campo: idUsuario.campo, valido: 'false' });
+          // }
         }
       }
     }
