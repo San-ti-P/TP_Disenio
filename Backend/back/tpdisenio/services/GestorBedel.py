@@ -116,7 +116,7 @@ class GestorBedel():
             id_existente = True
 
         if id_existente:
-            self.bedel_DAO.delete_bedel(id_existente)
+            self.bedel_DAO.delete_bedel(id_usuario)
 
         return id_existente
 
@@ -166,5 +166,14 @@ class GestorBedel():
         turno: TipoTurno
             -- turno del bedel a buscar. Por defecto es None
         """
-        return self.bedel_DAO.get_bedel_criterio(apellido, turno)
+        bedeles = self.bedel_DAO.get_bedel_criterio(apellido, turno)
+
+        for bedel in bedeles:
+            turno = bedel.get_turno().capitalize()
+            if turno == 'Maniana':
+                turno = 'Mañana'
+            bedel.set_turno(turno)
+        
+        return bedeles
+
         
