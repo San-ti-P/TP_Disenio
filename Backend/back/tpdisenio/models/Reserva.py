@@ -22,6 +22,8 @@ class Reserva(models.Model):
     actividad = models.ForeignKey(Actividad, on_delete=models.PROTECT, db_column="id_actividad")
     usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT, db_column="id_usuario")
     
+    reservaciones = []
+
     def get_id_reserva(self):
         return self.id_reserva
     def get_cantidad_alumnos(self):
@@ -40,7 +42,8 @@ class Reserva(models.Model):
         return self.actividad
     def get_usuario(self):
         return self.usuario
-    
+    def get_reservaciones(self):
+        return self.reservaciones
     
     def set_id_reserva(self, id):
         self.id_reserva = id
@@ -60,4 +63,5 @@ class Reserva(models.Model):
         self.actividad = actividad
     def set_usuario(self, usuario):
         self.usuario = usuario
-    
+    def add_reservacion(self, reservacion):
+        self.reservaciones.append(reservacion)
