@@ -23,14 +23,14 @@ class GestorReserva():
 
     def baja_reserva(self, id_reserva):
 
-       """ id_existente = False
-        if not self.gestor_usuario.validacion_id_unico(id_usuario):
+        id_existente = False
+        if not self.validacion_id_unico(id_reserva):
             id_existente = True
 
         if id_existente:
-            self.bedel_DAO.delete_bedel(id_usuario)
+            self.reserva_DAO.delete_bedel(id_reserva)
 
-        return id_existente"""
+        return id_existente
 
 
     def modificar_reserva(self, id_reserva, cantidad_alumnos, fecha_solicitud, tipo_reserva):
@@ -62,24 +62,24 @@ class GestorReserva():
     def get_registrador(self, id_reserva):
         pass
 
-    def validar_datos(self, nombre, apellido, turno, id_usuario):
-        """
-        if not (len(nombre)>1 and len(nombre)<30):
+    def validar_datos(self, id_reserva, cantidad_alumnos, fecha_solicitud, tipo_reserva):
+
+       """ if not (len(nombre)>1 and len(nombre)<30):
             return False
         if not (len(apellido)>1 and len(apellido)<30):
             return False
         
-        tipos_turno = []
-        for tupla in Bedel.TipoTurno.choices:
-            tipos_turno.append(tupla[1])
-        
+        tipos_reserva = []
+        for tupla in Reserva.TipoReserva.choices:
+            tipos_rese.append(tupla[1])
+            
         if turno not in tipos_turno:
             return False
         
         if len(id_usuario)==0 or len(id_usuario)>10:
             return False
-        return True """
-        pass
+        return True
+        pass"""
     
     def iniciar_reserva():
         pass
