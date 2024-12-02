@@ -37,6 +37,8 @@ def buscar_bedel(request):
 
     if 'turno' in params:
         turno = params['turno'].capitalize()
+        if turno == "Mañana":
+            turno = "Maniana"
     else:
         turno = ""
 
@@ -72,8 +74,8 @@ def modificar_bedel(request):
         data['turno'] = "Maniana"
     print(data['id_usuario'], data['contrasenia'],
             data['nombre'], data['apellido'], data['turno'])
-    nombre = data['nombre']
-    apellido = data['apellido']
+    nombre = data['nombre'].capitalize()
+    apellido = data['apellido'].capitalize()
     turno = data['turno']
     id_usuario = data['id_usuario']
     contrasenia = data['contrasenia']
@@ -93,8 +95,8 @@ def registrar_bedel(request):
         data['turno'] = "Maniana"
     print(data['id_usuario'], data['contrasenia'],
             data['nombre'], data['apellido'], data['turno'])
-    nombre = data['nombre']
-    apellido = data['apellido']
+    nombre = data['nombre'].capitalize()
+    apellido = data['apellido'].capitalize()
     turno = data['turno']
     id_usuario = data['id_usuario']
     contrasenia = data['contrasenia']
