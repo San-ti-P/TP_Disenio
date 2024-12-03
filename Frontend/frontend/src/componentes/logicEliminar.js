@@ -1,4 +1,4 @@
-import { tuneoModal } from '../componentes/modal';
+import { tuneoModal } from './modal';
 import { eliminarBedel } from '../services/api';
 
 export const manejoEliminar = async (bedel, actualizarValores) => {
