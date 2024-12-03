@@ -1,81 +1,3 @@
-// import React from 'react';
-// import { useLocation, useNavigate } from 'react-router-dom';
-// import Table from '@mui/material/Table';
-// import TableBody from '@mui/material/TableBody';
-// import TableHead from '@mui/material/TableHead';
-// import TableRow from '@mui/material/TableRow';
-// import Button from '@mui/material/Button';
-// import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-// import EditIcon from '@mui/icons-material/Edit';
-// import DeleteIcon from '@mui/icons-material/Delete';
-// import Paper from '@mui/material/Paper';
-// import { StyledContainer, StyledHeader, StyledHeading, StyledIconButton, StyledTableContainer, StyledTableCell, StyledTableRow } from '../elementos/tablaResultados';
-// import { manejoEliminar } from '../services/logicEliminar';
-// import { manejoModificar } from '../services/logModificar';
-// import BackButton from '../componentes/backButton';
-
-// export default function ModificarEliminarBedel() {
-//   const location = useLocation();
-//   const navigate = useNavigate();
-//   const { valores } = location.state || { valores: [] };
-  
-//   const handleEliminar = async (bedel) => {
-//     manejoEliminar(bedel);
-//   };
-  
-//   const handleModificar = () => {
-//     manejoModificar();
-//   };
-
-//   return (
-//     <StyledContainer>
-//       <StyledHeader>
-//         <BackButton route="/buscar-bedel"/>
-//         <StyledHeading>Resultados de la búsqueda</StyledHeading>
-//       </StyledHeader>
-
-//       <StyledTableContainer component={Paper}>
-//         <Table stickyHeader aria-label="customized table">
-//           <TableHead>
-//             <TableRow>
-//               <StyledTableCell width="15%">Nombre</StyledTableCell>
-//               <StyledTableCell width="17%">Apellido</StyledTableCell>
-//               <StyledTableCell width="17%">Turno</StyledTableCell>
-//               <StyledTableCell width="15%">Identificador</StyledTableCell>
-//               <StyledTableCell width="25%" align="center">Acciones</StyledTableCell>
-//             </TableRow>
-//           </TableHead>
-//           <TableBody>
-//             {valores.map((row, index) => (
-//               <StyledTableRow key={index}>
-//                 <StyledTableCell>{row.nombre}</StyledTableCell>
-//                 <StyledTableCell>{row.apellido}</StyledTableCell>
-//                 <StyledTableCell>{row.turno}</StyledTableCell>
-//                 <StyledTableCell>{row.identificador}</StyledTableCell>
-//                 <StyledTableCell width="5fr" align="center">
-//                   <Button 
-//                     onClick={handleModificar}
-//                     color="info"
-//                     style={{ marginRight: '0px' }}
-//                   >
-//                     <EditIcon />
-//                   </Button>
-//                   <Button 
-//                     onClick={() => handleEliminar(row)} 
-//                     color="error"
-//                   >
-//                     <DeleteIcon />
-//                   </Button>
-//                 </StyledTableCell>
-//               </StyledTableRow>
-//             ))}
-//           </TableBody>
-//         </Table>
-//       </StyledTableContainer>
-//     </StyledContainer>
-//   );
-// }
-
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import Table from '@mui/material/Table';
@@ -87,18 +9,42 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Paper from '@mui/material/Paper';
 import { StyledContainer, StyledHeader, StyledHeading, StyledIconButton, StyledTableContainer, StyledTableCell, StyledTableRow } from '../elementos/tablaResultados';
 import { manejoEliminar } from '../services/logicEliminar';
-import { ManejoModificar } from '../services/logModificar';
+import { ManejoModificar } from '../services/logicModificar';
 import BackButton from '../componentes/backButton';
 
 export default function ModificarEliminarBedel() {
   const location = useLocation();
   const [valores, setValores] = useState(location.state?.valores || []);
+  
+  const [criteriosBusqueda, setCriteriosBusqueda] = useState({
+    apellido: location.state?.apellido || '',
+    turno: location.state?.turno || ''
+  });
+
+  console.log(location);
+  console.log(criteriosBusqueda.apellido, criteriosBusqueda.turno);
 
   const handleEliminar = async (bedel) => {
     await manejoEliminar(bedel, () => {
       setValores((prevValores) => prevValores.filter((item) => item.id_usuario !== bedel.id_usuario));
     });
   };
+
+  const actualizarFila = (bedelModificado) => {
+    setValores((prevValores) =>
+      prevValores
+        .map((item) =>
+          item.id_usuario === bedelModificado.id_usuario ? { ...item, ...bedelModificado } : item
+        )
+        .filter((item) =>
+          (criteriosBusqueda.apellido === '' || item.apellido.includes(criteriosBusqueda.apellido)) &&
+          (criteriosBusqueda.turno === '' || item.turno === criteriosBusqueda.turno)
+        )
+    );
+  };
+
+
+  const valores_activo = valores.filter(valor => valor.activo);
 
   return (
     <StyledContainer>
@@ -111,29 +57,29 @@ export default function ModificarEliminarBedel() {
         <Table stickyHeader aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell width="15%">Nombre</StyledTableCell>
-              <StyledTableCell width="17%">Apellido</StyledTableCell>
-              <StyledTableCell width="17%">Turno</StyledTableCell>
+              <StyledTableCell width="18%">Nombre</StyledTableCell>
+              <StyledTableCell width="18%">Apellido</StyledTableCell>
+              <StyledTableCell width="16%">Turno</StyledTableCell>
               <StyledTableCell width="15%">Identificador</StyledTableCell>
-              <StyledTableCell width="25%" align="center">Acciones</StyledTableCell>
+              <StyledTableCell width="20%" align="center">Acciones</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-          {valores.length === 0 ? (
+          {valores_activo.length === 0 ? (
             <StyledTableRow>
               <StyledTableCell colSpan={5} align="center">
                 No hay resultados para la búsqueda
               </StyledTableCell>
             </StyledTableRow>
           ) : (
-            valores.filter(row => row.activo).map((row, index) => (
+            valores_activo.filter(row => row.activo).map((row, index) => (
               <StyledTableRow key={index}>
                 <StyledTableCell>{row.nombre}</StyledTableCell>
                 <StyledTableCell>{row.apellido}</StyledTableCell>
                 <StyledTableCell>{row.turno}</StyledTableCell>
                 <StyledTableCell>{row.id_usuario}</StyledTableCell>
                 <StyledTableCell width="5fr" align="center">
-                  <ManejoModificar bedel={row} />
+                  <ManejoModificar bedel={row} actualizarFila={actualizarFila} />
                   <Button 
                     onClick={() => handleEliminar(row)} 
                     color="error"
@@ -150,5 +96,3 @@ export default function ModificarEliminarBedel() {
     </StyledContainer>
   );
 }
-
-

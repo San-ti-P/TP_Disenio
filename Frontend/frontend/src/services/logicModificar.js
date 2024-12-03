@@ -2,19 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Box } from '@mui/material';
 import { Formulario, DivTextoCampoObligatorio, DivBotonesSC } from "../elementos/formularios.js";
 import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "../componentes/input.js";
-import { CancelarModal, mostrarModalExito } from "../componentes/modal.js";
+import { CancelarModal, mostrarModalExitoModificar } from "../componentes/modal.js";
 import { getPoliticas, modificarBedel } from "../services/api.js";
 import { BotonSubmit, LeyendaError } from '../elementos/formularios.js';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 
-export const ModificarModal = ({ open, handleClose, bedel }) => {
-  const [nombre, cambiarNombre] = useState({campo: bedel.nombre, valido: 'true'});
-  const [apellido, cambiarApellido] = useState({campo: bedel.apellido, valido: 'true'});
-  const [turno, cambiarTurno] = useState({campo: bedel.turno, valido: 'true'});
-  const [idUsuario, cambiarIdUsuario] = useState({campo: bedel.id_usuario, valido: 'true'});
-  const [contraseña1, cambiarContraseña1] = useState({campo: bedel.contrasenia, valido: 'true'});
-  const [contraseña2, cambiarContraseña2] = useState({campo: bedel.contrasenia, valido: 'true'});
+export const ModificarModal = ({ open, handleClose, bedel, actualizarFila }) => {
+  const [nombre, cambiarNombre] = useState({campo: bedel.nombre || '', valido: 'true'});
+  const [apellido, cambiarApellido] = useState({campo: bedel.apellido || '', valido: 'true'});
+  const [turno, cambiarTurno] = useState({campo: bedel.turno || '', valido: 'true'});
+  const [idUsuario, cambiarIdUsuario] = useState({campo: bedel.id_usuario || '', valido: 'true'});
+  const [contraseña1, cambiarContraseña1] = useState({campo: bedel.contrasenia || '', valido: 'true'});
+  const [contraseña2, cambiarContraseña2] = useState({campo: bedel.contrasenia || '', valido: 'true'});
   const [formularioValido, cambiarFormularioValido] = useState(null);
   const [animarErrores, cambiarAnimarErrores] = useState(false);
   const [mostrarIDLeyenda, cambiarMostrarIDLeyenda] = useState(false);
@@ -83,18 +83,18 @@ export const ModificarModal = ({ open, handleClose, bedel }) => {
         apellido: apellido.campo,
         turno: turno.campo,
         id_usuario: idUsuario.campo,
-        contrasenia: contraseña1.campo || undefined
+        contrasenia: contraseña1.campo
       };
-      console.log(datosFormulario);
       const respuesta = await modificarBedel(datosFormulario);
 
-      if (respuesta.error) {
-        alert("Ocurrió un error al enviar el formulario");
-      } else {
+      if (respuesta.error) alert("Ocurrió un error al enviar el formulario");
+      else {
         const respuestaErrores = respuesta.data.errors;
         if (respuestaErrores.length === 0) {
-          mostrarModalExito();
-          handleClose();
+          mostrarModalExitoModificar(() => {
+            actualizarFila(datosFormulario);
+            handleClose();
+          });
         } else {
           if (respuestaErrores.includes("campos_invalidos")) { 
             alert("Error de campo"); 
@@ -103,10 +103,6 @@ export const ModificarModal = ({ open, handleClose, bedel }) => {
             cambiarMostrarContraLeyenda(true);
             cambiarContraseña1({ campo: contraseña1.campo, valido: "false" });
           }
-          // if (respuestaErrores.includes("id_existente")) {
-          //   cambiarMostrarIDLeyenda(true);
-          //   cambiarIdUsuario({ campo: idUsuario.campo, valido: 'false' });
-          // }
         }
       }
     }
@@ -118,17 +114,16 @@ export const ModificarModal = ({ open, handleClose, bedel }) => {
   };
 
   useEffect(() => {
-    if (open) {
-      cambiarNombre({ campo: bedel.nombre, valido: 'true' });
-      cambiarApellido({ campo: bedel.apellido, valido: 'true' });
-      cambiarTurno({ campo: bedel.turno, valido: 'true' });
-      cambiarIdUsuario({ campo: bedel.id_usuario, valido: 'true' });
-      cambiarContraseña1({ campo: bedel.contrasenia, valido: 'true' });
-      cambiarContraseña2({ campo: bedel.contrasenia, valido: 'true' });
-    }
     obtenerPoliticas();
-
-  }, [open]);
+    if (open) {
+      cambiarNombre({ campo: bedel.nombre || '', valido: 'true' });
+      cambiarApellido({ campo: bedel.apellido || '', valido: 'true' });
+      cambiarTurno({ campo: bedel.turno || '', valido: 'true' });
+      cambiarIdUsuario({ campo: bedel.id_usuario || '', valido: 'true' });
+      cambiarContraseña1({ campo: bedel.contrasenia || '', valido: 'true' });
+      cambiarContraseña2({ campo: bedel.contrasenia || '', valido: 'true' });
+    }
+  }, [open, bedel]);
 
   return (
     <Modal
@@ -190,7 +185,7 @@ export const ModificarModal = ({ open, handleClose, bedel }) => {
             comportamientoTooltip="nunca"
             leyendaError={"ID de usuario ya existe"}
             mostrarLeyenda={mostrarIDLeyenda}
-            cambiarMostrarLeyenda={cambiarMostrarIDLeyenda}
+            cambiarMostrarIDLeyenda={cambiarMostrarIDLeyenda}
             editable={false}
           />
           <ComponenteOtro 
@@ -240,7 +235,7 @@ export const ModificarModal = ({ open, handleClose, bedel }) => {
   );
 };
 
-export const ManejoModificar = (bedel) => {
+export const ManejoModificar = ({ bedel, actualizarFila }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -253,7 +248,7 @@ export const ManejoModificar = (bedel) => {
         style={{ marginRight: '-15px' }}>
        <EditIcon />
     </Button>
-      <ModificarModal open={open} handleClose={handleClose} bedel={bedel} />
+      <ModificarModal open={open} handleClose={handleClose} bedel={bedel} actualizarFila={actualizarFila} />
     </>
   );
 };
