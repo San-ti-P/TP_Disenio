@@ -1,5 +1,7 @@
 from ..models import Bedel
 
+import bcrypt
+
 class RespuestaRegistrarBedel(object):
     """Se usa para construir el objeto respuesta del método .alta_bedel() de GestorBedel"""
     def __init__(self, campos_validos, contrasenia_valida, id_valido):
@@ -94,9 +96,10 @@ class GestorBedel():
         
         if self.gestor_contrasenia.validar_politicas(contrasenia):
             contrasenia_valida = True
+            hash_contrasenia = bcrypt.hashpw(contrasenia.encode('utf-8'), bcrypt.gensalt())
 
         if campos_validos and contrasenia_valida and id_unico:
-            bedel = Bedel(nombre=nombre, apellido=apellido, turno=turno, id_usuario=id_usuario, contrasenia=contrasenia, activo=True, fecha_baja=None)
+            bedel = Bedel(nombre=nombre, apellido=apellido, turno=turno, id_usuario=id_usuario, contrasenia=hash_contrasenia, activo=True, fecha_baja=None)
             self.bedel_DAO.create_bedel(bedel)
         
         response = RespuestaRegistrarBedel(campos_validos, contrasenia_valida, id_unico)
@@ -110,6 +113,8 @@ class GestorBedel():
         id_usuario: str
             -- ID del bedel a eliminar
         """
+
+        #self.gestor_sesion.consultar_sesion()
 
         id_existente = False
         if not self.gestor_usuario.validacion_id_unico(id_usuario):
@@ -148,10 +153,11 @@ class GestorBedel():
         
         if self.gestor_contrasenia.validar_politicas(contrasenia):
             contrasenia_valida = True
+            hash_contrasenia = bcrypt.hashpw(contrasenia.encode('utf-8'), bcrypt.gensalt())
 
         if campos_validos and contrasenia_valida and id_existente:
             #bedel = self.bedel_DAO.get_bedel(id_usuario)
-            bedel = Bedel(nombre=nombre, apellido=apellido, turno=turno, id_usuario=id_usuario, contrasenia=contrasenia, activo=True, fecha_baja=None)
+            bedel = Bedel(nombre=nombre, apellido=apellido, turno=turno, id_usuario=id_usuario, contrasenia=hash_contrasenia, activo=True, fecha_baja=None)
             self.bedel_DAO.update_bedel(bedel)
         
         response = RespuestaModificarBedel(campos_validos, contrasenia_valida, id_existente)

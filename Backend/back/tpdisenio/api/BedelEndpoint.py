@@ -73,7 +73,7 @@ def buscar_bedel(request):
     """
     Define el comportamiento de .../bedeles con solicitudes GET
     """
-
+    print(request.COOKIES)
     params = request.query_params
 
     if 'apellido' in params:
@@ -97,7 +97,7 @@ def eliminar_bedel(request):
     """
     Define el comportamiento de .../bedeles con solicitudes DELETE
     """
-
+    
     params = request.query_params
     print(params)
     if 'id' in params:

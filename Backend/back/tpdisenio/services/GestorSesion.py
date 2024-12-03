@@ -1,5 +1,5 @@
 from datetime import date
-#import bcrypt
+import bcrypt
 
 from .Sesion import Sesion
 
@@ -18,11 +18,14 @@ class GestorSesion():
         self.sesiones = {}
 
     def inicio_sesion(self, id_usuario, contrasenia):
-        #hash_contrasenia = bcrypt.hashpw(contrasenia.encode('utf-8'), bcrypt.gensalt())
+
+        hash_contrasenia = bcrypt.hashpw(contrasenia.encode('utf-8'), bcrypt.gensalt())
+
+        print("Hash: ", hash_contrasenia, type(hash_contrasenia))
         administrador = self.administrador_DAO.get_administrador(id_usuario)
         if administrador != None:
-            #if hash_contrasenia == administrador.get_contrasena():
-            if contrasenia == administrador.get_contrasena():
+            if bcrypt.checkpw(contrasenia.encode('utf-8'), administrador.get_contrasena()):
+            #if contrasenia == administrador.get_contrasena():
                 if len(self.sesiones) != 0:
                     id_sesion = str(int(self.sesiones[len(self.sesiones)-1].get_id_sesion())+1)
                 else: id_sesion = "1"
@@ -33,13 +36,13 @@ class GestorSesion():
         else:
             bedel = self.bedel_DAO.get_bedel(id_usuario)
             if bedel != None:
-                #if hash_contrasenia == bedel.get_contrasena():
-                if contrasenia == bedel.get_contrasena():
+                if bcrypt.checkpw(contrasenia.encode('utf-8'), bedel.get_contrasena()):
+                #if contrasenia == bedel.get_contrasena():
                     if len(self.sesiones) != 0:
                         id_sesion = str(int(self.sesiones[len(self.sesiones)-1].get_id_sesion())+1)
                     else: id_sesion = "1"
                     sesion = Sesion(id_sesion, date.today(), True, bedel)
-                    self.sesiones.append(sesion)
+                    self.sesiones[sesion.get_cookie()] = sesion
                     return RespuestaLogin("bedel", bedel.get_nombre(), sesion.get_cookie())
                 #else: return "acceso denegado"
             #else: return "acceso denegado"
