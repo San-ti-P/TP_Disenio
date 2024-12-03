@@ -129,9 +129,26 @@ const mostrarModalExito = () => {
     confirmButtonText: "Confirmar"
   }).then((result) => {
     if (result.isConfirmed) {
-      window.location.reload();
+      // window.location.reload();
+      console.log("Bedel registrado")
     }
   });
 };
 
-export { CancelarModal, mostrarModalExito, tuneoModal };
+const mostrarModalExitoModificar = (onConfirm) => {
+  tuneoModal({
+    title: "Bedel modificado satisfactoriamente",
+    text: "",
+    icon: "info",
+    confirmButtonText: "Confirmar"
+  }).then((result) => {
+    if (result.isConfirmed) {
+      console.log("Bedel cambiado...");
+      if (onConfirm) {
+        onConfirm();
+      }
+    }
+  });
+};
+
+export { CancelarModal, mostrarModalExito, tuneoModal, mostrarModalExitoModificar };
