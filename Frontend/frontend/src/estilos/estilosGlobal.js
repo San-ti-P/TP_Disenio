@@ -33,6 +33,7 @@ const EstilosGlobal = createGlobalStyle`
     flex-direction: column;
     background-color: #e5e5e5;
     padding: 20px;
+    padding-top: 8px;
     box-shadow: 1px 1px 30px #3339;
     border-radius: 8px;
   }

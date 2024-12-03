@@ -121,7 +121,7 @@ const CancelarModal = ({
   return <BotonSC onClick={mostrarAlerta} type={type}>{labelBoton}</BotonSC>;
 };
 
-const mostrarModalExito = () => {
+const mostrarModalExito = (onConfirm) => {
   tuneoModal({
     title: "Bedel registrado satisfactoriamente",
     text: "",
@@ -129,8 +129,10 @@ const mostrarModalExito = () => {
     confirmButtonText: "Confirmar"
   }).then((result) => {
     if (result.isConfirmed) {
-      // window.location.reload();
-      console.log("Bedel registrado")
+      console.log("Bedel registrado");
+      if (onConfirm) {
+        onConfirm();
+      }
     }
   });
 };

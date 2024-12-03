@@ -114,9 +114,16 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila }) => 
   };
 
   useEffect(() => {
-    console.log("Recurso")
     obtenerPoliticas();
-  }, []);
+    if (open) {
+      cambiarNombre({ campo: bedel.nombre || '', valido: 'true' });
+      cambiarApellido({ campo: bedel.apellido || '', valido: 'true' });
+      cambiarTurno({ campo: bedel.turno || '', valido: 'true' });
+      cambiarIdUsuario({ campo: bedel.id_usuario || '', valido: 'true' });
+      cambiarContraseña1({ campo: bedel.contrasenia || '', valido: 'true' });
+      cambiarContraseña2({ campo: bedel.contrasenia || '', valido: 'true' });
+    }
+  }, [open, bedel]);
 
   return (
     <Modal

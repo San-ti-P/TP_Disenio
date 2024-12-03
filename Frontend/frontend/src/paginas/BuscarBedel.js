@@ -18,7 +18,7 @@ const App = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const valores = await fetchValores();
-        navigate('/modificar-eliminar-bedel', { state: { valores} });
+        navigate('/modificar-eliminar-bedel', { state: { valores, apellido: apellido.campo, turno: turno.campo} });
     };
 
     return (

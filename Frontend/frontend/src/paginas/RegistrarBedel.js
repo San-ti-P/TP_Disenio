@@ -41,6 +41,15 @@ const App = () => {
     }
   }
 
+  const resetFormulario = () => {
+    cambiarNombre({campo:'', valido: null});
+    cambiarApellido({campo:'', valido: null});
+    cambiarTurno({campo:'', valido: null});
+    cambiarIdUsuario({campo:'', valido: null});
+    cambiarContraseña1({campo:'', valido: null});
+    cambiarContraseña2({campo:'', valido: null});
+  }
+
   const onSubmit = async (e) => {
     e.preventDefault();
     
@@ -94,7 +103,7 @@ const App = () => {
       } else {
         const respuestaErrores = respuesta.data.errors;
         if (respuestaErrores.length === 0) {
-          mostrarModalExito();
+          mostrarModalExito(resetFormulario);
         } else {
           if (respuestaErrores.includes("campos_invalidos")) { 
             alert("Error de campo"); 
