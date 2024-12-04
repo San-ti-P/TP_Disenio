@@ -2,51 +2,19 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter, OpenApiTypes
-from ..serializers import IniciarReservaEntidadesSerializer, IniciarReservaRequestSerializer, IniciarReservaResponseSerializer
+from ..serializers import IniciarReservaEntidadesSerializer, IniciarReservaRequestSerializer, IniciarReservaResponseSerializer, IniciarReservaEntidadesDTO
 from ..services import gestor_actividad, gestor_docente, gestor_reserva, gestor_sesion
-from ..models import reserva
+from ..models import Reserva
 
 @extend_schema_view(
     get=extend_schema(
-        parameters=[
-            OpenApiParameter(
-                name='apellido',
-                description='Apellido del reserva',
-                required=False,
-                type=OpenApiTypes.STR,
-            ),
-            OpenApiParameter(
-                name='turno',
-                description='Turno del reserva',
-                required=False,
-                type=OpenApiTypes.STR,
-                enum=[turno[1] for turno in reserva.TipoTurno.choices],
-            ),
-        ],
-        responses=reservaSerializer,
+        responses=IniciarReservaEntidadesSerializer,
         description="Obtener reservaes"
     ),
     post=extend_schema(
-        request=reservaSerializer,
-        responses=ErrorsListSerializer,
+        request=IniciarReservaRequestSerializer,
+        responses=IniciarReservaResponseSerializer,
         description="Crear un nuevo reserva"
-    ),
-    put=extend_schema(
-        request=reservaSerializer,
-        responses=ErrorsListSerializer,
-        description="Modificar un reserva existente"
-    ),
-    delete=extend_schema(
-        parameters=[
-            OpenApiParameter(
-                name='id',
-                description='ID del reserva',
-                required=False,
-                type=OpenApiTypes.STR,
-            ),
-        ],
-        responses={200: OpenApiTypes.BOOL},
-        description="Eliminar un reserva"
     )
 )
 
@@ -84,64 +52,23 @@ def obtener_datos(request):
     
     actividades = gestor_actividad.obtener_actividades()
     docentes = gestor_docente.obtener_docentes()
-    response_serializer = IniciarReservaEntidadesSerializer(actividades, docentes)
+    response_serializer = IniciarReservaEntidadesSerializer(IniciarReservaEntidadesDTO(actividades, docentes))
     return Response(response_serializer.data)
-
-def eliminar_reserva(request):
-    """
-    Define el comportamiento de .../reservaes con solicitudes DELETE
-    """
-    
-    """params = request.query_params
-    print(params)
-    if 'id' in params:
-        id = params['id']
-    else:
-        id = ""
-
-    exito = gestor_reserva.baja_reserva(id_usuario=id)
-    return Response(exito)"""
-    pass
-
-
-def modificar_reserva(request):
-    """
-    Define el comportamiento de .../reservaes con solicitudes PUT
-    """
-    
-    """reservaes_serializer = reservaSerializer(data=request.data)
-    data = reservaes_serializer.initial_data
-    if data['turno'] == "Mañana":
-        data['turno'] = "Maniana"
-    print(data['id_usuario'], data['contrasenia'],
-            data['nombre'], data['apellido'], data['turno'])
-    nombre = data['nombre'].capitalize()
-    apellido = data['apellido'].capitalize()
-    turno = data['turno']
-    id_usuario = data['id_usuario']
-    contrasenia = data['contrasenia']
-    response = gestor_reserva.modificar_reserva(nombre, apellido, turno, id_usuario, contrasenia)
-    response_serializer = ErrorsListSerializer(response)
-    return Response(response_serializer.data)"""
-    pass
-
 
 def comenzar_reserva(request):
     """
-    Define el comportamiento de .../reservaes con solicitudes POST
+    Define el comportamiento de .../reservas con solicitudes POST
     """
     
     iniciar_reserva_serializer = IniciarReservaRequestSerializer(data=request.data)
     data = iniciar_reserva_serializer.initial_data
     
-    nombre = data['nombre'].capitalize()
-    apellido = data['apellido'].capitalize()
-    correo = data['correo']
+    docente = data['docente']
     cant_alumnos = data['cant_alumnos']
     tipo_aula = data['tipo_aula']
     actividad = data['actividad']
     periodo = data['periodo'].capitalize()
     lista_reservaciones = data['lista_reservaciones']
-    response = gestor_reserva.iniciar_reserva(nombre, apellido, correo, cant_alumnos, tipo_aula, actividad, periodo, lista_reservaciones)
+    response = gestor_reserva.iniciar_reserva(docente, cant_alumnos, tipo_aula, actividad, periodo, lista_reservaciones)
     response_serializer = IniciarReservaResponseSerializer(response)
     return Response(response_serializer.data)

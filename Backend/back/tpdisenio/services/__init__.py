@@ -28,7 +28,7 @@ gestor_usuario = GestorUsuario(SQL_bedel_DAO, SQL_administrador_DAO)
 gestor_bedel = GestorBedel(gestor_sesion, gestor_usuario, gestor_contrasenia,
                            SQL_bedel_DAO, SQL_administrador_DAO)
 gestor_docente = GestorDocente()
-gestor_actividad = GestorActividad(gestor_docente)
+gestor_actividad = GestorActividad(gestor_docente, SQL_actividad_DAO)
 gestor_periodo = GestorPeriodo(SQL_periodo_DAO)
 gestor_aula = GestorAula(gestor_sesion, SQL_aula_sin_adicionales_DAO, SQL_aula_multimedios_DAO, SQL_aula_informatica_DAO)
 gestor_reservacion = GestorReservacion(gestor_sesion, SQL_reservacion_DAO)

@@ -3,6 +3,11 @@ from .models import Aula, Bedel, Reservacion, Usuario
 from .services import DocenteDTO
 #import services
 
+class IniciarReservaEntidadesDTO():
+    def __init__(self, actividades, docentes):
+        self.actividades = actividades
+        self.docentes = docentes
+
 class UsuarioSerializer(serializers.ModelSerializer):
     """Serializador de la clase Usuario"""
     class Meta:
@@ -21,10 +26,16 @@ class AulaSerializer(serializers.ModelSerializer):
         model = Aula
         fields = '__all__'
 
+class TipoActividadDTOSerializer(serializers.Serializer):
+    id_tipo_actividad = serializers.IntegerField()
+    nombre = serializers.CharField()
+    descripcion = serializers.CharField()
+
 class ActividadDTOSerializer(serializers.Serializer):
     id_actividad = serializers.IntegerField()
     nombre = serializers.CharField()
     descripcion = serializers.CharField()
+    tipo_actividad = TipoActividadDTOSerializer()
 
 class DocenteDTOSerializer(serializers.Serializer):
     id_docente = serializers.IntegerField()
@@ -60,9 +71,7 @@ class IniciarReservaEntidadesSerializer(serializers.Serializer):
     docentes = DocenteDTOSerializer(many=True)
     
 class IniciarReservaRequestSerializer(serializers.Serializer):
-    nombre = serializers.CharField()
-    apellido = serializers.CharField()
-    correo = serializers.CharField()
+    docente = DocenteDTOSerializer()
     cant_alumnos = serializers.IntegerField()
     tipo_aula = serializers.CharField()
     actividad = ActividadDTOSerializer()

@@ -1,14 +1,25 @@
 from ..models import Reserva
 from ..models import Reservacion
 from ..models import Periodo
+from .GestorDocente import DocenteDTO
 from datetime import date, timedelta
 
-"""class RespuestaIniciarReserva():
-    def __init__(self, listaErrores) -> None:
-        errors = []
-        if not listaErrores[0]:
-            errors.append
-"""
+class AulaReservaDTO():
+    def __init__(self, aula, reservacion, docente):
+        self.aula = aula
+        self.reservacion = reservacion
+        self.docente = docente
+
+class SolicitudFechaSerializer():
+    def __init__(self, fecha, lista_aula_reserva) -> None:
+        self.fecha = fecha
+        self.aulas = lista_aula_reserva
+
+class RespuestaIniciarReservaDTO():
+    def __init__(self, lista_errores, lista_solicitudes) -> None:
+        self.errors = lista_errores
+        self.fechas = lista_errores
+    
 
 class ReservacionDTO():
     def __init__(self, dia, fecha, hora, duracion) -> None:
@@ -85,12 +96,16 @@ class GestorReserva():
     def get_registrador(self, id_reserva):
         pass
 
-    def validar_datos(self, nombre, apellido, correo, cant_alumnos, tipo_aula, actividad, periodo, lista_reservaciones):
+    def validar_datos(self, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones):
         
         faltan_ingresar_datos = True
         dia_anterior_actual = False
         duracion_no_multiplo_30 = False 
         mas_de_una_hora_inicio_dia = False
+
+        nombre = docente_DTO.get_nombre()
+        apellido = docente_DTO.get_apellido()
+        correo = docente_DTO.get_correo()
 
         if not (len(nombre)>1 and len(nombre)<30):
             faltan_ingresar_datos = False
@@ -135,33 +150,33 @@ class GestorReserva():
         return retorno
 
     def obtener_fechas(self, periodo, lista_reservaciones):
-       reservaciones_periodicas = lista_reservaciones.copy()
-       dias_semana = {
+        reservaciones_periodicas = lista_reservaciones.copy()
+        dias_semana = {
         "lunes": 0,
-        "martes": 1,
-        "miercoles": 2,  
-        "jueves": 3,
-        "viernes": 4,
-        "sabado": 5,      
-        "domingo": 6
-    }
-       lista = []
-       for reservacion in reservaciones_periodicas:
-        actual = periodo.get_fecha_inicio()
-        fin = periodo.get_fecha_fin()
-        
-        while actual.weekday() != dias_semana.get(reservacion.dia.lower(), None):
-            actual += timedelta(days=1)
-        
-        while actual <= fin:
-            r = ReservacionDTO(reservacion.dia, actual, reservacion.hora_inicio, reservacion.duracion)
-            lista.append(r)
-            actual += timedelta(days=7)
+            "martes": 1,
+            "miercoles": 2,  
+            "jueves": 3,
+            "viernes": 4,
+            "sabado": 5,      
+            "domingo": 6
+        }
+        lista = []
+        for reservacion in reservaciones_periodicas:
+            actual = periodo.get_fecha_inicio()
+            fin = periodo.get_fecha_fin()
+            
+            while actual.weekday() != dias_semana.get(reservacion.dia.lower(), None):
+                actual += timedelta(days=1)
+            
+            while actual <= fin:
+                r = ReservacionDTO(reservacion.dia, actual, reservacion.hora_inicio, reservacion.duracion)
+                lista.append(r)
+                actual += timedelta(days=7)
 
         return lista
     
-    def iniciar_reserva(self, nombre, apellido, correo, cant_alumnos, tipo_aula, actividad, periodo, lista_reservaciones):
-        errores = self.validar_datos(nombre, apellido, correo, cant_alumnos, tipo_aula, actividad, periodo,lista_reservaciones)
+    def iniciar_reserva(self, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones):
+        errores = self.validar_datos(docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo,lista_reservaciones)
         if False in errores:
             return None
         lista_fechas = []
