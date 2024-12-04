@@ -66,7 +66,7 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
         hora_fin_dt = hora_inicio_dt + duracion_timedelta
 
         # Filtrar reservaciones conflictivas
-        reservaciones_conflictivas = Reservacion.objects.select_related('aula').filter(
+        reservaciones_conflictivas = Reservacion.objects.select_related('Aula').select_related('Reserva').select_related('Actividad').select_related('Docente').filter(
             fecha=fecha,
             # Filtrar solapamientos de horarios
             hora_inicio__lt=hora_fin_dt.time(),  # Comienza antes de que termine la nueva reserva
@@ -77,11 +77,14 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
             'duracion',        # Duración en minutos
             'aula__nro_aula',  # Número del aula
             'aula__capacidad', # Capacidad del aula
+            'docente__id_docente'
+            'docente__apellido'
+            'docente__correo'
         )
 
         # Determinar el menor tiempo de solapamiento
         menor_solapamiento = None
-        mejor_reservacion = None
+        mejor_reservacion = []
 
         for reservacion in reservaciones_conflictivas:
             # Convertir los datos de la reservación en horarios
@@ -96,7 +99,10 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
             # Comparar para encontrar el menor solapamiento
             if menor_solapamiento is None or tiempo_solapamiento < menor_solapamiento:
                 menor_solapamiento = tiempo_solapamiento
-                mejor_reservacion = reservacion
+                mejor_reservacion = [reservacion]
+            else:
+                if tiempo_solapamiento == menor_solapamiento:
+                    mejor_reservacion.append(reservacion)
 
         # Retornar la reservación con el menor solapamiento, o None si no hay conflictos
         return mejor_reservacion
