@@ -3,7 +3,7 @@ from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter, OpenApiTypes
 from ..serializers import IniciarReservaEntidadesSerializer, IniciarReservaRequestSerializer, IniciarReservaResponseSerializer
-from ..services import gestor_actividad, gestor_docente, gestor_sesion
+from ..services import gestor_actividad, gestor_docente, gestor_reserva, gestor_sesion
 from ..models import reserva
 
 @extend_schema_view(
@@ -71,11 +71,6 @@ def iniciar_reserva(request):
     if request.method == 'POST':
         return comenzar_reserva(request=request)
 
-    if request.method == 'PUT':
-        return modificar_reserva(request=request)
-    
-    if request.method == 'DELETE':
-        return eliminar_reserva(request=request)
     #    else:
     #        raise PermissionDenied("Acceso denegado")
     #else:
@@ -89,8 +84,8 @@ def obtener_datos(request):
     
     actividades = gestor_actividad.obtener_actividades()
     docentes = gestor_docente.obtener_docentes()
-    response = IniciarReservaEntidadesSerializer(actividades, docentes)
-    return Response(response.data)
+    response_serializer = IniciarReservaEntidadesSerializer(actividades, docentes)
+    return Response(response_serializer.data)
 
 def eliminar_reserva(request):
     """
@@ -141,9 +136,12 @@ def comenzar_reserva(request):
     
     nombre = data['nombre'].capitalize()
     apellido = data['apellido'].capitalize()
-    turno = data['turno']
-    id_usuario = data['id_usuario']
-    contrasenia = data['contrasenia']
-    response = gestor_reserva.alta_reserva(nombre, apellido, turno, id_usuario, contrasenia)
-    response_serializer = ErrorsListSerializer(response)
+    correo = data['correo']
+    cant_alumnos = data['cant_alumnos']
+    tipo_aula = data['tipo_aula']
+    actividad = data['actividad']
+    periodo = data['periodo'].capitalize()
+    lista_reservaciones = data['lista_reservaciones']
+    response = gestor_reserva.iniciar_reserva(nombre, apellido, correo, cant_alumnos, tipo_aula, actividad, periodo, lista_reservaciones)
+    response_serializer = IniciarReservaResponseSerializer(response)
     return Response(response_serializer.data)

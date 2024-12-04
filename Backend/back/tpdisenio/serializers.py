@@ -26,17 +26,16 @@ class ActividadDTOSerializer(serializers.Serializer):
     nombre = serializers.CharField()
     descripcion = serializers.CharField()
 
-class DocenteDTOSerializer():
+class DocenteDTOSerializer(serializers.Serializer):
     id_docente = serializers.IntegerField()
     apellido = serializers.CharField()
     nombre = serializers.CharField()
     correo = serializers.CharField()
 
-class ReservacionDTOSerializer():
-    dia = serializers.CharField(choices=Reservacion.DiaSemana)
-    fecha = serializers.DateField()
-    hora = serializers.TimeField()
-    duracion = serializers.IntegerField()
+class ReservacionDTOSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservacion
+        fields = ['dia', 'fecha', 'duracion', 'hora_inicio']
     
 class AulaReservaDTOSerializer(serializers.Serializer):
     aula = AulaSerializer()
@@ -70,6 +69,10 @@ class IniciarReservaRequestSerializer(serializers.Serializer):
     periodo = serializers.CharField()
     lista_reservaciones = ReservacionDTOSerializer(many=True)
 
-class IniciarReservaResponseSerializer(serializers.Serializer):
+class SolicitudFechaSerializer(serializers.Serializer):
     fecha = serializers.DateField()
     aulas = AulaReservaDTOSerializer(many=True)
+
+class IniciarReservaResponseSerializer(serializers.Serializer):
+    errors = serializers.ListField()
+    fechas = SolicitudFechaSerializer(many=True)

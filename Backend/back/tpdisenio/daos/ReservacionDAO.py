@@ -3,8 +3,7 @@ from abc import ABC
 class ReservacionDAO(ABC):
     """Interfaz encargada de definir el protocolo para persistir datos de la clase Reservacion"""
     
-    def __init__(self, reserva_DAO, aula_sin_adicionales_DAO, aula_multimedios_DAO, aula_informatica_DAO):
-        self.reserva_DAO = reserva_DAO
+    def __init__(self, aula_sin_adicionales_DAO, aula_multimedios_DAO, aula_informatica_DAO):
         self.aula_sin_adicionales_DAO = aula_sin_adicionales_DAO
         self.aula_multimedios_DAO = aula_multimedios_DAO
         self.aula_informatica_DAO = aula_informatica_DAO
