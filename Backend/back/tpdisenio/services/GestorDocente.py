@@ -1,4 +1,4 @@
-
+from ..models import Docente
 class DocenteDTO(object):
     def __init__(self, id, apellido, nombre, correo) -> None:
         self.id_docente = id
@@ -8,8 +8,10 @@ class DocenteDTO(object):
 
 class GestorDocente():
 
-    def alta_docente(self, id_docente):
-        pass
+    def alta_docente(self, id_doc, apellido_doc, nombre_doc, correo_doc): 
+        docente = Docente(id_doc=id_doc, apellido_doc=apellido_doc, nombre_doc=nombre_doc, correo_doc=correo_doc, activo=True, fecha_baja=None)
+        self.docente_DAO.create_docente(docente)
+
     def guardar_docente(self, docente):
         pass
 
