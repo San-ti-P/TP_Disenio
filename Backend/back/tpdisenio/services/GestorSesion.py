@@ -15,20 +15,17 @@ class GestorSesion():
     def __init__(self, bedel_DAO, administrador_DAO):
         self.bedel_DAO = bedel_DAO
         self.administrador_DAO = administrador_DAO
-        self.sesiones = {}
+        self.sesiones = {'1': Sesion(1, "hoy", True, None)}
 
     def inicio_sesion(self, id_usuario, contrasenia):
 
-        hash_contrasenia = bcrypt.hashpw(contrasenia.encode('utf-8'), bcrypt.gensalt())
-
-        print("Hash: ", hash_contrasenia, type(hash_contrasenia))
         administrador = self.administrador_DAO.get_administrador(id_usuario)
         if administrador != None:
             if administrador.get_activo():
                 if bcrypt.checkpw(contrasenia.encode('utf-8'), administrador.get_contrasena()):
                 #if contrasenia == administrador.get_contrasena():
                     if len(self.sesiones) != 0:
-                        id_sesion = max([s.id_sesion for s in self.sesiones.values])+1
+                        id_sesion = max([s.id_sesion for s in self.sesiones.values()])+1
                     else: id_sesion = 1
                     sesion = Sesion(id_sesion, date.today(), True, administrador)
                     self.sesiones[sesion.get_cookie()] = sesion

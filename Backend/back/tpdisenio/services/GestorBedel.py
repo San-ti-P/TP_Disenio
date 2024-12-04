@@ -172,6 +172,7 @@ class GestorBedel():
         turno: TipoTurno
             -- turno del bedel a buscar. Por defecto es None
         """
+
         bedeles = self.bedel_DAO.get_bedel_criterio(apellido, turno)
 
         for bedel in bedeles:

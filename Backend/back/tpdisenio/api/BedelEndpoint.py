@@ -1,8 +1,9 @@
 from rest_framework.response import Response
+from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter, OpenApiTypes
 from ..serializers import BedelSerializer, ErrorsListSerializer
-from ..services import gestor_bedel
+from ..services import gestor_bedel, gestor_sesion
 from ..models import Bedel
 
 @extend_schema_view(
@@ -54,26 +55,38 @@ def bedeles(request):
     """
     Define el comportamiento de .../bedeles. Acepta solicitudes GET, POST, PUT, DELETE
     """
-
-    if request.method == 'GET':
-        return buscar_bedel(request=request)
+    print(request.COOKIES)
+    if 'sessionid' in request.COOKIES:
+        sessionid = request.COOKIES.get('sessionid')
+    else:
+        sessionid = ""
     
-    if request.method == 'POST':
-        return registrar_bedel(request=request)
+    autorizado, sesion = gestor_sesion.consultar_sesion(sessionid)
 
-    if request.method == 'PUT':
-        return modificar_bedel(request=request)
-    
-    if request.method == 'DELETE':
-        return eliminar_bedel(request=request)
+    if autorizado:
+        if sesion.get_es_admin():
+            if request.method == 'GET':
+                return buscar_bedel(request=request)
+            
+            if request.method == 'POST':
+                return registrar_bedel(request=request)
 
+            if request.method == 'PUT':
+                return modificar_bedel(request=request)
+            
+            if request.method == 'DELETE':
+                return eliminar_bedel(request=request)
+        else:
+            raise PermissionDenied("Acceso denegado")
+    else:
+        raise AuthenticationFailed("Credenciales no válidas")
 
 
 def buscar_bedel(request):
     """
     Define el comportamiento de .../bedeles con solicitudes GET
     """
-    print(request.COOKIES)
+    
     params = request.query_params
 
     if 'apellido' in params:
