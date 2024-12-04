@@ -145,3 +145,4 @@ class GestorReserva():
             actual += timedelta(days=7)
 
         return fechas
+    
