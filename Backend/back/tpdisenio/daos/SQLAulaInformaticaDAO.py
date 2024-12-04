@@ -77,7 +77,6 @@ class SQLAulaInformaricaDAO(AulaInformaricaDAO):
             'duracion',        # Duración en minutos
             'aula__nro_aula',  # Número del aula
             'aula__capacidad', # Capacidad del aula
-            'aula__piso'       # Piso del aula
         )
 
         # Determinar el menor tiempo de solapamiento
