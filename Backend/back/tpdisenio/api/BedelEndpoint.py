@@ -55,31 +55,31 @@ def bedeles(request):
     """
     Define el comportamiento de .../bedeles. Acepta solicitudes GET, POST, PUT, DELETE
     """
-    print(request.COOKIES)
-    if 'sessionid' in request.COOKIES:
-        sessionid = request.COOKIES.get('sessionid')
-    else:
-        sessionid = ""
+    #print(request.COOKIES)
+    #if 'sessionid' in request.COOKIES:
+    #    sessionid = request.COOKIES.get('sessionid')
+    #else:
+    #    sessionid = ""
     
-    autorizado, sesion = gestor_sesion.consultar_sesion(sessionid)
+    #autorizado, sesion = gestor_sesion.consultar_sesion(sessionid)
 
-    if autorizado:
-        if sesion.get_es_admin():
-            if request.method == 'GET':
-                return buscar_bedel(request=request)
-            
-            if request.method == 'POST':
-                return registrar_bedel(request=request)
+    #if autorizado:
+    #    if sesion.get_es_admin():
+    if request.method == 'GET':
+        return buscar_bedel(request=request)
+    
+    if request.method == 'POST':
+        return registrar_bedel(request=request)
 
-            if request.method == 'PUT':
-                return modificar_bedel(request=request)
-            
-            if request.method == 'DELETE':
-                return eliminar_bedel(request=request)
-        else:
-            raise PermissionDenied("Acceso denegado")
-    else:
-        raise AuthenticationFailed("Credenciales no válidas")
+    if request.method == 'PUT':
+        return modificar_bedel(request=request)
+    
+    if request.method == 'DELETE':
+        return eliminar_bedel(request=request)
+    #    else:
+    #        raise PermissionDenied("Acceso denegado")
+    #else:
+    #    raise AuthenticationFailed("Credenciales no válidas")
 
 
 def buscar_bedel(request):
