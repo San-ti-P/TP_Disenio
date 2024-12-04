@@ -1,6 +1,6 @@
 from datetime import timedelta, datetime 
 from django.core.exceptions import ObjectDoesNotExist
-from .AulaInformaricaDAO import AulaInformaricaDAO
+from .AulaInformaticaDAO import AulaInformaticaDAO
 from ..models import AulaInformatica
 from ..models import Reservacion
 
@@ -27,7 +27,7 @@ class SQLAulaInformaricaDAO(AulaInformaricaDAO):
     def update_informatica(self, aula_informatica):
         aula_informatica.save()
 
-    from datetime import timedelta, datetime
+   
 
     def get_available(self, capacidad, fecha, hora_inicio, duracion):
 
@@ -49,7 +49,7 @@ class SQLAulaInformaricaDAO(AulaInformaricaDAO):
         aulas_ocupadas = {res['aula__nro_aula'] for res in reservaciones_ocupadas}
 
         # Filtrar aulas disponibles
-        aulas_disponibles = Aula.objects.filter(
+        aulas_disponibles = AulaInformatica.objects.filter(
             capacidad__gte=capacidad,  # Verificar que la capacidad mínima se cumpla
             activo=True,               # Asegurarse de que el aula esté activa
         ).exclude(nro_aula__in=aulas_ocupadas)  # Excluir aulas ocupadas
