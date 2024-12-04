@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, act } from 'react';
 import ReservasEsporadicas from '../componentes/reservaEsporadica';
 import ReservaPeriodica from '../componentes/reservaPeriodica';
 import { Botones, Container, FormSection, FormGroup, Label, ScheduleSection, ParrafoObli, Footer } from '../elementos/formReserva';
@@ -17,6 +17,8 @@ const RegistroReservas = () => {
   const [actividad, setActividad] = useState({ campo: '', valido: null });
   const [reservas, setReservas] = useState([]);
   const [periodo, setPeriodo] = useState(null);
+
+  const [actividadesDocentes, setActividadesDocentes] = useState({actividades: [], docentes: []});
 
   const handleReservasChange = (nuevasReservas, periodo) => {
     setReservas(nuevasReservas);
@@ -41,13 +43,19 @@ const RegistroReservas = () => {
 
   useEffect(() => {
     const obtenerActividadesDocentes = async () => {
-      return await getActividadesDocentes();
+      try {
+        const datos = await getActividadesDocentes();
+        setActividadesDocentes(datos) 
+      } catch (error) {
+        console.error("Error al obtener actividades y docentes: ", error);
+      }
     };
 
-    const act_docentes = obtenerActividadesDocentes();
-    console.log(act_docentes);
-    
+    obtenerActividadesDocentes();
   }, []);
+
+  // console.log(actividadesDocentes); esto se muestra 4 veces, no deberian ser 2??? 
+
 
   return (
     <Container>

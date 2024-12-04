@@ -87,10 +87,8 @@ const getActividadesDocentes = async () => {
   try {
     const url = "http://127.0.0.1:8000/tpdisenio/iniciar_reserva";
     const respuesta = await axios.get(url);
-    
-    console.log(respuesta);
-
     return respuesta.data;
+    
   } catch (error) {
     console.error("Error al obtener actividades y docentes: ", error);
     throw error;
