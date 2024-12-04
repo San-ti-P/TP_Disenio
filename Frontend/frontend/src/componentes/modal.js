@@ -88,7 +88,8 @@ const CancelarModal = ({
   mostrarCancelar = false,
   confirmarTexto = 'Confirmar',
   cancelarTexto = 'Regresar',
-  labelBoton, width = 320,
+  labelBoton, 
+  width = 320,
   type = "button",
   url = '/menuAdm',
   onConfirm
@@ -103,7 +104,7 @@ const CancelarModal = ({
       confirmButtonText: confirmarTexto,
       cancelButtonText: cancelarTexto,
       width: width,
-      zIndex: 12000 // Asegura que esté por encima
+      zIndex: 12000
     }).then((result) => {
       if (result.isConfirmed) {
         if (onConfirm) {

@@ -1,47 +1,48 @@
 import React, { useState } from 'react';
-import {
-  Container,
-  FormSection,
-  FormGroup,
-  Label,
-  ScheduleSection,
-  RadioGroup,
-  RadioButton,
-  DayButtons,
-  DayButton,
-  ModalOverlay,
-  Modal,
-  Button,
-  ParrafoObli
-} from '../elementos/formReserva';
+import { Botones, Container, FormSection, FormGroup, Label, ScheduleSection, RadioGroup, RadioButton, DayButtons, DayButton, ModalOverlay, Modal, Button, ParrafoObli, Footer, DivPeriodica } from '../elementos/formReserva';
 import { ComponenteNyAP, ComponenteDesplegableInput } from '../componentes/input';
-import {Input} from "../elementos/formularios"
+import { Input, BotonSubmit } from "../elementos/formularios"
+import { CancelarModal } from '../componentes/modal';
+import HorarioModal from '../componentes/horarioModal'; // Import the HorarioModal component
 
 const RegistroReservas = () => {
-  const [selectedDay, setSelectedDay] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [duration, setDuration] = useState(30);
-  const [schedule, setSchedule] = useState([]);
-  const [periodo, setPeriodo] = useState('');
+  const [diaSeleccionado, setDiaSeleccionado] = useState([]);
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [duracion, setDuracion] = useState(30);
+  const [horario, setHorario] = useState([]);
+  const [horaInicio, setHoraInicio] = useState('');
+  const [periodo, setPeriodo] = useState('primer');
   const [tipoReserva, setTipoReserva] = useState({ campo: '', valido: null });
-
 
   const [nombre, setNombre] = useState({ campo: '', valido: null });
   const [apellido, setApellido] = useState({ campo: '', valido: null });
   const [correo, setCorreo] = useState({ campo: '', valido: null });
 
-  const [cantAlum, setCantAlumn] = useState({ campo: '', valido: null });
+  const [cantidadAlumnos, setCantidadAlumnos] = useState({ campo: '', valido: null });
   const [tipoAula, setTipoAula] = useState({ campo: '', valido: null });
   const [actividad, setActividad] = useState({ campo: '', valido: null });
 
-  const handleDayClick = (day) => {
-    setSelectedDay(day);
-    setShowModal(true);
+  const [modalData, setModalData] = useState({ dia: '', horaInicio: '', duracion: 30 });
+
+  const manejarClickDia = (dia) => {
+    setModalData({ ...modalData, dia });
+    setMostrarModal(true);
   };
 
-  const handleAddSchedule = (startTime) => {
-    setSchedule([...schedule, { day: selectedDay, startTime, duration }]);
-    setShowModal(false);
+  const manejarAgregarHorario = () => {
+    if (modalData.horaInicio && modalData.duracion >= 30) {
+      setHorario([...horario, { ...modalData }]);
+      setDiaSeleccionado([...diaSeleccionado, modalData.dia]);
+      setMostrarModal(false);
+      setModalData({ dia: '', horaInicio: '', duracion: 30 });
+    }
+  };
+
+  const manejarEliminarHorario = (index) => {
+    const nuevosHorarios = horario.filter((_, i) => i !== index);
+    const nuevosSeleccionados = nuevosHorarios.map(h => h.dia);
+    setHorario(nuevosHorarios);
+    setDiaSeleccionado(nuevosSeleccionados);
   };
 
   return (
@@ -84,8 +85,8 @@ const RegistroReservas = () => {
         <div>
           <h2>Datos del aula</h2>
           <FormGroup>
-            <Label htmlFor="cantAlum">Cantidad de alumnos</Label>
-            <Input id="cantAlum" type="number" min="0" placeholder="0" />
+            <Label htmlFor="cantidadAlumnos">Cantidad de alumnos</Label>
+            <Input id="cantidadAlumnos" type="number" min="0" placeholder="0" />
           </FormGroup>
 
           <FormGroup>
@@ -111,7 +112,6 @@ const RegistroReservas = () => {
                 />
             </FormGroup>
         </div>
-        <ParrafoObli>Todos los campos son obligatorios</ParrafoObli>
       </FormSection>
 
       {/* Seccion derecha */}
@@ -129,13 +129,11 @@ const RegistroReservas = () => {
             />
         </FormGroup>
 
-
-
         {tipoReserva.campo === 'Periodica' && (
-          <>
+          <DivPeriodica>
             <RadioGroup>
               <RadioButton>
-                <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('primer')} /> Primer cuatrimestre
+                <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('primer')} defaultChecked/> Primer cuatrimestre
               </RadioButton>
               <RadioButton>
                 <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('segundo')} /> Segundo cuatrimestre
@@ -146,55 +144,63 @@ const RegistroReservas = () => {
             </RadioGroup>
 
             <DayButtons>
-              {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((day) => (
+              {['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom'].map((dia) => (
                 <DayButton
-                  key={day}
-                  onClick={() => handleDayClick(day)}
-                  selected={selectedDay === day}
-                >
-                  {day}
+                  key={dia}
+                  onClick={() => !diaSeleccionado.includes(dia) && manejarClickDia(dia)}
+                  selected={diaSeleccionado.includes(dia)}>
+                  {dia}
                 </DayButton>
               ))}
             </DayButtons>
 
             <h3>Horarios seleccionados:</h3>
             <ul>
-              {schedule.map((item, index) => (
-                <li key={index}>
-                  {item.day}: {item.startTime} - {item.duration} minutos
+              {horario.map((item, index) => (
+                <li style = {{marginBottom: "10px"}} key={index}>
+                  {item.dia}: {item.horaInicio} hs - {item.duracion} minutos
+                  <button style={{border: "none", position: "absolute", right: "240px"}}
+                      onClick={() => manejarEliminarHorario(index)}>
+                      Eliminar
+                  </button>
                 </li>
               ))}
             </ul>
-          </>
+          </DivPeriodica>
         )}
+
         {tipoReserva.campo === 'Esporadica' && <h1>CALENDARIO</h1>}
+      
       </ScheduleSection>
 
-      {/* Modal */}
-      {showModal && (
-        <>
-          <ModalOverlay onClick={() => setShowModal(false)} />
-          <Modal>
-            <h3>Cronograma {selectedDay}</h3>
-            <FormGroup>
-              <Label>Horario inicio</Label>
-              <Input type="time" />
-            </FormGroup>
-            <FormGroup>
-              <Label>Duración</Label>
-              <Input
-                type="number"
-                value={duration}
-                onChange={(e) => setDuration(Math.max(30, Number(e.target.value)))}
-                step="30"
-                min="30"
-              />
-            </FormGroup>
-            <Button onClick={() => handleAddSchedule('00:00')}>Aceptar</Button>
-            <Button onClick={() => setShowModal(false)}>Cancelar</Button>
-          </Modal>
-        </>
+      
+      {mostrarModal && (
+        <HorarioModal
+          modalData={modalData}
+          setModalData={setModalData}
+          onAceptar={manejarAgregarHorario}
+          onCancelar={() => setMostrarModal(false)}
+        />
       )}
+
+
+
+      <Footer>
+          <ParrafoObli>Todos los campos son obligatorios</ParrafoObli>
+          <Botones>
+            <BotonSubmit label="Siguiente">Siguiente</BotonSubmit>
+            <CancelarModal 
+              titulo="¿Está seguro que desea cancelar el registro?"
+              texto="No podrá deshacer esta acción"
+              icono="question"
+              mostrarCancelar={true}
+              confirmarTexto="Confirmar"
+              cancelarTexto="Regresar"
+              labelBoton="Cancelar"
+              url="/menuBedel"
+            />
+          </Botones>
+      </Footer>
     </Container>
   );
 };

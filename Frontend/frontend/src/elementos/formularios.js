@@ -13,10 +13,9 @@ const Formulario = styled.form`
   gap: 25px;
   align-items: center;
 
-  /* Asegura que el último div (los botones) ocupe las dos columnas */
   & > div:last-of-type {
     grid-column: span 2;
-    justify-self: end; /* Alinea el contenedor de botones a la derecha */
+    justify-self: end;
   }
 `;
 

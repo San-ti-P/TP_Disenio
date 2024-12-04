@@ -13,6 +13,13 @@ const Container = styled.div`
   box-shadow: 1px 1px 30px #3339;
   border-radius: 8px;
   gap: 20px;
+  position: relative;
+
+  & > div:last-of-type {
+    grid-column: span 2;
+    justify-self: end;
+  }
+
 `;
 
 const FormSection = styled.div`
@@ -60,6 +67,8 @@ const Select = styled.select`
 
 const RadioGroup = styled.div`
   margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const RadioButton = styled.label`
@@ -131,6 +140,37 @@ const ScheduleSection = styled.div`
 const ParrafoObli = styled.p`
   color: red;
   font-size: 15px;
+  margin: 0;
+  position: absolute;
+  left: 20px;
+`;
+
+const Botones = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+const Footer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+`;
+
+const DivPeriodica = styled.div`
+  margin-top: 30px;
+  width: 91%;
+`;
+
+const ModalButtons = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+`;
+
+const ModalButton = styled(Button)`
+  padding: 8px 12px;
+  font-size: 14px;
 `;
 
 export {
@@ -148,5 +188,10 @@ export {
   Modal,
   ModalOverlay,
   Button,
-  ParrafoObli
+  ParrafoObli,
+  Botones,
+  Footer,
+  DivPeriodica,
+  ModalButton,
+  ModalButtons
 };
