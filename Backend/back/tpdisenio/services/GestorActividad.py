@@ -10,8 +10,10 @@ class GestorActividad():
     def __init__(self, gestor_docente):
         self.gestor_docente = gestor_docente
     
-    def alta_actividad(self, id_actividad):
-        pass
+    def alta_actividad(self, id_act, nombre_act, desc_act, id_doc, apellido_doc, nombre_doc, correo_doc, tipo_actividad): 
+        actividad = Actividad(id_act=id_act, nombre_act=nombre_act, desc_act=desc_act, id_doc=id_doc, apellido_doc=apellido_doc, nombre_doc=nombre_doc, correo_doc=correo_doc, tipo_actividad=tipo_actividad, activo=True, fecha_baja=None)
+        self.actividad_DAO.create_actividad(actividad)
+        
     def guardar_actividad(self, actividad, docente):
         pass
 
