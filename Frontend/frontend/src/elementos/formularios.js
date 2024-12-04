@@ -43,7 +43,7 @@ const Input = styled.input`
     border-radius: 3px;
     height: 45px;
     line-height: 45px;
-    padding: 0 40px 0 10px;
+    padding: 0 5px 0 10px;
     transition: 0.3s ease all;
     border: 2px solid transparent;
     cursor: ${props => props.readOnly ? 'not-allowed' : 'auto'};  // Cambio el cursor para indicar que no es editable
@@ -76,7 +76,6 @@ const Input = styled.input`
         100% { transform: translate(0); }
     }
 `;
-
 
 
 const LeyendaError = styled.p`

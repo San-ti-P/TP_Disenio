@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box } from '@mui/material';
 import { Formulario, DivTextoCampoObligatorio, DivBotonesSC } from "../elementos/formularios.js";
-import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "../componentes/input.js";
-import { CancelarModal, mostrarModalExitoModificar } from "../componentes/modal.js";
+import { ComponenteNyAP, ComponenteOtro, ComponenteDesplegableInput } from "./input.js";
+import { CancelarModal, mostrarModalExitoModificar } from "./modal.js";
 import { getPoliticas, modificarBedel } from "../services/api.js";
 import { BotonSubmit, LeyendaError } from '../elementos/formularios.js';
 import Button from '@mui/material/Button';
