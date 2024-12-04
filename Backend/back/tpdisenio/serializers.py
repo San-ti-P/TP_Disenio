@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Aula, Bedel, Reservacion, Usuario
-from .services import DocenteDTO
+from .services import DocenteDTO, ActividadDTO, TipoActividadDTO
 #import services
 
 class IniciarReservaEntidadesDTO():
@@ -20,11 +20,11 @@ class BedelSerializer(serializers.ModelSerializer):
         model = Bedel
         fields = '__all__'
 
-class AulaSerializer(serializers.ModelSerializer):
+class AulaDTOSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Aula
-        fields = '__all__'
+        fields = ['nro_aula', 'piso', 'capacidad']
 
 class TipoActividadDTOSerializer(serializers.Serializer):
     id_tipo_actividad = serializers.IntegerField()
@@ -49,7 +49,7 @@ class ReservacionDTOSerializer(serializers.ModelSerializer):
         fields = ['dia', 'fecha', 'duracion', 'hora_inicio']
     
 class AulaReservaDTOSerializer(serializers.Serializer):
-    aula = AulaSerializer()
+    aula = AulaDTOSerializer()
     reservacion = ReservacionDTOSerializer(required=False)
     docente = DocenteDTOSerializer(required=False)
 

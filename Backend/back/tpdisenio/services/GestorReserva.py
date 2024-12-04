@@ -18,7 +18,7 @@ class SolicitudFechaSerializer():
 class RespuestaIniciarReservaDTO():
     def __init__(self, lista_errores, lista_solicitudes) -> None:
         self.errors = lista_errores
-        self.fechas = lista_errores
+        self.fechas = lista_solicitudes
     
 
 class ReservacionDTO():
@@ -98,7 +98,7 @@ class GestorReserva():
 
     def validar_datos(self, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones):
         
-        faltan_ingresar_datos = True
+        datos_completos = True
         dia_anterior_actual = False
         duracion_no_multiplo_30 = False 
         mas_de_una_hora_inicio_dia = False
@@ -108,51 +108,54 @@ class GestorReserva():
         correo = docente_DTO.get_correo()
 
         if not (len(nombre)>1 and len(nombre)<30):
-            faltan_ingresar_datos = False
+            datos_completos = False
         if not (len(apellido)>1 and len(apellido)<30):
-            faltan_ingresar_datos = False
+            datos_completos = False
         if not (len(correo)>1 and len(correo)<50):
-            faltan_ingresar_datos = False
+            datos_completos = False
         if not (type(cant_alumnos)==type(1) and cant_alumnos >= 0):
-            faltan_ingresar_datos = False
+            datos_completos = False
 
         tipos_aula = ["Sin Recursos Adicionales", "Multimedio", "Informatica"]
         if tipo_aula not in tipos_aula:
-            faltan_ingresar_datos = False
+            datos_completos = False
         
-        if (periodo.get_fecha_inicio > date.today):
-            dia_anterior_actual = True
+        if periodo is None:
+            vistos_fechas = set()
+            for reservacion in lista_reservaciones:
+                if reservacion.get_fecha() in vistos_fechas:
+                    mas_de_una_hora_inicio_dia = True
+                if reservacion.get_fecha() <= date.today():
+                    dia_anterior_actual = True
+                vistos_fechas.add(reservacion.get_fecha())
+        else:
+            vistos_dias = set()
+            for reservacion in lista_reservaciones:
+                if reservacion.get_dia() in vistos_dias:
+                    mas_de_una_hora_inicio_dia = True
+                    break
+                vistos_dias.add(reservacion.get_dia())
+
+            if (periodo.get_fecha_inicio() <= date.today()):
+                dia_anterior_actual = True
 
         for reservacion in lista_reservaciones: 
-            if reservacion.dia not in [tupla[1] for tupla in Reservacion.DiaSemana.choices]:
-                faltan_ingresar_datos = False
+            if reservacion.get_dia() not in [tupla[1] for tupla in Reservacion.DiaSemana.choices]:
+                datos_completos = False
 
         if reservacion in lista_reservaciones:
-            if reservacion.duracion % 30 != 0: 
+            if reservacion.get_duracion() % 30 != 0: 
                 duracion_no_multiplo_30 = True
-        
-        vistos_dias = set()
-        vistos_fechas = set()
-        for reservacion in lista_reservaciones:
-            if (reservacion.fecha == None):
-                if reservacion.dia in vistos_dias:
-                    mas_de_una_hora_inicio_dia = True
-                    break
-                vistos_dias.add(reservacion.dia)
-            else:
-                if reservacion.fecha in vistos_fechas:
-                    mas_de_una_hora_inicio_dia = True
-                    break
-                vistos_fechas.add(reservacion.fecha)
+            
 
-        retorno = [mas_de_una_hora_inicio_dia, duracion_no_multiplo_30, dia_anterior_actual, faltan_ingresar_datos]
+        retorno = [mas_de_una_hora_inicio_dia, duracion_no_multiplo_30, dia_anterior_actual, (not datos_completos)]
 
         return retorno
 
     def obtener_fechas(self, periodo, lista_reservaciones):
         reservaciones_periodicas = lista_reservaciones.copy()
         dias_semana = {
-        "lunes": 0,
+            "lunes": 0,
             "martes": 1,
             "miercoles": 2,  
             "jueves": 3,
@@ -165,25 +168,31 @@ class GestorReserva():
             actual = periodo.get_fecha_inicio()
             fin = periodo.get_fecha_fin()
             
-            while actual.weekday() != dias_semana.get(reservacion.dia.lower(), None):
+            while actual.weekday() != dias_semana.get(reservacion.get_dia().lower(), None):
                 actual += timedelta(days=1)
             
             while actual <= fin:
-                r = ReservacionDTO(reservacion.dia, actual, reservacion.hora_inicio, reservacion.duracion)
+                r = ReservacionDTO(reservacion.get_dia(), actual, reservacion.get_hora_inicio(), reservacion.get_duracion())
                 lista.append(r)
                 actual += timedelta(days=7)
 
         return lista
     
     def iniciar_reserva(self, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones):
-        errores = self.validar_datos(docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo,lista_reservaciones)
-        if False in errores:
-            return None
-        lista_fechas = []
+        if periodo is not None:
+            periodo = self.gestor_periodo.get_periodo(periodo, date.today().year)
+        errores = self.validar_datos(docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones)
+        
         if periodo != None:
             lista_reservaciones = self.obtener_fechas(periodo, lista_reservaciones)
+        
+        solicitudes = []
         for r in lista_reservaciones:
-            self.gestor_aula.obtener_aulas_disponibles()
+            aulas = self.gestor_aula.obtener_aulas_disponibles(cant_alumnos, r.get_fecha(), r.get_hora_inicio(), r.get_duracion(), tipo_aula)
+            solicitudes.append(SolicitudFechaSerializer(r.get_fecha(), aulas))
+
+
+        return RespuestaIniciarReservaDTO(errores, solicitudes)
             
 
 

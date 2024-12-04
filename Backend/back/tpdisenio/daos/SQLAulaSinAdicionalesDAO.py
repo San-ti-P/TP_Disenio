@@ -68,6 +68,7 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
         # Filtrar reservaciones conflictivas
         reservaciones_conflictivas = Reservacion.objects.select_related('Aula').select_related('Reserva').select_related('Actividad').select_related('Docente').filter(
             fecha=fecha,
+            capacidad__gte=capacidad,
             # Filtrar solapamientos de horarios
             hora_inicio__lt=hora_fin_dt.time(),  # Comienza antes de que termine la nueva reserva
             hora_inicio__gte=(hora_inicio_dt - duracion_timedelta).time()  # Termina después de que comience

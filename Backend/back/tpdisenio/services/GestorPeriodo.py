@@ -9,4 +9,4 @@ class GestorPeriodo():
         pass
 
     def get_periodo(self, tipo, anio): 
-        pass
+        return self.periodo_DAO.get_periodo_by_year(tipo, anio)

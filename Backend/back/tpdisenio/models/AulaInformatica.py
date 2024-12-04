@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .Aula import Aula
 
-class AulaInformatica(models.Model):
+class AulaInformatica(Aula):
     class Meta:
         db_table = "AulaInformatica"
 

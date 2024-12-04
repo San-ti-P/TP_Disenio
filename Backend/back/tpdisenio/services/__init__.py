@@ -1,4 +1,4 @@
-from .GestorActividad import GestorActividad, ActividadDTO
+from .GestorActividad import GestorActividad, ActividadDTO, TipoActividadDTO
 from .GestorAula import GestorAula
 from .GestorBedel import GestorBedel
 from .GestorContrasenia import GestorContrasenia

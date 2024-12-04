@@ -17,11 +17,11 @@ class GestorAula():
         pass
 
     def get_aula(self, nro_aula):
-        aula = AulaInformaticaDAO.get_aula(nro_aula)
+        aula = self.AulaInformatica_DAO.get_aula(nro_aula)
         if (aula==None):
-            aula = AulaMultimedioDAO.get_aula(nro_aula)
+            aula = self.AulaMultimedio_DAO.get_aula(nro_aula)
             if(aula==None):
-                aula = AulaSinAdicionalesDAO.get_aula(nro_aula)
+                aula = self.AulaSinAdicionales_DAO.get_aula(nro_aula)
         return aula
 
     def buscar_aula(self, nro_aula, capacidad):
@@ -54,12 +54,15 @@ class GestorAula():
     def modificar_informatica(self):
         pass
 
-    def obtener_aulas_disponibles(self, capacidad, dia,
-    horario_inicio, duracion, tipo):
+    def obtener_aulas_disponibles(self, capacidad, dia, horario_inicio, duracion, tipo):
+        aulas = []
         if tipo == "AulaSinAdicionales":
-            SQLAulaSinAdicionalesDAO.get_avalible()
+            aulas = self.AulaSinAdicionales_DAO.get_available(capacidad, dia, horario_inicio, duracion)
             
-    
+        if len(aulas) == 0:
+            if tipo == "AulaSinAdicionales":
+                aulas = self.AulaSinAdicionales_DAO.calcular_reservacion_menor_diferencia(capacidad, dia, horario_inicio, duracion)
+                print(aulas)
 
     def obtener_aulas_menor_solapamiento(self, capacidad, dia,
     horario_inicio, duracion, tipo):
