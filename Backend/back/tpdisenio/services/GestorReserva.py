@@ -1,7 +1,14 @@
 from ..models import Reserva
 from ..models import Reservacion
 from ..models import Periodo
-from datetime import date
+from datetime import date, timedelta
+
+"""class RespuestaIniciarReserva():
+    def __init__(self, listaErrores) -> None:
+        errors = []
+        if not listaErrores[0]:
+            errors.append
+"""
 
 class ReservacionDTO():
     def __init__(self, dia, fecha, hora, duracion) -> None:
@@ -123,13 +130,12 @@ class GestorReserva():
                     break
                 vistos_fechas.add(reservacion.fecha)
 
-        return (faltan_ingresar_datos and dia_anterior_actual and duracion_no_multiplo_30 and mas_de_una_hora_inicio_dia)
+        retorno = [mas_de_una_hora_inicio_dia, duracion_no_multiplo_30, dia_anterior_actual, faltan_ingresar_datos]
 
-    def iniciar_reserva():
-        pass
+        return retorno
 
     def obtener_fechas(self, periodo, lista_reservaciones):
-       fechas = lista_reservaciones.copy()
+       reservaciones_periodicas = lista_reservaciones.copy()
        dias_semana = {
         "lunes": 0,
         "martes": 1,
@@ -139,16 +145,32 @@ class GestorReserva():
         "sabado": 5,      
         "domingo": 6
     }
-       for reservacion in fechas:
-        actual = periodo.get_fecha_inicio
-        fin = periodo.get_fecha_fin
+       lista = []
+       for reservacion in reservaciones_periodicas:
+        actual = periodo.get_fecha_inicio()
+        fin = periodo.get_fecha_fin()
         
-        while actual.weekday() != dias_semana.get(periodo.dia.lower(), None):
+        while actual.weekday() != dias_semana.get(reservacion.dia.lower(), None):
             actual += timedelta(days=1)
         
         while actual <= fin:
-            fechas.append(actual)
+            r = ReservacionDTO(reservacion.dia, actual, reservacion.hora_inicio, reservacion.duracion)
+            lista.append(r)
             actual += timedelta(days=7)
 
-        return fechas
+        return lista
     
+    def iniciar_reserva(self, nombre, apellido, correo, cant_alumnos, tipo_aula, actividad, periodo, lista_reservaciones):
+        errores = self.validar_datos(nombre, apellido, correo, cant_alumnos, tipo_aula, actividad, periodo,lista_reservaciones)
+        if False in errores:
+            return None
+        lista_fechas = []
+        if periodo != None:
+            lista_reservaciones = self.obtener_fechas(periodo, lista_reservaciones)
+        for r in lista_reservaciones:
+            self.gestor_aula.obtener_aulas_disponibles()
+            
+
+
+        
+

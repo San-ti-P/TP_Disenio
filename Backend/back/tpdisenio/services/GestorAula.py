@@ -1,5 +1,5 @@
 from ..models import Aula
-from ..daos import AulaInformaticaDAO, AulaMultimedioDAO, AulaSinAdicionalesDAO
+from ..daos import SQLAulaInformaticaDAO, SQLAulaMultimedioDAO, SQLAulaSinAdicionalesDAO
 
 class GestorAula():
     """Clase encargada de suministrar todo la lógica concerniente a la clase aula"""
@@ -56,7 +56,10 @@ class GestorAula():
 
     def obtener_aulas_disponibles(self, capacidad, dia,
     horario_inicio, duracion, tipo):
-        pass
+        if tipo == "AulaSinAdicionales":
+            SQLAulaSinAdicionalesDAO.get_avalible()
+            
+    
 
     def obtener_aulas_menor_solapamiento(self, capacidad, dia,
     horario_inicio, duracion, tipo):
