@@ -18,6 +18,10 @@ class Aula(models.Model):
     tiene_pizarrones = models.ManyToManyField(TipoPizarron, through="Tiene", related_name="aulas")
     activo = models.BooleanField(default=True)
     fecha_baja = models.DateField(blank=True, default=None, null=True)
+    reservaciones = []
+
+    def add_reservacion(self, reservacion):
+        self.reservaciones.add(reservacion)
 
     def get_nro_aula(self):
         return self.nro_aula

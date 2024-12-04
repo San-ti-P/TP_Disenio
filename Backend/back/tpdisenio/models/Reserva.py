@@ -23,6 +23,9 @@ class Reserva(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT, db_column="id_usuario")
     
     reservaciones = []
+    
+    def add_reservacion(self, reservacion):
+        self.reservaciones.add(reservacion)
 
     def get_id_reserva(self):
         return self.id_reserva

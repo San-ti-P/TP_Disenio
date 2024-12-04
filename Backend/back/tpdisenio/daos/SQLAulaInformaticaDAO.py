@@ -4,7 +4,7 @@ from .AulaInformaticaDAO import AulaInformaticaDAO
 from ..models import AulaInformatica
 from ..models import Reservacion
 
-class SQLAulaInformaricaDAO(AulaInformaricaDAO):
+class SQLAulaInformaticaDAO(AulaInformaticaDAO):
     """Clase encargada de implementar el protocolo para persistir datos de la clase Aula Informatica en una BDD SQL (PostgreSQL)"""
     def create_informatica(self, aula_informatica):
         aula_informatica.save()
