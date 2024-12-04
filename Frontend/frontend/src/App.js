@@ -10,6 +10,7 @@ import BuscarBedel from './paginas/BuscarBedel';
 import RegistrarBedel from './paginas/RegistrarBedel';
 import Login from "./paginas/logIn.js";
 import ModificarEliminarBedel from "./paginas/ModificarEliminarBedel.js"
+import 'react-calendar/dist/Calendar.css';
 
 function App() {
   return (

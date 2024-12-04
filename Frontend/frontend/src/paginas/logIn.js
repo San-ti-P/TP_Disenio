@@ -14,8 +14,6 @@ const App = () => {
         id_usuario: idUsuario.campo,
         contrasenia: contraseña1.campo
     }
-
-    console.log(datosLogin);
     
     const onSubmit = async (e) => {
      e.preventDefault();

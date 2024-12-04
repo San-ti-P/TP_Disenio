@@ -2,7 +2,7 @@ import React from 'react';
 import { Modal, ModalOverlay, FormGroup, Label, Input, ModalButtons, ModalButton } from '../elementos/formReserva';
 
 const HorarioModal = ({ modalData, setModalData, onAceptar, onCancelar }) => {
-  const isValidData = modalData.horaInicio && modalData.duracion >= 30;
+  const datosValidos = modalData.horaInicio && modalData.duracion >= 30;
 
   const handleCancel = () => {
     setModalData({ ...modalData, horaInicio: '', duracion: 30 });
@@ -33,7 +33,7 @@ const HorarioModal = ({ modalData, setModalData, onAceptar, onCancelar }) => {
           />
         </FormGroup>
         <ModalButtons>
-          <ModalButton onClick={onAceptar} disabled={!isValidData}>Aceptar</ModalButton>
+          <ModalButton onClick={onAceptar} disabled={!datosValidos}>Aceptar</ModalButton>
           <ModalButton onClick={handleCancel}>Cancelar</ModalButton>
         </ModalButtons>
       </Modal>

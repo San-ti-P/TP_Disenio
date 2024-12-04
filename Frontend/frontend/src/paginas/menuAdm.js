@@ -2,9 +2,8 @@ import React from 'react';
 import { BotonMenu, DivMenu, ImgMenu } from '../elementos/menuEl.js';
 import { useNavigate } from 'react-router-dom';
 import { getPoliticas } from '../services/api.js';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {StyledIconButton} from '../elementos/tablaResultados';
 import BackButton from '../componentes/backButton';
+
 // Menu dirigido al ADMINISTRADOR
 // El administrador puede: RegistrarBedel, ModificarBedel, EliminarBedel, BuscarBedel
 
