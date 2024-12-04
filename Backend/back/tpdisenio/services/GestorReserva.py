@@ -3,6 +3,13 @@ from ..models import Reservacion
 from ..models import Periodo
 from datetime import date, timedelta
 
+"""class RespuestaIniciarReserva():
+    def __init__(self, listaErrores) -> None:
+        errors = []
+        if not listaErrores[0]:
+            errors.append
+"""
+
 class ReservacionDTO():
     def __init__(self, dia, fecha, hora, duaracion) -> None:
         self.dia = dia
@@ -149,5 +156,15 @@ class GestorReserva():
     
     def iniciar_reserva(self, nombre, apellido, correo, cant_alumnos, tipo_aula, actividad, periodo, lista_reservaciones):
         errores = self.validar_datos(nombre, apellido, correo, cant_alumnos, tipo_aula, actividad, periodo,lista_reservaciones)
-        if (errores[0]==False):
+        if False in errores:
+            return None
+        lista_fechas = []
+        if periodo != None:
+            lista_reservaciones = self.obtener_fechas(periodo, lista_reservaciones)
+        for r in lista_reservaciones:
+            self.gestor_aula.obtener_aulas_disponibles()
+            
+
+
+        
 
