@@ -2,8 +2,8 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter, OpenApiTypes
-from ..serializers import reservaSerializer, ErrorsListSerializer
-from ..services import gestor_reserva, gestor_sesion
+from ..serializers import IniciarReservaEntidadesSerializer, IniciarReservaRequestSerializer, IniciarReservaResponseSerializer
+from ..services import gestor_actividad, gestor_docente, gestor_sesion
 from ..models import reserva
 
 @extend_schema_view(
@@ -50,10 +50,10 @@ from ..models import reserva
     )
 )
 
-@api_view(['GET', 'POST', 'PUT', 'DELETE'])
-def reservas(request):
+@api_view(['GET', 'POST'])
+def iniciar_reserva(request):
     """
-    Define el comportamiento de .../reservas. Acepta solicitudes GET, POST, PUT, DELETE
+    Define el comportamiento de .../iniciar_reserva. Acepta solicitudes GET, POST
     """
     #print(request.COOKIES)
     #if 'sessionid' in request.COOKIES:
@@ -66,10 +66,10 @@ def reservas(request):
     #if autorizado:
     #    if sesion.get_es_admin():
     if request.method == 'GET':
-        return buscar_reserva(request=request)
+        return obtener_datos(request=request)
     
     if request.method == 'POST':
-        return registrar_reserva(request=request)
+        return comenzar_reserva(request=request)
 
     if request.method == 'PUT':
         return modificar_reserva(request=request)
@@ -82,30 +82,15 @@ def reservas(request):
     #    raise AuthenticationFailed("Credenciales no válidas")
 
 
-def buscar_reserva(request):
+def obtener_datos(request):
     """
-    Define el comportamiento de .../reservaes con solicitudes GET
+    Define el comportamiento de .../iniciar_reserva con solicitudes GET
     """
     
-    """params = request.query_params
-
-    if 'apellido' in params:
-        apellido = params['apellido'].capitalize()
-    else:
-        apellido = ""
-
-    if 'turno' in params:
-        turno = params['turno'].capitalize()
-        if turno == "Mañana":
-            turno = "Maniana"
-    else:
-        turno = ""
-
-    reservaes = gestor_reserva.buscar_reserva(apellido=apellido, turno=turno)
-    reservaes_serializer = reservaSerializer(reservaes, many=True)
-    return Response(reservaes_serializer.data)"""
-    pass
-
+    actividades = gestor_actividad.obtener_actividades()
+    docentes = gestor_docente.obtener_docentes()
+    response = IniciarReservaEntidadesSerializer(actividades, docentes)
+    return Response(response.data)
 
 def eliminar_reserva(request):
     """
@@ -146,17 +131,14 @@ def modificar_reserva(request):
     pass
 
 
-def registrar_reserva(request):
+def comenzar_reserva(request):
     """
     Define el comportamiento de .../reservaes con solicitudes POST
     """
     
-    reservas_serializer = reservaSerializer(data=request.data)
-    data = reservaes_serializer.initial_data
-    if data['turno'] == "Mañana":
-        data['turno'] = "Maniana"
-    print(data['id_usuario'], data['contrasenia'],
-            data['nombre'], data['apellido'], data['turno'])
+    iniciar_reserva_serializer = IniciarReservaRequestSerializer(data=request.data)
+    data = iniciar_reserva_serializer.initial_data
+    
     nombre = data['nombre'].capitalize()
     apellido = data['apellido'].capitalize()
     turno = data['turno']

@@ -4,11 +4,17 @@ from ..models import Periodo
 from datetime import date
 
 class ReservacionDTO():
-    def __init__(self, dia, fecha, hora, duaracion) -> None:
+    def __init__(self, dia, fecha, hora, duracion) -> None:
         self.dia = dia
         self.fecha = fecha
         self.hora = hora
-        self.duracion = duaracion
+        self.duracion = duracion
+
+class AulaReservaDTO():
+    def __init__(self, aula, reservacion, docente) -> None:
+        self.aula = aula
+        self.reservacion = reservacion
+        self.docente = docente
 
 class GestorReserva():
     """Clase encargada de suministrar todo la lógica concerniente a la clase reserva"""
