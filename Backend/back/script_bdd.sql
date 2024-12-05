@@ -1,4 +1,4 @@
-TRUNCATE public."Usuario", public."Bedel", public."Administrador", public."Periodo" CASCADE;
+TRUNCATE public."Usuario", public."Bedel", public."Administrador", public."Periodo", public."AulaInformatica", public."AulaMultimedios", public."AulaSinRecursosAdicionales", public."Aula"CASCADE;
 
 INSERT INTO public."Usuario" (id_usuario, contrasenia, nombre, apellido, activo, fecha_baja) VALUES 
 ('utn-000000', '$2b$12$AGJJjVaYiowu/07AGLEVtOaxijElrlKC0JWnxzPmARm8t.1qB.1Uu', 'Marcos', 'Debona', true, NULL),
