@@ -34,6 +34,7 @@ class GestorReserva():
     def get_datos_reserva(self, id_reserva):
         pass
 
+   
     def alta_reserva(self, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones):
         if periodo is not None:
             periodo = self.gestor_periodo.get_periodo(periodo, date.today().year)
@@ -49,6 +50,19 @@ class GestorReserva():
             reserva.set_tipo(Reserva.TipoReserva.PERIODICA)
         else:
             reserva.set_tipo(Reserva.TipoReserva.ESPORADICA)
+        
+        self.gestor_actividad.alta_actividad(actividad_DTO, docente_DTO)
+
+        #CHEQUAR SI VA LO DE SESION ACA O LO ELIMINAMOS 
+
+        reserva.set_autor_reserva(reserva.get_usuario())
+
+        for r in lista_reservaciones:
+           reservacion = self.gestor_reservacion.alta_reservacion(r.get_hora_inicio(), r.get_duracion(), r.get_fecha(), r.get_reserva(), r.get_aula())
+           self.add_reservacion(reservacion)
+        
+        self.reserva_DAO.create_reserva(reserva)
+
             
     def baja_reserva(self, id_reserva):
 

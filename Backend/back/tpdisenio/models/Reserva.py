@@ -67,4 +67,6 @@ class Reserva(models.Model):
     def set_usuario(self, usuario):
         self.usuario = usuario
     def add_reservacion(self, reservacion):
-        self.reservaciones.append(reservacion)
+        self.reservaciones.append(reservacion)  
+    def set_autor_reserva(self, usuario):
+        self.set_usuario(usuario)
