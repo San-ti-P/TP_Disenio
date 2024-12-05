@@ -25,12 +25,15 @@ def login(request):
         # if cookie is None:
         #     raise AuthenticationFailed("Credenciales no válidas")
         r = Response(response_serializer.data)
+        
         r.set_cookie(
-                key="sessionid",
-                value=cookie,
-                httponly=True,
-                secure=False,
-                samesite="Lax",
-                max_age=3600
-            )
+            key="sessionid",
+            value=cookie,
+            httponly=True,
+            secure=True,  # Cambiar a True
+            samesite="None",
+            max_age=3600,
+            path="/"
+        )
+        
         return r

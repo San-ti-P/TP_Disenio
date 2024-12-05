@@ -1,3 +1,4 @@
+# from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from rest_framework.decorators import api_view
@@ -55,11 +56,11 @@ def bedeles(request):
     """
     Define el comportamiento de .../bedeles. Acepta solicitudes GET, POST, PUT, DELETE
     """
-    print(request.COOKIES)
+    print("HOLAAAAAAAAAAAAAAAAAAAA", request.COOKIES)
     if 'sessionid' in request.COOKIES:
         sessionid = request.COOKIES.get('sessionid')
     else:
-        sessionid = ""
+        sessionid = None
     
     autorizado, sesion = gestor_sesion.consultar_sesion(sessionid)
 

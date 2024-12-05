@@ -4,6 +4,7 @@ import { MenuAdm } from "./paginas/menuAdm";
 import { MenuBedel } from "./paginas/menuBedel";
 import RegistrarReserva from "./paginas/RegistrarReserva";
 import ListarReservasDia from "./paginas/ListarReservasDia";
+import ModificarEliminarBedel from "./paginas/ModificarEliminarBedel";
 import ListarReservasCurso from "./paginas/ListarReservasCurso";
 import BuscarBedel from "./paginas/BuscarBedel";
 import RegistrarBedel from "./paginas/RegistrarBedel";
@@ -44,6 +45,14 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route 
+          path="/modificar-eliminar-bedel" 
+          element={
+            <ProtectedRoute rolesPermitidos={["admin"]}>
+              <ModificarEliminarBedel />
+            </ProtectedRoute>
+            } 
+          />
 
         {/* Rutas para Bedeles */}
         <Route

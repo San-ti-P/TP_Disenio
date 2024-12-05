@@ -1,15 +1,26 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useNavigate } from 'react-router-dom';
 import { Formulario, DivBotonesSC } from "../elementos/formularios.js";
 import { ComponenteNyAP, ComponenteDesplegableInput } from "../componentes/input.js"
 import { BotonSubmit } from '../elementos/formularios.js'; 
 import { CancelarModal } from "../componentes/modal.js"
 import { getResultadosBusqueda } from "../services/api.js";
+import { getPoliticas } from "../services/api.js";
 
 const App = () => {
     const [apellido, setApellido] = useState({campo:'', valido: null});
     const [turno, setTurno] = useState({campo:'', valido: null});
     const navigate = useNavigate();
+    const [politicasTooltip, setPoliticasTooltip] = useState('');
+
+    const obtenerPoliticas = async () => {
+        const politicas = await getPoliticas();
+        if (politicas) setPoliticasTooltip(politicas);
+      };
+    
+    useEffect(() => {
+        obtenerPoliticas();
+    }, []);
 
     const fetchValores = async () => {
         return await getResultadosBusqueda(apellido.campo, turno.campo);
@@ -18,7 +29,8 @@ const App = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const valores = await fetchValores();
-        navigate('/modificar-eliminar-bedel', { state: { valores, apellido: apellido.campo, turno: turno.campo} });
+        console.log(politicasTooltip);
+        navigate('/modificar-eliminar-bedel', { state: { valores, apellido: apellido.campo, turno: turno.campo, politicas: politicasTooltip} });
     };
 
     return (

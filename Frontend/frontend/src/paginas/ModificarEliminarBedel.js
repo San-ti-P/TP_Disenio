@@ -13,16 +13,14 @@ import { ManejoModificar } from '../componentes/logicModificar';
 import BackButton from '../componentes/backButton';
 
 export default function ModificarEliminarBedel() {
+
   const location = useLocation();
   const [valores, setValores] = useState(location.state?.valores || []);
-  
+  const [politicasTooltip, setPoliticasTooltip] = useState(location.state?.politicasTooltip || "");
   const [criteriosBusqueda, setCriteriosBusqueda] = useState({
     apellido: location.state?.apellido || '',
     turno: location.state?.turno || ''
   });
-
-  console.log(location);
-  console.log(criteriosBusqueda.apellido, criteriosBusqueda.turno);
 
   const handleEliminar = async (bedel) => {
     await manejoEliminar(bedel, () => {
@@ -45,6 +43,7 @@ export default function ModificarEliminarBedel() {
 
 
   const valores_activo = valores.filter(valor => valor.activo);
+  console.log(valores_activo);
 
   return (
     <StyledContainer>
@@ -79,7 +78,7 @@ export default function ModificarEliminarBedel() {
                 <StyledTableCell>{row.turno}</StyledTableCell>
                 <StyledTableCell>{row.id_usuario}</StyledTableCell>
                 <StyledTableCell width="5fr" align="center">
-                  <ManejoModificar bedel={row} actualizarFila={actualizarFila} />
+                  <ManejoModificar bedel={row} actualizarFila={actualizarFila} politicas={politicasTooltip} />
                   <Button 
                     onClick={() => handleEliminar(row)} 
                     color="error"

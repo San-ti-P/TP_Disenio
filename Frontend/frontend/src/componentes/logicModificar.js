@@ -8,18 +8,18 @@ import { BotonSubmit, LeyendaError } from '../elementos/formularios.js';
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 
-export const ModificarModal = ({ open, handleClose, bedel, actualizarFila }) => {
+export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, politicas }) => {
   const [nombre, cambiarNombre] = useState({campo: bedel.nombre || '', valido: 'true'});
   const [apellido, cambiarApellido] = useState({campo: bedel.apellido || '', valido: 'true'});
   const [turno, cambiarTurno] = useState({campo: bedel.turno || '', valido: 'true'});
   const [idUsuario, cambiarIdUsuario] = useState({campo: bedel.id_usuario || '', valido: 'true'});
-  const [contraseña1, cambiarContraseña1] = useState({campo: bedel.contrasenia || '', valido: 'true'});
-  const [contraseña2, cambiarContraseña2] = useState({campo: bedel.contrasenia || '', valido: 'true'});
+  const [contraseña1, cambiarContraseña1] = useState({campo: '', valido: 'true'});
+  const [contraseña2, cambiarContraseña2] = useState({campo: '', valido: 'true'});
   const [formularioValido, cambiarFormularioValido] = useState(null);
   const [animarErrores, cambiarAnimarErrores] = useState(false);
   const [mostrarIDLeyenda, cambiarMostrarIDLeyenda] = useState(false);
   const [mostrarContraLeyenda, cambiarMostrarContraLeyenda] = useState(false);
-  const [politicasTooltip, setPoliticasTooltip] = useState('');
+  // const [politicasTooltip, setPoliticasTooltip] = useState(politicas);
 
   const expresiones = {
     nombre: /^[a-zA-ZÀ-ÿ\s]{2,40}$/,
@@ -85,7 +85,10 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila }) => 
         id_usuario: idUsuario.campo,
         contrasenia: contraseña1.campo
       };
+
+      console.log(datosFormulario);
       const respuesta = await modificarBedel(datosFormulario);
+      console.log(respuesta.error);
 
       if (respuesta.error) alert("Ocurrió un error al enviar el formulario");
       else {
@@ -108,20 +111,14 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila }) => 
     }
   };
 
-  const obtenerPoliticas = async () => {
-    const politicas = await getPoliticas();
-    if (politicas) setPoliticasTooltip(politicas);
-  };
-
   useEffect(() => {
-    obtenerPoliticas();
     if (open) {
       cambiarNombre({ campo: bedel.nombre || '', valido: 'true' });
       cambiarApellido({ campo: bedel.apellido || '', valido: 'true' });
       cambiarTurno({ campo: bedel.turno || '', valido: 'true' });
       cambiarIdUsuario({ campo: bedel.id_usuario || '', valido: 'true' });
-      cambiarContraseña1({ campo: bedel.contrasenia || '', valido: 'true' });
-      cambiarContraseña2({ campo: bedel.contrasenia || '', valido: 'true' });
+      cambiarContraseña1({ campo: "" || '', valido: 'true' });
+      cambiarContraseña2({ campo: "" || '', valido: 'true' });
     }
   }, [open, bedel]);
 
@@ -196,7 +193,7 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila }) => 
             placeholder="Ingrese su contraseña"
             name="contraseña" 
             funcion={validarContraseña2}
-            textoTooltip={politicasTooltip}
+            textoTooltip={politicas}
             comportamientoTooltip="siempre"
             leyendaError={"Contraseña inválida"}
             mostrarLeyenda={mostrarContraLeyenda}
@@ -235,7 +232,7 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila }) => 
   );
 };
 
-export const ManejoModificar = ({ bedel, actualizarFila }) => {
+export const ManejoModificar = ({ bedel, actualizarFila, politicasTooltip }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -248,7 +245,7 @@ export const ManejoModificar = ({ bedel, actualizarFila }) => {
         style={{ marginRight: '-15px' }}>
        <EditIcon />
     </Button>
-      <ModificarModal open={open} handleClose={handleClose} bedel={bedel} actualizarFila={actualizarFila} />
+      <ModificarModal open={open} handleClose={handleClose} bedel={bedel} actualizarFila={actualizarFila} politicas={politicasTooltip} />
     </>
   );
 };
