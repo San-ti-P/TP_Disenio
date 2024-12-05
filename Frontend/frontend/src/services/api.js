@@ -1,5 +1,11 @@
 import axios from "axios";  
 
+const api = axios.create({
+  baseURL: "http://127.0.0.1:8000/tpdisenio/", 
+  withCredentials: true,
+});
+
+
 const enviarFormulario = async (datosFormulario) => {
   try {
     const url = "http://127.0.0.1:8000/tpdisenio/bedeles";
@@ -106,4 +112,4 @@ const obtenerAulasReserva = async (datosReserva) => {
   }
 }
 
-export {enviarFormulario, getPoliticas, enviarUsuario, eliminarBedel, getResultadosBusqueda, modificarBedel, getActividadesDocentes, obtenerAulasReserva}
+export {enviarFormulario, getPoliticas, enviarUsuario, eliminarBedel, getResultadosBusqueda, modificarBedel, getActividadesDocentes, obtenerAulasReserva, api}

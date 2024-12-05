@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import {ComponenteOtro} from "../componentes/input"
 import {FormLogin, BotonSC} from "../elementos/formularios"
 import { enviarUsuario } from '../services/api';
+import { login } from "../services/autenticacion";
 
 const App = () => {
     const [idUsuario, cambiarIdUsuario] = useState({campo:'', valido: null});
@@ -14,15 +15,20 @@ const App = () => {
         id_usuario: idUsuario.campo,
         contrasenia: contraseña1.campo
     }
-    
+
     const onSubmit = async (e) => {
-     e.preventDefault();
-     const respuesta = await enviarUsuario(datosLogin);
-     
-     if (respuesta.rango === "acceso denegado") cambiarMostrarContraLeyenda(true);
-     if (respuesta.rango === "bedel") navigate("/menuBedel");
-     if (respuesta.rango === "admin") navigate("/menuAdm");
-    }
+        e.preventDefault();
+        const respuesta = await enviarUsuario(datosLogin);
+      
+        if (respuesta.rango === "acceso denegado") {
+          cambiarMostrarContraLeyenda(true);
+        } else {
+          login(respuesta);
+          if (respuesta.rango === "bedel") navigate("/menuBedel");
+          if (respuesta.rango === "admin") navigate("/menuAdm");
+          console.log(respuesta.cookie);
+        }
+      };
 
     return (
       <main>
