@@ -1,4 +1,4 @@
-TRUNCATE public."Usuario", public."Bedel", public."Administrador" CASCADE;
+TRUNCATE public."Usuario", public."Bedel", public."Administrador", public."Periodo" CASCADE;
 
 INSERT INTO public."Usuario" (id_usuario, contrasenia, nombre, apellido, activo, fecha_baja) VALUES 
 ('utn-000000', '$2b$12$AGJJjVaYiowu/07AGLEVtOaxijElrlKC0JWnxzPmARm8t.1qB.1Uu', 'Marcos', 'Debona', true, NULL),
@@ -43,3 +43,27 @@ INSERT INTO public."Bedel" (id_usuario, turno) VALUES
 --{'utn-888888', 'pass#Bedel8'}
 --{'utn-999999', 'pass#Bedel9'}
 --{'utn-101010', 'pass#Bedel10'}
+
+
+INSERT INTO public."Periodo" (id_periodo, tipo, anio, fecha_inicio, fecha_fin, activo, fecha_baja) VALUES (1, 'Anual', 2024, '2024-03-11', '2024-11-29', true, NULL);
+INSERT INTO public."Periodo" (id_periodo, tipo, anio, fecha_inicio, fecha_fin, activo, fecha_baja) VALUES (2, 'Primer Cuatrimestre', 2024, '2024-03-11', '2024-07-05', true, NULL);
+INSERT INTO public."Periodo" (id_periodo, tipo, anio, fecha_inicio, fecha_fin, activo, fecha_baja) VALUES (3, 'Segundo Cuatrimestre', 2024, '2024-08-06', '2024-11-29', true, NULL);
+INSERT INTO public."Periodo" (id_periodo, tipo, anio, fecha_inicio, fecha_fin, activo, fecha_baja) VALUES (4, 'Primer Cuatrimestre', 2025, '2025-03-10', '2025-07-04', true, NULL);
+INSERT INTO public."Periodo" (id_periodo, tipo, anio, fecha_inicio, fecha_fin, activo, fecha_baja) VALUES (5, 'Segundo Cuatrimestre', 2025, '2025-08-05', '2025-11-28', true, NULL);
+INSERT INTO public."Periodo" (id_periodo, tipo, anio, fecha_inicio, fecha_fin, activo, fecha_baja) VALUES (6, 'Anual', 2025, '2025-03-10', '2025-11-28', true, NULL);
+
+INSERT INTO public."Aula" (nro_aula, capacidad, piso, aire_acondicionado, estado_aula, activo, fecha_baja) VALUES ('Laboratorio 1', 40, 'Segundo Piso', true, 'Habilitado', true, NULL);
+INSERT INTO public."Aula" (nro_aula, capacidad, piso, aire_acondicionado, estado_aula, activo, fecha_baja) VALUES ('Laboratorio 3', 40, 'Segundo Piso', true, 'Habilitado', true, NULL);
+INSERT INTO public."Aula" (nro_aula, capacidad, piso, aire_acondicionado, estado_aula, activo, fecha_baja) VALUES ('Aula Multimedios 1', 50, 'Primer Piso', true, 'Habilitado', true, NULL);
+INSERT INTO public."Aula" (nro_aula, capacidad, piso, aire_acondicionado, estado_aula, activo, fecha_baja) VALUES ('Aula 17', 60, 'Primer Piso', true, 'Habilitado', true, NULL);
+INSERT INTO public."Aula" (nro_aula, capacidad, piso, aire_acondicionado, estado_aula, activo, fecha_baja) VALUES ('Aula 18', 60, 'Primer Piso', true, 'Habilitado', true, NULL);
+INSERT INTO public."Aula" (nro_aula, capacidad, piso, aire_acondicionado, estado_aula, activo, fecha_baja) VALUES ('Museo de Materiales', 60, 'Primer Piso', false, 'Habilitado', true, NULL);
+
+INSERT INTO public."AulaInformatica" (nro_aula, "cant_PCs", canion) VALUES ('Laboratorio 1', 20, true);
+INSERT INTO public."AulaInformatica" (nro_aula, "cant_PCs", canion) VALUES ('Laboratorio 3', 20, false);
+
+INSERT INTO public."AulaMultimedios" (nro_aula, televisor, canion, ventilador, computadora) VALUES ('Aula Multimedios 1', true, true, true, false);
+
+INSERT INTO public."AulaSinRecursosAdicionales" (nro_aula, ventilador) VALUES ('Aula 17', false);
+INSERT INTO public."AulaSinRecursosAdicionales" (nro_aula, ventilador) VALUES ('Aula 18', false);
+INSERT INTO public."AulaSinRecursosAdicionales" (nro_aula, ventilador) VALUES ('Museo de Materiales', false);

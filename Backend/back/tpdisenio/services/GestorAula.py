@@ -63,6 +63,8 @@ class GestorAula():
             if tipo == "AulaSinAdicionales":
                 aulas = self.AulaSinAdicionales_DAO.calcular_reservacion_menor_diferencia(capacidad, dia, horario_inicio, duracion)
                 print(aulas)
+        
+        return aulas
 
     def obtener_aulas_menor_solapamiento(self, capacidad, dia,
     horario_inicio, duracion, tipo):

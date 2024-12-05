@@ -10,7 +10,7 @@ class AulaReservaDTO():
         self.reservacion = reservacion
         self.docente = docente
 
-class SolicitudFechaSerializer():
+class SolicitudFechaDTO():
     def __init__(self, fecha, lista_aula_reserva) -> None:
         self.fecha = fecha
         self.aulas = lista_aula_reserva
@@ -189,7 +189,8 @@ class GestorReserva():
         solicitudes = []
         for r in lista_reservaciones:
             aulas = self.gestor_aula.obtener_aulas_disponibles(cant_alumnos, r.get_fecha(), r.get_hora_inicio(), r.get_duracion(), tipo_aula)
-            solicitudes.append(SolicitudFechaSerializer(r.get_fecha(), aulas))
+            print(aulas)
+            solicitudes.append(SolicitudFechaDTO(r.get_fecha(), aulas))
 
 
         return RespuestaIniciarReservaDTO(errores, solicitudes)
