@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Aula, Bedel, Reservacion, Usuario
+from .models import Aula, Bedel, Docente, Reservacion, Usuario
 from .services import DocenteDTO, ActividadDTO, TipoActividadDTO
 #import services
 
@@ -37,11 +37,10 @@ class ActividadDTOSerializer(serializers.Serializer):
     descripcion = serializers.CharField()
     tipo_actividad = TipoActividadDTOSerializer()
 
-class DocenteDTOSerializer(serializers.Serializer):
-    id_docente = serializers.IntegerField()
-    apellido = serializers.CharField()
-    nombre = serializers.CharField()
-    correo = serializers.CharField()
+class DocenteDTOSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Docente
+        fields = ['id_docente', 'apellido', 'nombre', 'correo']
 
 class ReservacionDTOSerializer(serializers.ModelSerializer):
     class Meta:

@@ -17,12 +17,6 @@ class SolicitudFechaDTO():
         self.aulas = lista_aula_reserva
 
 
-class ReservacionDTO():
-    def __init__(self, dia, fecha, hora, duracion) -> None:
-        self.dia = dia
-        self.fecha = fecha
-        self.hora = hora
-        self.duracion = duracion
 
 class GestorReserva():
     """Clase encargada de suministrar todo la lógica concerniente a la clase reserva"""
@@ -106,7 +100,7 @@ class GestorReserva():
         if not (type(cant_alumnos)==type(1) and cant_alumnos >= 0):
             datos_completos = False
 
-        tipos_aula = ["AulaSinAdicionales", "Multimedio", "Informatica"]
+        tipos_aula = ["SinAdicionales", "Multimedio", "Informatica"]
         if tipo_aula not in tipos_aula:
             datos_completos = False
         
@@ -162,7 +156,7 @@ class GestorReserva():
                 actual += timedelta(days=1)
             
             while actual <= fin:
-                r = ReservacionDTO(reservacion.get_dia(), actual, reservacion.get_hora_inicio(), reservacion.get_duracion())
+                r = Reservacion(dia=reservacion.get_dia(), fecha=actual, hora_inicio=reservacion.get_hora_inicio(), duracion=reservacion.get_duracion())
                 lista.append(r)
                 actual += timedelta(days=7)
 
@@ -173,7 +167,10 @@ class GestorReserva():
             periodo = self.gestor_periodo.get_periodo(periodo, date.today().year)
         errores = self.validar_datos(docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones)
         
-        if periodo != None:
+        if True in errores:
+            return RespuestaIniciarReservaDTO(errores, None)
+
+        if periodo is not None:
             lista_reservaciones = self.obtener_fechas(periodo, lista_reservaciones)
         
         solicitudes = []

@@ -73,18 +73,22 @@ def comenzar_reserva(request):
                              TipoActividadDTO(actividad['tipo_actividad']['id_tipo_actividad'], actividad['tipo_actividad']['nombre'], actividad['tipo_actividad']['descripcion']))
     periodo = data['periodo']
     lista_reservaciones = data['lista_reservaciones']
-    reservaciones_objs = [
+    reservaciones_objs = []
+    for reservacion in lista_reservaciones:
+        fecha = reservacion['fecha']
+        if fecha is not None:
+            fecha = datetime.datetime.strptime(fecha, "%Y-%m-%d").date()
+        reservaciones_objs.append(
             Reservacion(
                 dia=reservacion['dia'],
-                fecha=datetime.datetime.strptime(reservacion['fecha'], "%Y-%m-%d").date(),
+                fecha=fecha,
                 duracion=reservacion['duracion'],
                 hora_inicio=datetime.datetime.strptime(reservacion['hora_inicio'], "%H:%M").time()
             )
-            for reservacion in lista_reservaciones
-        ]
+        )
     
     
     response = gestor_reserva.iniciar_reserva(docente, cant_alumnos, tipo_aula, actividad, periodo, reservaciones_objs)
-    print("RESPUESTA: ", response.fechas[0].aulas[0])
+
     response_serializer = IniciarReservaResponseSerializer(response)
     return Response(response_serializer.data)

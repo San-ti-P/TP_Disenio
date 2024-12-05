@@ -1,8 +1,7 @@
 from datetime import timedelta, datetime 
 from django.core.exceptions import ObjectDoesNotExist
-from .AulaSinAdicionalesDAO import AulaSinAdicionalesDAO
-from ..models import AulaSinRecursosAdicionales
-from ..models import Reservacion
+from .AulaSinAdicionalesDAO import AulaSinAdicionalesDAO, AulaReservaDTO
+from ..models import AulaSinRecursosAdicionales, Aula, Docente, Reservacion
 
 class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
     """Clase encargada de implementar el protocolo para persistir datos de la clase Aula sin_adicionales en una BDD SQL (PostgreSQL)"""
@@ -56,7 +55,9 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
         ).exclude(nro_aula__in=aulas_ocupadas)  # Excluir aulas ocupadas
         #print(aulas_disponibles)
         # Devolver solo los números de aula
-        return list(aulas_disponibles.values('nro_aula','piso', 'capacidad'))
+
+        return [AulaReservaDTO(Aula(nro_aula=aula['nro_aula'], piso=aula['piso'], capacidad=aula['capacidad']), None, None)
+                for aula in list(aulas_disponibles.values('nro_aula', 'piso', 'capacidad'))]
     
     def calcular_reservacion_menor_diferencia(self, capacidad, fecha, hora_inicio, duracion):
         # Convertir duración de minutos a timedelta
@@ -81,6 +82,7 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
             'aula__piso',
             'aula__capacidad', # Capacidad del aula
             'docente__id_docente'
+            'docente__nombre'
             'docente__apellido'
             'docente__correo'
         )
@@ -108,4 +110,9 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
                     mejor_reservacion.append(reservacion)
 
         # Retornar la reservación con el menor solapamiento, o None si no hay conflictos
-        return mejor_reservacion
+        return [AulaReservaDTO(
+                    Aula(nro_aula=reservacion['nro_aula'], piso=reservacion['piso'], capacidad=reservacion['capacidad']), 
+                    Reservacion(dia=reservacion['dia'], fecha=reservacion['fecha'], duracion=reservacion['duracion'], hora_inicio=reservacion['hora_inicio']), 
+                    Docente(id_docente=reservacion['id_docente'], apellido=reservacion['apellido'], nombre=reservacion['nombre'], correo=reservacion['correo']))
+                for reservacion in mejor_reservacion]
+        
