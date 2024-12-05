@@ -2,9 +2,9 @@ from rest_framework.response import Response
 from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter, OpenApiTypes
-from ..serializers import IniciarReservaEntidadesSerializer, IniciarReservaRequestSerializer, IniciarReservaResponseSerializer, IniciarReservaEntidadesDTO, DocenteDTO, ActividadDTO, TipoActividadDTO, ReservacionDTOSerializer
+from ..serializers import IniciarReservaEntidadesSerializer, IniciarReservaRequestSerializer, IniciarReservaResponseSerializer, IniciarReservaEntidadesDTO, ReservacionDTOSerializer
 from ..services import gestor_actividad, gestor_docente, gestor_reserva, gestor_sesion
-from ..models import Reservacion
+from ..models import Actividad, Docente, Reservacion
 import datetime
 
 @extend_schema_view(
@@ -65,12 +65,11 @@ def comenzar_reserva(request):
     data = iniciar_reserva_serializer.initial_data
     
     docente = data['docente']
-    docente = DocenteDTO(docente['id_docente'], docente['apellido'], docente['nombre'], docente['correo'])
+    docente = Docente(id_docente=docente['id_docente'], apellido=docente['apellido'], nombre=docente['nombre'], correo_contacto=docente['correo_contacto'])
     cant_alumnos = data['cant_alumnos']
     tipo_aula = data['tipo_aula']
     actividad = data['actividad']
-    actividad = ActividadDTO(actividad['id_actividad'], actividad['nombre'], actividad['descripcion'],
-                             TipoActividadDTO(actividad['tipo_actividad']['id_tipo_actividad'], actividad['tipo_actividad']['nombre'], actividad['tipo_actividad']['descripcion']))
+    actividad = Actividad(id_actividad=actividad['id_actividad'], nombre=actividad['nombre'], descripcion=actividad['descripcion'])
     periodo = data['periodo']
     lista_reservaciones = data['lista_reservaciones']
     reservaciones_objs = []

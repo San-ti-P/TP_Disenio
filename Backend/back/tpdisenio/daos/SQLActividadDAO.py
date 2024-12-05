@@ -7,7 +7,7 @@ class SQLActividadDAO(ActividadDAO):
     """Clase encargada de implementar el protocolo para persistir datos de la clase Actividad en una BDD SQL (PostgreSQL)"""
 
     def create_actividad(self, actividad):
-        self.tipo_actividad_DAO.create_tipo_actividad(actividad.get_tipo_actividad())
+        #self.tipo_actividad_DAO.create_tipo_actividad(actividad.get_tipo_actividad())
         self.docente_DAO.create_docente(actividad.get_docente())
         actividad.save()
 
@@ -24,6 +24,6 @@ class SQLActividadDAO(ActividadDAO):
         return Actividad.objects.all()
 
     def update_actividad(self, actividad):
-        self.tipo_actividad_DAO.update_tipo_actividad(actividad.get_tipo_actividad())
+        #self.tipo_actividad_DAO.update_tipo_actividad(actividad.get_tipo_actividad())
         self.docente_DAO.update_docente(actividad.get_docente())
         actividad.save()

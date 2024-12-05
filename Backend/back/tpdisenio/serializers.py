@@ -1,6 +1,5 @@
 from rest_framework import serializers
-from .models import Aula, Bedel, Docente, Reservacion, Usuario
-from .services import DocenteDTO, ActividadDTO, TipoActividadDTO
+from .models import Actividad, Aula, Bedel, Docente, Reservacion, Usuario
 #import services
 
 class IniciarReservaEntidadesDTO():
@@ -26,21 +25,20 @@ class AulaDTOSerializer(serializers.ModelSerializer):
         model = Aula
         fields = ['nro_aula', 'piso', 'capacidad']
 
-class TipoActividadDTOSerializer(serializers.Serializer):
-    id_tipo_actividad = serializers.IntegerField()
-    nombre = serializers.CharField()
-    descripcion = serializers.CharField()
+#class TipoActividadDTOSerializer(serializers.Serializer):
+#    id_tipo_actividad = serializers.IntegerField()
+#    nombre = serializers.CharField()
+#    descripcion = serializers.CharField()
 
-class ActividadDTOSerializer(serializers.Serializer):
-    id_actividad = serializers.IntegerField()
-    nombre = serializers.CharField()
-    descripcion = serializers.CharField()
-    tipo_actividad = TipoActividadDTOSerializer()
+class ActividadDTOSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Actividad
+        fields = ['id_actividad', 'nombre', 'descripcion']
 
 class DocenteDTOSerializer(serializers.ModelSerializer):
     class Meta:
         model = Docente
-        fields = ['id_docente', 'apellido', 'nombre', 'correo']
+        fields = ['id_docente', 'apellido', 'nombre', 'correo_contacto']
 
 class ReservacionDTOSerializer(serializers.ModelSerializer):
     class Meta:
