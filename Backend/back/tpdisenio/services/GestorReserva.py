@@ -34,11 +34,22 @@ class GestorReserva():
     def get_datos_reserva(self, id_reserva):
         pass
 
-    def alta_reserva(self, id_reserva, cantidad_alumnos, fecha_solicitud, tipo_reserva):
+    def alta_reserva(self, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones):
+        if periodo is not None:
+            periodo = self.gestor_periodo.get_periodo(periodo, date.today().year)
+        errores = self.validar_datos(docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones)
         
-        pass
+        if True in errores:
+            return None
 
+        reserva = Reserva(cant_alumnos=cant_alumnos, fecha_solicitud=date.today())
 
+        if periodo is not None:
+            reserva.set_periodo(periodo)
+            reserva.set_tipo(Reserva.TipoReserva.PERIODICA)
+        else:
+            reserva.set_tipo(Reserva.TipoReserva.ESPORADICA)
+            
     def baja_reserva(self, id_reserva):
 
         id_existente = False
@@ -52,27 +63,7 @@ class GestorReserva():
 
 
     def modificar_reserva(self, id_reserva, cantidad_alumnos, fecha_solicitud, tipo_reserva):
-        """
-
-        campos_validos = False
-        contrasenia_valida = False
-        id_existente = False
-        if self.validar_datos(nombre, apellido, turno, id_usuario):
-            campos_validos = True
-        
-        if not self.gestor_usuario.validacion_id_unico(id_usuario):
-            id_existente = True
-        
-        if self.gestor_contrasenia.validar_politicas(contrasenia):
-            contrasenia_valida = True
-
-        if campos_validos and contrasenia_valida and id_existente:
-            #bedel = self.bedel_DAO.get_bedel(id_usuario)
-            bedel = Bedel(nombre=nombre, apellido=apellido, turno=turno, id_usuario=id_usuario, contrasenia=contrasenia, activo=True, fecha_baja=None)
-            self.bedel_DAO.update_bedel(bedel)
-        
-        response = RespuestaModificarBedel(campos_validos, contrasenia_valida, id_existente)
-        return response """
+        pass
 
     def get_reservas_actividad(self, id_actividad, anio):
         pass
@@ -181,6 +172,7 @@ class GestorReserva():
 
 
         return RespuestaIniciarReservaDTO(errores, solicitudes)
+    
             
 
 

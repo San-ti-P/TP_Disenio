@@ -8,7 +8,7 @@ class AulaReservaDTO():
         self.docente = docente
 
 class GestorAula():
-    """Clase encargada de suministrar todo la lógica concerniente a la clase aula"""
+    """Clase encargada de suministrar todo la lógica concerniente a la clase Aula"""
     def __init__(self, gestor_sesion, aula_sin_adicionales_DAO, aula_multimedio_DAO, aula_informatica_DAO) -> None:
         
         self.gestor_sesion = gestor_sesion
@@ -19,14 +19,14 @@ class GestorAula():
     def agregar_reservacion(self, reservacion, aula):
         aula.add_reservacion(reservacion)
 
-    def listar_reservaciones(self,nro_aula):
+    def listar_reservaciones(self, nro_aula):
         pass
 
     def get_aula(self, nro_aula):
         aula = self.aula_informatica_DAO.get_aula(nro_aula)
-        if (aula==None):
+        if aula is None:
             aula = self.aula_multimedio_DAO.get_aula(nro_aula)
-            if(aula==None):
+            if aula is None:
                 aula = self.aula_sin_adicionales_DAO.get_aula(nro_aula)
         return aula
 
