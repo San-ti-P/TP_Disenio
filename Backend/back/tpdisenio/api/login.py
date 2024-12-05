@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 #from rest_framework.views import APIView
+from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema
 from ..services import gestor_sesion
@@ -19,6 +20,15 @@ def login(request):
         id_usuario = data['id_usuario']
         contrasenia = data['contrasenia']
         print(id_usuario, contrasenia)
-        response = gestor_sesion.inicio_sesion(id_usuario, contrasenia)
+        response, cookie = gestor_sesion.inicio_sesion(id_usuario, contrasenia)
         response_serializer = LoginResponseSerializer(response)
-        return Response(response_serializer.data)
+        if cookie is None:
+            raise AuthenticationFailed("Credenciales no válidas")
+        r = Response(response_serializer.data)
+        r.set_cookie(
+                key="sessionid",
+                value=cookie,
+                httponly=True,
+                max_age=3600
+            )
+        return r

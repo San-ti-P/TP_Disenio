@@ -61,7 +61,6 @@ class LoginRequestSerializer(serializers.Serializer):
 class LoginResponseSerializer(serializers.Serializer):
     rango = serializers.CharField(max_length=15)
     nombre = serializers.CharField(max_length=30)
-    cookie = serializers.CharField(max_length=32)
 
 class IniciarReservaEntidadesSerializer(serializers.Serializer):
     actividades = ActividadDTOSerializer(many=True)
