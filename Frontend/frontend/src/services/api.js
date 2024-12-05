@@ -25,7 +25,7 @@ const getPoliticas = async () => {
   }
 };
 
-const getUsuario = async (datosLogin) => {
+const enviarUsuario = async (datosLogin) => {
   try {
     const url = "http://127.0.0.1:8000/tpdisenio/login";
     const respuesta = await axios.post(url, datosLogin);
@@ -95,4 +95,15 @@ const getActividadesDocentes = async () => {
   }
 };
 
-export {enviarFormulario, getPoliticas, getUsuario, eliminarBedel, getResultadosBusqueda, modificarBedel, getActividadesDocentes}
+const obtenerAulasReserva = async (datosReserva) => {
+  try {
+    const url = "http://127.0.0.1:8000/tpdisenio/iniciar_reserva";
+    const respuesta = await axios.post(url, datosReserva);
+    return respuesta.data;
+  } catch (error) {
+    console.error("Error al enviar la reserva: ", error);
+    throw error;
+  }
+}
+
+export {enviarFormulario, getPoliticas, enviarUsuario, eliminarBedel, getResultadosBusqueda, modificarBedel, getActividadesDocentes, obtenerAulasReserva}

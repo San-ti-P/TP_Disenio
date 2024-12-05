@@ -15,8 +15,17 @@ import {
   ItemReserva 
 } from "../elementos/esporadicoEl";
 
+const diasMap = {
+  0: 'Domingo',
+  1: 'Lunes',
+  2: 'Martes',
+  3: 'Miércoles',
+  4: 'Jueves',
+  5: 'Viernes',
+  6: 'Sábado'
+};
 
-const ReservasEsporadicas = ( {onReservasChange} ) => {
+const ReservasEsporadicas = ({ onReservasChange }) => {
   const [fechaSeleccionada, setFechaSeleccionada] = useState(null);
   const [mostrarModalHorario, setMostrarModalHorario] = useState(false);
   const [reservas, setReservas] = useState({});
@@ -27,15 +36,16 @@ const ReservasEsporadicas = ( {onReservasChange} ) => {
     setMostrarModalHorario(true);
   };
 
-  const manejarAceptarHorario = (horaInicio, duracion) => {
+  const manejarAceptarHorario = (hora_inicio, duracion) => {
     const fechaString = fechaSeleccionada.toISOString().split('T')[0];
+    const dia = diasMap[fechaSeleccionada.getDay()];
     const nuevasReservas = {
       ...reservas,
-      [fechaString]: { horaInicio, duracion }
+      [fechaString]: { dia, fecha: fechaString, duracion, hora_inicio}
     };
     setReservas(nuevasReservas);
     setMostrarModalHorario(false);
-    onReservasChange(Object.entries(nuevasReservas).map(([fecha, datos]) => ({ fecha, ...datos })), null);
+    onReservasChange(Object.entries(nuevasReservas).map(([fecha, datos]) => ({ ...datos })), null);
   };
 
   const manejarCancelarHorario = () => {
@@ -46,7 +56,7 @@ const ReservasEsporadicas = ( {onReservasChange} ) => {
     const nuevasReservas = { ...reservas };
     delete nuevasReservas[fechaString];
     setReservas(nuevasReservas);
-    onReservasChange(Object.entries(nuevasReservas).map(([fecha, datos]) => ({ fecha, ...datos })), null);
+    onReservasChange(Object.entries(nuevasReservas).map(([fecha, datos]) => ({ ...datos })), null);
   };
 
   const obtenerClaseFecha = ({ date }) => {
@@ -81,9 +91,9 @@ const ReservasEsporadicas = ( {onReservasChange} ) => {
               <BotonCerrarModal onClick={() => setMostrarModalReservas(false)}>&times;</BotonCerrarModal>
             </EncabezadoModal>
             <ListaReservas>
-              {Object.entries(reservas).map(([fecha, { horaInicio, duracion }]) => (
+              {Object.entries(reservas).map(([fecha, { dia, duracion, hora_inicio }]) => (
                 <ItemReserva key={fecha}>
-                  {fecha}: {horaInicio} hs - {duracion} minutos
+                  {fecha} ({dia}): {hora_inicio} hs - {duracion} minutos
                   <BotonEliminarReserva onClick={() => manejarEliminarReserva(fecha)}>
                     Eliminar
                   </BotonEliminarReserva>

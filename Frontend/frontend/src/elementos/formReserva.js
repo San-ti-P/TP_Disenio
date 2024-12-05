@@ -176,7 +176,7 @@ const ModalButton = styled(Button)`
 const BotonEliminarPeriodica = styled.button`
   border: 2px solid lightgrey;
   position: absolute;
-  right: 240px;
+  right: 220px;
   border-radius: 3px;
   font-family: arial;
   font-size: 14px;
