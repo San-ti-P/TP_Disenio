@@ -7,7 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Paper from '@mui/material/Paper';
-import { StyledContainer, StyledHeader, StyledHeading, StyledIconButton, StyledTableContainer, StyledTableCell, StyledTableRow } from '../elementos/tablaResultados';
+import { StyledContainer, StyledHeader, StyledHeading, StyledTableContainer, StyledTableCell, StyledTableRow } from '../elementos/tablaResultados';
 import { manejoEliminar } from '../componentes/logicEliminar';
 import { ManejoModificar } from '../componentes/logicModificar';
 import BackButton from '../componentes/backButton';

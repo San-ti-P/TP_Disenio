@@ -191,10 +191,6 @@ const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeho
                             )
                         })
                     }
-                {/* 
-                    <option value="Mañana">Mañana</option>
-                    <option value="Tarde">Tarde</option>
-                    <option value="Noche">Noche</option> */}
                 </Select>
             </GrupoInput>
         </React.Fragment>

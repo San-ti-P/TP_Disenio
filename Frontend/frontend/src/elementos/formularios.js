@@ -76,7 +76,6 @@ const Input = styled.input`
     }
 `;
 
-
 const LeyendaError = styled.p`
   font-size: 13px;
   margin: -22px 0 0 0;
@@ -198,7 +197,5 @@ const FormLogin = styled.form`
       justify-content: flex-end;
   }
 `;
-
-
 
 export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC, BotonSubmit, LeyendaError, FormLogin}

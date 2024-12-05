@@ -2,7 +2,6 @@ import React from 'react';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { BotonSC } from '../elementos/formularios'; 
-import zIndex from '@mui/material/styles/zIndex';
 
 const tuneoModal = (config) => {
   const existingStyle = document.getElementById('swal-custom-styles');
