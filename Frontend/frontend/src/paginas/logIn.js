@@ -26,7 +26,7 @@ const App = () => {
           login(respuesta);
           if (respuesta.rango === "bedel") navigate("/menuBedel");
           if (respuesta.rango === "admin") navigate("/menuAdm");
-          console.log(respuesta.cookie);
+          console.log(respuesta);
         }
       };
 

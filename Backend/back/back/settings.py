@@ -67,6 +67,10 @@ MIDDLEWARE = [
   #  'https://localhost:3000',
 #]
 
+# CORS_ALLOWED_ORIGINS = [
+#     "http://localhost:3000",  # Agrega el origen de tu frontend
+# ]
+
 CORS_ALLOW_ALL_ORIGINS = True
 
 #CORS_ORIGIN_WHITELIST = [
@@ -94,6 +98,10 @@ CORS_ALLOW_ALL_ORIGINS = True
 #    'x-csrftoken',
 #    'x-requested-with',
 #]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000", 
+]
 
 ROOT_URLCONF = 'back.urls'
 
