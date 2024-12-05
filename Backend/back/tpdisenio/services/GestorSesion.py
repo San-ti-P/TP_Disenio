@@ -5,10 +5,9 @@ from .Sesion import Sesion
 
 class RespuestaLogin(object):
 
-    def __init__(self, rango, nombre, cookie):
+    def __init__(self, rango, nombre):
         self.rango = rango
         self.nombre = nombre
-        self.cookie = cookie
 
 class GestorSesion():
     """Clase encargada de suministrar todo la lógica concerniente a la clase Sesion"""
@@ -29,7 +28,7 @@ class GestorSesion():
                     else: id_sesion = 1
                     sesion = Sesion(id_sesion, date.today(), True, administrador)
                     self.sesiones[sesion.get_cookie()] = sesion
-                    return RespuestaLogin("admin", administrador.get_nombre(), sesion.get_cookie())
+                    return RespuestaLogin("admin", administrador.get_nombre()), sesion.get_cookie()
             #else: return "acceso denegado"
         else:
             bedel = self.bedel_DAO.get_bedel(id_usuario)
@@ -42,10 +41,10 @@ class GestorSesion():
                         else: id_sesion = 1
                         sesion = Sesion(id_sesion, date.today(), True, bedel)
                         self.sesiones[sesion.get_cookie()] = sesion
-                        return RespuestaLogin("bedel", bedel.get_nombre(), sesion.get_cookie())
+                        return RespuestaLogin("bedel", bedel.get_nombre()), sesion.get_cookie()
                 #else: return "acceso denegado"
             #else: return "acceso denegado"
-        return RespuestaLogin("acceso denegado", None, None)
+        return RespuestaLogin("acceso denegado", None), None
     
     def cerrar_sesion(self, cookie):
         if cookie in self.sesiones:

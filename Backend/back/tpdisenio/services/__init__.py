@@ -1,4 +1,4 @@
-from .GestorActividad import GestorActividad, ActividadDTO, TipoActividadDTO
+from .GestorActividad import GestorActividad, ActividadDTO
 from .GestorAula import GestorAula
 from .GestorBedel import GestorBedel
 from .GestorContrasenia import GestorContrasenia
@@ -10,9 +10,9 @@ from .GestorSesion import GestorSesion
 from .GestorUsuario import GestorUsuario
 from ..daos import *
 
-SQL_tipo_actividad_DAO = SQLTipoActividadDAO()
+#SQL_tipo_actividad_DAO = SQLTipoActividadDAO()
 SQL_docente_DAO = SQLDocenteDAO()
-SQL_actividad_DAO = SQLActividadDAO(SQL_tipo_actividad_DAO, SQL_docente_DAO)
+SQL_actividad_DAO = SQLActividadDAO(SQL_docente_DAO)
 SQL_administrador_DAO = SQLAdministradorDAO()
 SQL_bedel_DAO = SQLBedelDAO()
 SQL_aula_sin_adicionales_DAO = SQLAulaSinAdicionalesDAO()

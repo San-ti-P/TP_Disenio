@@ -80,7 +80,7 @@ class GestorReserva():
 
         nombre = docente_DTO.get_nombre()
         apellido = docente_DTO.get_apellido()
-        correo = docente_DTO.get_correo()
+        correo = docente_DTO.get_correo_contacto()
 
         if not (len(nombre)>1 and len(nombre)<30):
             datos_completos = False
@@ -167,7 +167,6 @@ class GestorReserva():
         solicitudes = []
         for r in lista_reservaciones:
             aulas = self.gestor_aula.obtener_aulas_disponibles(cant_alumnos, r.get_fecha(), r.get_hora_inicio(), r.get_duracion(), tipo_aula)
-            print("Aulas: ", aulas)
             solicitudes.append(SolicitudFechaDTO(r.get_fecha(), aulas))
 
 

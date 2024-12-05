@@ -8,5 +8,5 @@ from .SQLDocenteDAO import SQLDocenteDAO
 from .SQLPeriodoDAO import SQLPeriodoDAO
 from .SQLReservacionDAO import SQLReservacionDAO
 from .SQLReservaDAO import SQLReservaDAO
-from .SQLTipoActividadDAO import SQLTipoActividadDAO
+#from .SQLTipoActividadDAO import SQLTipoActividadDAO
 from .SQLTipoPizarronDAO import SQLTipoPizarronDAO

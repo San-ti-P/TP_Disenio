@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .Docente import Docente
-from .TipoActividad import TipoActividad
+#from .TipoActividad import TipoActividad
 
 class Actividad(models.Model):
     class Meta:
@@ -11,7 +11,7 @@ class Actividad(models.Model):
     id_actividad = models.IntegerField()
     nombre = models.CharField(max_length=40)
     descripcion = models.DateField(max_length=100)
-    tipo_actividad = models.ForeignKey(TipoActividad, on_delete=models.CASCADE, db_column="id_tipo_actividad")
+    #tipo_actividad = models.ForeignKey(TipoActividad, on_delete=models.CASCADE, db_column="id_tipo_actividad")
     docente = models.ForeignKey(Docente, on_delete=models.PROTECT, db_column="id_docente")
     activo = models.BooleanField(default=True)
     fecha_baja = models.DateField(blank=True, default=None, null=True)
@@ -24,8 +24,8 @@ class Actividad(models.Model):
         return self.nombre
     def get_descripcion(self):
         return self.descripcion
-    def get_tipo_actividad(self):
-        return self.tipo_actividad
+    #def get_tipo_actividad(self):
+    #    return self.tipo_actividad
     def get_docente(self):
         return self.docente
     def get_activo(self):
@@ -41,8 +41,8 @@ class Actividad(models.Model):
         self.nombre = nombre
     def set_descripcion(self, descripcion):
         self.descripcion = descripcion
-    def set_tipo_actividad(self, tipo_actividad):
-        self.tipo_actividad = tipo_actividad
+    #def set_tipo_actividad(self, tipo_actividad):
+    #    self.tipo_actividad = tipo_actividad
     def set_docente(self, docente):
         self.docente = docente
     def set_activo(self, activo):

@@ -6,6 +6,8 @@ class DocenteDTO(object):
         self.nombre = nombre
         self.correo = correo
     
+    def get_id(self):
+        return self.id_docente
     def get_nombre(self):
         return self.nombre
     def get_apellido(self):
@@ -16,22 +18,20 @@ class DocenteDTO(object):
 
 class GestorDocente():
 
-    def alta_docente(self, id_doc, apellido_doc, nombre_doc, correo_doc): 
-        docente = Docente(id_doc=id_doc, apellido_doc=apellido_doc, nombre_doc=nombre_doc, correo_doc=correo_doc, activo=True, fecha_baja=None)
-        self.docente_DAO.create_docente(docente)
-
-    def guardar_docente(self, docente):
-        pass
+    def alta_docente(self, docente_DTO): 
+        docente = Docente(id_docente=docente_DTO.get_id(), apellido=docente_DTO.get_apellido(), nombre=docente_DTO.get_nombre(), correo_contacto=docente_DTO.get_correo(), activo=True, fecha_baja=None)
+        #self.docente_DAO.create_docente(docente)
+        return docente
 
     def obtener_docentes(self):
         docentes = [
-            DocenteDTO(1, "Scagnetti", "Olga", "oscagnetti@frsf.utn.edu.ar"),
-            DocenteDTO(2, "Ramirez", "Sandra", "scramirez@frsf.utn.edu.ar"),
-            DocenteDTO(3, "Dlugovitzky", "Fabio", "fduglovi@frsf.utn.edu.ar"),
-            DocenteDTO(4, "Budini", "Francisco", "fgbudini@frsf.utn.edu.ar"),
-            DocenteDTO(5, "Enrique", "Claudio", "cenrique@frsf.utn.edu.ar"),
-            DocenteDTO(6, "Kowalkoski", "Maria Lorena", "lkowalkoski@frsf.utn.edu.ar"),
-            DocenteDTO(7, "Puppo", "Juan Pablo Damian", "jpuppo@frsf.utn.edu.ar"),
-            DocenteDTO(8, "Cordero Gonzalez", "Penelope", "pcorderogonzalez@frsf.utn.edu.ar"),
+            Docente(id_docente=1, apellido="Scagnetti", nombre="Olga", correo_contacto="oscagnetti@frsf.utn.edu.ar"),
+            Docente(id_docente=2, apellido="Ramirez", nombre="Sandra", correo_contacto="scramirez@frsf.utn.edu.ar"),
+            Docente(id_docente=3, apellido="Dlugovitzky", nombre="Fabio", correo_contacto="fduglovi@frsf.utn.edu.ar"),
+            Docente(id_docente=4, apellido="Budini", nombre="Francisco", correo_contacto="fgbudini@frsf.utn.edu.ar"),
+            Docente(id_docente=5, apellido="Enrique", nombre="Claudio", correo_contacto="cenrique@frsf.utn.edu.ar"),
+            Docente(id_docente=6, apellido="Kowalkoski", nombre="Maria Lorena", correo_contacto="lkowalkoski@frsf.utn.edu.ar"),
+            Docente(id_docente=7, apellido="Puppo", nombre="Juan Pablo Damian", correo_contacto="jpuppo@frsf.utn.edu.ar"),
+            Docente(id_docente=8, apellido="Cordero Gonzalez", nombre="Penelope", correo_contacto="pcorderogonzalez@frsf.utn.edu.ar"),
         ]
         return docentes

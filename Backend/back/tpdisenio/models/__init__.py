@@ -9,6 +9,6 @@ from .Docente import Docente
 from .Periodo import Periodo
 from .Reserva import Reserva
 from .Reservacion import Reservacion
-from .TipoActividad import TipoActividad
+#from .TipoActividad import TipoActividad
 from .TipoPizarron import TipoPizarron
 from .Usuario import Usuario

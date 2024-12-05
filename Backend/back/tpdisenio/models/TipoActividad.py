@@ -1,3 +1,4 @@
+"""
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -34,3 +35,4 @@ class TipoActividad(models.Model):
         self.activo = activo
     def set_fecha_baja(self, fecha_baja):
         self.fecha_baja = fecha_baja
+"""

@@ -1,11 +1,12 @@
+"""
 import datetime
 
 from .TipoActividadDAO import TipoActividadDAO
 from ..models import TipoActividad
-
-class SQLTipoActividadDAO(TipoActividadDAO):
+"""
+#class SQLTipoActividadDAO(TipoActividadDAO):
     """Clase encargada de implementar el protocolo para persistir datos de la clase TipoActividad en una BDD SQL (PostgreSQL)"""
-
+"""
     def create_tipo_actividad(self, tipo_actividad):
         tipo_actividad.save()
 
@@ -22,3 +23,4 @@ class SQLTipoActividadDAO(TipoActividadDAO):
 
     def update_tipo_actividad(self, tipo_actividad):
         tipo_actividad.save()
+"""
