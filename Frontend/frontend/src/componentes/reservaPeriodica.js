@@ -2,12 +2,22 @@ import React, { useState } from 'react';
 import { RadioGroup, RadioButton, DayButtons, DayButton, DivPeriodica, BotonEliminarPeriodica } from '../elementos/formReserva';
 import HorarioModal from './horarioModalPeriodica';
 
+const diasMap = {
+  'Lun': 'Lunes',
+  'Mar': 'Martes',
+  'Mie': 'Miércoles',
+  'Jue': 'Jueves',
+  'Vie': 'Viernes',
+  'Sab': 'Sábado',
+  'Dom': 'Domingo'
+};
+
 const ReservaPeriodica = ({ onReservasChange }) => {
   const [diaSeleccionado, setDiaSeleccionado] = useState([]);
   const [mostrarModal, setMostrarModal] = useState(false);
   const [horario, setHorario] = useState([]);
-  const [periodo, setPeriodo] = useState('primer');
-  const [modalData, setModalData] = useState({ dia: '', horaInicio: '', duracion: 30 });
+  const [periodo, setPeriodo] = useState('Primer Cuatrimestre');
+  const [modalData, setModalData] = useState({ dia: '', fecha: null, duracion: 30, hora_inicio: '' });
 
   const manejarClickDia = (dia) => {
     setModalData({ ...modalData, dia });
@@ -15,12 +25,12 @@ const ReservaPeriodica = ({ onReservasChange }) => {
   };
 
   const manejarAgregarHorario = () => {
-    if (modalData.horaInicio && modalData.duracion >= 30) {
-      const nuevoHorario = [...horario, { ...modalData }];
+    if (modalData.hora_inicio && modalData.duracion >= 30) {
+      const nuevoHorario = [...horario, { ...modalData, dia: diasMap[modalData.dia] }];
       setHorario(nuevoHorario);
       setDiaSeleccionado([...diaSeleccionado, modalData.dia]);
       setMostrarModal(false);
-      setModalData({ dia: '', horaInicio: '', duracion: 30 });
+      setModalData({ dia: '', fecha: null, duracion: 30, hora_inicio: '' });
       onReservasChange(nuevoHorario, periodo);
     }
   };
@@ -37,13 +47,13 @@ const ReservaPeriodica = ({ onReservasChange }) => {
     <DivPeriodica>
       <RadioGroup>
         <RadioButton>
-          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('primer')} defaultChecked/> Primer cuatrimestre
+          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Primer cuatrimestre')} defaultChecked/> Primer cuatrimestre
         </RadioButton>
         <RadioButton>
-          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('segundo')} /> Segundo cuatrimestre
+          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Segundo cuatrimestre')} /> Segundo cuatrimestre
         </RadioButton>
         <RadioButton>
-          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('anual')} /> Anual
+          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Anual')} /> Anual
         </RadioButton>
       </RadioGroup>
 
@@ -62,7 +72,7 @@ const ReservaPeriodica = ({ onReservasChange }) => {
       <ul>
         {horario.map((item, index) => (
           <li style={{ marginBottom: "10px" }} key={index}>
-            {item.dia}: {item.horaInicio} hs - {item.duracion} minutos
+            {item.dia}: {item.hora_inicio} hs - {item.duracion} minutos
             <BotonEliminarPeriodica onClick={() => manejarEliminarHorario(index)}> Eliminar </BotonEliminarPeriodica>
           </li>
         ))}

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {ComponenteOtro} from "../componentes/input"
 import {FormLogin, BotonSC} from "../elementos/formularios"
-import { getUsuario } from '../services/api';
+import { enviarUsuario } from '../services/api';
 
 const App = () => {
     const [idUsuario, cambiarIdUsuario] = useState({campo:'', valido: null});
@@ -17,7 +17,7 @@ const App = () => {
     
     const onSubmit = async (e) => {
      e.preventDefault();
-     const respuesta = await getUsuario(datosLogin);
+     const respuesta = await enviarUsuario(datosLogin);
      
      if (respuesta.rango === "acceso denegado") cambiarMostrarContraLeyenda(true);
      if (respuesta.rango === "bedel") navigate("/menuBedel");

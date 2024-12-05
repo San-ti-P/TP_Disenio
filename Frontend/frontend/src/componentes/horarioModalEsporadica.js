@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Modal, ModalOverlay, FormGroup, Label, Input, ModalButtons, ModalButton } from '../elementos/formReserva';
 
 const HorarioModalEsporadica = ({ fecha, onAceptar, onCancelar }) => {
-  const [horaInicio, setHoraInicio] = useState('');
+  const [hora_inicio, sethora_inicio] = useState('');
   const [duracion, setDuracion] = useState(30);
 
-  const datosValidos = horaInicio && duracion >= 30;
+  const datosValidos = hora_inicio && duracion >= 30;
 
   const handleAceptar = () => {
     if (datosValidos) {
-      onAceptar(horaInicio, duracion);
+      onAceptar(hora_inicio, duracion);
     }
   };
 
@@ -22,8 +22,8 @@ const HorarioModalEsporadica = ({ fecha, onAceptar, onCancelar }) => {
           <Label>Horario inicio</Label>
           <Input
             type="time"
-            value={horaInicio}
-            onChange={(e) => setHoraInicio(e.target.value)}
+            value={hora_inicio}
+            onChange={(e) => sethora_inicio(e.target.value)}
           />
         </FormGroup>
         <FormGroup>
