@@ -4,16 +4,6 @@ from ..models import Periodo
 from .GestorDocente import DocenteDTO
 from datetime import date, timedelta
 
-class AulaReservaDTO():
-    def __init__(self, aula, reservacion, docente):
-        self.aula = aula
-        self.reservacion = reservacion
-        self.docente = docente
-
-class SolicitudFechaDTO():
-    def __init__(self, fecha, lista_aula_reserva) -> None:
-        self.fecha = fecha
-        self.aulas = lista_aula_reserva
 
 class RespuestaIniciarReservaDTO():
     def __init__(self, lista_errores, lista_solicitudes) -> None:
@@ -21,18 +11,18 @@ class RespuestaIniciarReservaDTO():
         self.fechas = lista_solicitudes
     
 
+class SolicitudFechaDTO():
+    def __init__(self, fecha, lista_aula_reserva) -> None:
+        self.fecha = fecha
+        self.aulas = lista_aula_reserva
+
+
 class ReservacionDTO():
     def __init__(self, dia, fecha, hora, duracion) -> None:
         self.dia = dia
         self.fecha = fecha
         self.hora = hora
         self.duracion = duracion
-
-class AulaReservaDTO():
-    def __init__(self, aula, reservacion, docente) -> None:
-        self.aula = aula
-        self.reservacion = reservacion
-        self.docente = docente
 
 class GestorReserva():
     """Clase encargada de suministrar todo la lógica concerniente a la clase reserva"""
@@ -116,7 +106,7 @@ class GestorReserva():
         if not (type(cant_alumnos)==type(1) and cant_alumnos >= 0):
             datos_completos = False
 
-        tipos_aula = ["Sin Recursos Adicionales", "Multimedio", "Informatica"]
+        tipos_aula = ["AulaSinAdicionales", "Multimedio", "Informatica"]
         if tipo_aula not in tipos_aula:
             datos_completos = False
         
@@ -189,7 +179,7 @@ class GestorReserva():
         solicitudes = []
         for r in lista_reservaciones:
             aulas = self.gestor_aula.obtener_aulas_disponibles(cant_alumnos, r.get_fecha(), r.get_hora_inicio(), r.get_duracion(), tipo_aula)
-            print(aulas)
+            print("Aulas: ", aulas)
             solicitudes.append(SolicitudFechaDTO(r.get_fecha(), aulas))
 
 

@@ -83,7 +83,8 @@ def comenzar_reserva(request):
             for reservacion in lista_reservaciones
         ]
     
-    print(reservaciones_objs)
+    
     response = gestor_reserva.iniciar_reserva(docente, cant_alumnos, tipo_aula, actividad, periodo, reservaciones_objs)
+    print("RESPUESTA: ", response.fechas[0].aulas[0])
     response_serializer = IniciarReservaResponseSerializer(response)
     return Response(response_serializer.data)

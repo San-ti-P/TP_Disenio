@@ -1,6 +1,12 @@
 from ..models import Aula
 from ..daos import SQLAulaInformaticaDAO, SQLAulaMultimedioDAO, SQLAulaSinAdicionalesDAO
 
+class AulaReservaDTO():
+    def __init__(self, aula, reservacion, docente):
+        self.aula = aula
+        self.reservacion = reservacion
+        self.docente = docente
+
 class GestorAula():
     """Clase encargada de suministrar todo la lógica concerniente a la clase aula"""
     def __init__(self, gestor_sesion, AulaSinAdicionales_DAO, AulaMultimedio_DAO, AulaInformatica_DAO) -> None:
@@ -58,13 +64,17 @@ class GestorAula():
         aulas = []
         if tipo == "AulaSinAdicionales":
             aulas = self.AulaSinAdicionales_DAO.get_available(capacidad, dia, horario_inicio, duracion)
-            
+        
+        aulas_reserva = []
         if len(aulas) == 0:
             if tipo == "AulaSinAdicionales":
                 aulas = self.AulaSinAdicionales_DAO.calcular_reservacion_menor_diferencia(capacidad, dia, horario_inicio, duracion)
-                print(aulas)
+        else:
+            for aula in aulas:
+                aulas_reserva.append(AulaReservaDTO(Aula(nro_aula=aula['nro_aula'], piso=aula['piso'], capacidad=aula['capacidad']), None, None))
+                print("AulaReserva: ", aula)
         
-        return aulas
+        return aulas_reserva
 
     def obtener_aulas_menor_solapamiento(self, capacidad, dia,
     horario_inicio, duracion, tipo):

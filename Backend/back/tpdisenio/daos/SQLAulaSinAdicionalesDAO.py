@@ -36,26 +36,27 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
 
         # Calcular hora de fin de la reserva solicitada
         hora_fin = (datetime.combine(fecha, hora_inicio) + duracion_timedelta).time()
-
+        
+        #print(hora_fin)
         # Filtrar reservaciones ocupadas que se solapan en el horario
-        reservaciones_ocupadas = Reservacion.objects.select_related('aula').filter(
+        reservaciones_ocupadas = Reservacion.objects.select_related('Aula').filter(
             fecha=fecha,
             # Filtrar solapamientos de horarios
             hora_inicio__lt=hora_fin,  # Comienza antes de que termine la nueva reserva
             hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time()
         ).values('aula__nro_aula')
-
+        #print(reservaciones_ocupadas)
         # Obtener los números de aulas ocupadas
         aulas_ocupadas = {res['aula__nro_aula'] for res in reservaciones_ocupadas}
-
+        #print(aulas_ocupadas)
         # Filtrar aulas disponibles
         aulas_disponibles = AulaSinRecursosAdicionales.objects.filter(
             capacidad__gte=capacidad,  # Verificar que la capacidad mínima se cumpla
             activo=True,               # Asegurarse de que el aula esté activa
         ).exclude(nro_aula__in=aulas_ocupadas)  # Excluir aulas ocupadas
-
+        #print(aulas_disponibles)
         # Devolver solo los números de aula
-        return list(aulas_disponibles.values_list('nro_aula', flat=True))
+        return list(aulas_disponibles.values('nro_aula','piso', 'capacidad'))
     
     def calcular_reservacion_menor_diferencia(self, capacidad, fecha, hora_inicio, duracion):
         # Convertir duración de minutos a timedelta
@@ -77,6 +78,7 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
             'horario_inicio',  # Hora de inicio
             'duracion',        # Duración en minutos
             'aula__nro_aula',  # Número del aula
+            'aula__piso',
             'aula__capacidad', # Capacidad del aula
             'docente__id_docente'
             'docente__apellido'
