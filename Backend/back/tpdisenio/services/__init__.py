@@ -1,8 +1,8 @@
-from .GestorActividad import GestorActividad, ActividadDTO
+from .GestorActividad import GestorActividad
 from .GestorAula import GestorAula
 from .GestorBedel import GestorBedel
 from .GestorContrasenia import GestorContrasenia
-from .GestorDocente import GestorDocente, DocenteDTO
+from .GestorDocente import GestorDocente
 from .GestorPeriodo import GestorPeriodo
 from. GestorReserva import GestorReserva
 from .GestorReservacion import GestorReservacion

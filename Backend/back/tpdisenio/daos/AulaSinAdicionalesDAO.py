@@ -1,11 +1,5 @@
 from abc import ABC
 
-class AulaReservaDTO():
-    def __init__(self, aula, reservacion, docente):
-        self.aula = aula
-        self.reservacion = reservacion
-        self.docente = docente
-
 class AulaSinAdicionalesDAO(ABC):
     """Interfaz encargada de definir el protocolo para persistir datos de la clase Aula Sin Adicionales"""
 

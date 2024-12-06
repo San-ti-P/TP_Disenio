@@ -24,14 +24,14 @@ def iniciar_reserva(request):
     """
     Define el comportamiento de .../iniciar_reserva. Acepta solicitudes GET, POST
     """
-    print(request.COOKIES)
+    #print(request.COOKIES)
     if 'sesion' in request.COOKIES:
         sesion = request.COOKIES.get('sesion')
+        autorizado, sesion = gestor_sesion.consultar_sesion(sesion)
     else:
+        autorizado = False
         sesion = None
-    print(sesion)
-    autorizado, sesion = gestor_sesion.consultar_sesion(sesion)
-    print(autorizado)
+        
     if autorizado:
         if sesion.get_es_admin():
             if request.method == 'GET':
@@ -41,9 +41,9 @@ def iniciar_reserva(request):
                 return comenzar_reserva(request=request)
 
         else:
-            raise PermissionDenied("Acceso denegado")
+            return Response("Acceso denegado")
     else:
-        raise AuthenticationFailed("Credenciales no válidas")
+        return Response("Credenciales no válidas")
 
 
 def obtener_datos(request):

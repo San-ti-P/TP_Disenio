@@ -1,27 +1,28 @@
-from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
-from rest_framework.decorators import api_view
-from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter, OpenApiTypes
-from ..serializers import IniciarReservaEntidadesSerializer, IniciarReservaRequestSerializer, IniciarReservaResponseSerializer, IniciarReservaEntidadesDTO, RegistrarReservaRequestSerializer
-from ..services import gestor_actividad, gestor_docente, gestor_reserva, gestor_sesion
-from ..models import Actividad, Aula, Docente, Reservacion
 import datetime
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from drf_spectacular.utils import extend_schema_view, extend_schema
+from django.db import transaction
+from ..serializers import RegistrarReservaRequestSerializer, ReservaSerializer
+from ..services import gestor_reserva, gestor_sesion
+from ..models import Actividad, Aula, Docente, Reservacion
+
 
 @extend_schema_view(
 
     post=extend_schema(
         request=RegistrarReservaRequestSerializer,
-        responses=IniciarReservaResponseSerializer,
-        description="Crear un nuevo reserva"
+        responses=ReservaSerializer,
+        description="Registrar una nueva reserva"
     )
 )
-
+@transaction.atomic
 @api_view(['POST'])
 def reservas(request):
     """
     Define el comportamiento de .../reservas. Acepta solicitudes POST
     """
-    print(request.COOKIES)
+    #print(request.COOKIES)
     if 'sesion' in request.COOKIES:
         sesion = request.COOKIES.get('sesion')
         autorizado, sesion = gestor_sesion.consultar_sesion(sesion)
@@ -29,7 +30,7 @@ def reservas(request):
         autorizado = False
         sesion = None
     
-    print(autorizado)
+    #print(autorizado)
     if autorizado:
         if request.method == 'POST':
             return registrar_reserva(request=request, usuario=sesion.get_usuario())
@@ -65,13 +66,11 @@ def registrar_reserva(request, usuario):
                 fecha=fecha,
                 duracion=reservacion['duracion'],
                 hora_inicio=datetime.datetime.strptime(reservacion['hora_inicio'], "%H:%M").time(),
-                aula = data['aula']
+                aula = Aula(nro_aula=reservacion['aula'])
             )
         )
     
-    print("USUARIO: ", usuario)
-    
     response = gestor_reserva.alta_reserva(usuario, docente, cant_alumnos, tipo_aula, actividad, periodo, reservaciones_objs)
 
-    response_serializer = IniciarReservaResponseSerializer(response)
+    response_serializer = ReservaSerializer(response)
     return Response(response_serializer.data)

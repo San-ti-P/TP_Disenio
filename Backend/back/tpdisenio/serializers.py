@@ -1,6 +1,13 @@
 from rest_framework import serializers
-from .models import Actividad, Aula, Bedel, Docente, Reservacion, Usuario
+from .models import Actividad, Aula, Bedel, Docente, Reserva, Reservacion, Usuario
 #import services
+
+class AulaReservaDTO():
+    def __init__(self, aula, reservacion, docente):
+        self.aula = aula
+        self.reservacion = reservacion
+        self.docente = docente
+
 
 class IniciarReservaEntidadesDTO():
     def __init__(self, actividades, docentes):
@@ -49,6 +56,11 @@ class ReservacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservacion
         fields = ['dia', 'fecha', 'duracion', 'hora_inicio', 'aula']
+
+class ReservaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reserva
+        fields = '__all__'
     
 class AulaReservaDTOSerializer(serializers.Serializer):
     aula = AulaDTOSerializer()

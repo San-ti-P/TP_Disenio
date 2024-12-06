@@ -1,10 +1,11 @@
 from datetime import timedelta, datetime 
 from django.core.exceptions import ObjectDoesNotExist
-from .AulaSinAdicionalesDAO import AulaSinAdicionalesDAO, AulaReservaDTO
-from ..models import AulaSinRecursosAdicionales, Aula, Docente, Reservacion
+from .AulaSinAdicionalesDAO import AulaSinAdicionalesDAO
+from ..models import Aula, AulaSinRecursosAdicionales, Docente, Reservacion
+from ..serializers import AulaReservaDTO
 
 class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
-    """Clase encargada de implementar el protocolo para persistir datos de la clase Aula sin_adicionales en una BDD SQL (PostgreSQL)"""
+    """Clase encargada de implementar el protocolo para persistir datos de la clase AulaSinRecursosAdicionales en una BDD SQL (PostgreSQL)"""
     def create_sin_adicionales(self, aula_sin_adicionales):
         aula_sin_adicionales.save()
 
@@ -38,7 +39,7 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
         
         #print(hora_fin)
         # Filtrar reservaciones ocupadas que se solapan en el horario
-        reservaciones_ocupadas = Reservacion.objects.select_related('Aula').filter(
+        reservaciones_ocupadas = Reservacion.objects.select_related('Aula').select_related('AulaSinRecursosAdicionales').filter(
             fecha=fecha,
             # Filtrar solapamientos de horarios
             hora_inicio__lt=hora_fin,  # Comienza antes de que termine la nueva reserva
@@ -68,32 +69,33 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
         hora_fin_dt = hora_inicio_dt + duracion_timedelta
 
         # Filtrar reservaciones conflictivas
-        reservaciones_conflictivas = Reservacion.objects.select_related('Aula').select_related('Reserva').select_related('Actividad').select_related('Docente').filter(
+        reservaciones_conflictivas = Reservacion.objects.select_related('Aula').select_related('AulaSinRecursosAdicionales').select_related('Reserva').select_related('Actividad').select_related('Docente').filter(
             fecha=fecha,
-            capacidad__gte=capacidad,
+            aula__capacidad__gte=capacidad,
             # Filtrar solapamientos de horarios
             hora_inicio__lt=hora_fin_dt.time(),  # Comienza antes de que termine la nueva reserva
             hora_inicio__gte=(hora_inicio_dt - duracion_timedelta).time()  # Termina después de que comience
         ).values(
             'id_reservacion',  # ID de la reservación
-            'horario_inicio',  # Hora de inicio
+            'hora_inicio',  # Hora de inicio
             'duracion',        # Duración en minutos
+            'dia',
+            'fecha',
             'aula__nro_aula',  # Número del aula
             'aula__piso',
             'aula__capacidad', # Capacidad del aula
-            'docente__id_docente'
-            'docente__nombre'
-            'docente__apellido'
-            'docente__correo'
+            'reserva__actividad__docente__id_docente',
+            'reserva__actividad__docente__nombre',
+            'reserva__actividad__docente__apellido',
+            'reserva__actividad__docente__correo_contacto'
         )
-
         # Determinar el menor tiempo de solapamiento
         menor_solapamiento = None
         mejor_reservacion = []
 
         for reservacion in reservaciones_conflictivas:
             # Convertir los datos de la reservación en horarios
-            reservacion_inicio = datetime.combine(fecha, reservacion['horario_inicio'])
+            reservacion_inicio = datetime.combine(fecha, reservacion['hora_inicio'])
             reservacion_fin = reservacion_inicio + timedelta(minutes=reservacion['duracion'])
 
             # Calcular el tiempo de solapamiento
@@ -111,8 +113,9 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
 
         # Retornar la reservación con el menor solapamiento, o None si no hay conflictos
         return [AulaReservaDTO(
-                    Aula(nro_aula=reservacion['nro_aula'], piso=reservacion['piso'], capacidad=reservacion['capacidad']), 
+                    Aula(nro_aula=reservacion['aula__nro_aula'], piso=reservacion['aula__piso'], capacidad=reservacion['aula__capacidad']), 
                     Reservacion(dia=reservacion['dia'], fecha=reservacion['fecha'], duracion=reservacion['duracion'], hora_inicio=reservacion['hora_inicio']), 
-                    Docente(id_docente=reservacion['id_docente'], apellido=reservacion['apellido'], nombre=reservacion['nombre'], correo=reservacion['correo']))
+                    Docente(id_docente=reservacion['reserva__actividad__docente__id_docente'], apellido=reservacion['reserva__actividad__docente__apellido'], 
+                            nombre=reservacion['reserva__actividad__docente__nombre'], correo_contacto=reservacion['reserva__actividad__docente__correo_contacto']))
                 for reservacion in mejor_reservacion]
         

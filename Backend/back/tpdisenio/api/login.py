@@ -14,12 +14,12 @@ from ..serializers import LoginRequestSerializer, LoginResponseSerializer
 @api_view(['POST'])
 def login(request):
     if request.method == 'POST':
-        print("LLegó post a login")
+        #print("LLegó post a login")
         login_request_serializer = LoginRequestSerializer(data=request.data)
         data = login_request_serializer.initial_data
         id_usuario = data['id_usuario']
         contrasenia = data['contrasenia']
-        print(id_usuario, contrasenia)
+        #print(id_usuario, contrasenia)
         response, cookie = gestor_sesion.inicio_sesion(id_usuario, contrasenia)
         response_serializer = LoginResponseSerializer(response)
         #if cookie is None:
@@ -35,5 +35,5 @@ def login(request):
             max_age=3600,
             path="/"
         )
-        print(cookie)
+        #print(cookie)
         return r

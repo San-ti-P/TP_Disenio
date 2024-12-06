@@ -24,4 +24,7 @@ class SQLPeriodoDAO(PeriodoDAO):
         periodo.save()
 
     def get_periodo_by_year(self, tipo_periodo, anio):
-        return Periodo.objects.filter(tipo=tipo_periodo, anio=anio)[0]
+        periodos = Periodo.objects.filter(tipo=tipo_periodo, anio=anio)
+        if len(periodos) > 0:
+            return periodos[0]
+        return None

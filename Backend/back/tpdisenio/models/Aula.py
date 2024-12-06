@@ -21,7 +21,7 @@ class Aula(models.Model):
     reservaciones = []
 
     def add_reservacion(self, reservacion):
-        self.reservaciones.add(reservacion)
+        self.reservaciones.append(reservacion)
 
     def get_nro_aula(self):
         return self.nro_aula

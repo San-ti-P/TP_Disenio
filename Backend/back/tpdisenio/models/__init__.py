@@ -2,7 +2,7 @@ from .Actividad import Actividad
 from .Administrador import Administrador
 from .Aula import Aula
 from .AulaInformatica import AulaInformatica
-from .AulaMultimedios import AulaMultimedios
+from .AulaMultimedio import AulaMultimedio
 from .AulaSinRecursosAdicionales import AulaSinRecursosAdicionales
 from .Bedel import Bedel
 from .Docente import Docente
