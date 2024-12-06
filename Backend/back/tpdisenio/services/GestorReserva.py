@@ -1,7 +1,6 @@
 from ..models import Reserva
 from ..models import Reservacion
 from ..models import Periodo
-from .GestorDocente import DocenteDTO
 from datetime import date, timedelta
 
 
@@ -43,7 +42,7 @@ class GestorReserva():
         if True in errores:
             return None
 
-        reserva = Reserva(cant_alumnos=cant_alumnos, fecha_solicitud=date.today())
+        reserva = Reserva(cantidad_alumnos=cant_alumnos, fecha_solicitud=date.today())
 
         if periodo is not None:
             reserva.set_periodo(periodo)
@@ -51,15 +50,16 @@ class GestorReserva():
         else:
             reserva.set_tipo(Reserva.TipoReserva.ESPORADICA)
         
-        self.gestor_actividad.alta_actividad(actividad_DTO, docente_DTO)
+        actividad = self.gestor_actividad.alta_actividad(actividad_DTO, docente_DTO)
+        reserva.set_actividad(actividad)
 
         #CHEQUAR SI VA LO DE SESION ACA O LO ELIMINAMOS 
 
         reserva.set_autor_reserva(usuario)
 
         for r in lista_reservaciones:
-           reservacion = self.gestor_reservacion.alta_reservacion(r.get_hora_inicio(), r.get_duracion(), r.get_fecha(), reserva, r.get_aula().get_nro_aula())
-           self.add_reservacion(reservacion)
+           reservacion = self.gestor_reservacion.alta_reservacion(r.get_hora_inicio(), r.get_duracion(), r.get_dia(), r.get_fecha(), reserva, r.get_aula().get_nro_aula())
+           reserva.add_reservacion(reservacion)
         
         self.reserva_DAO.create_reserva(reserva)
         return reserva
@@ -106,7 +106,7 @@ class GestorReserva():
         if not (type(cant_alumnos)==type(1) and cant_alumnos >= 0):
             datos_completos = False
 
-        tipos_aula = ["SinAdicionales", "Multimedio", "Informatica"]
+        tipos_aula = ["Sin recursos adicionales", "Multimedio", "Informatica"]
         if tipo_aula not in tipos_aula:
             datos_completos = False
         

@@ -1,11 +1,6 @@
 from ..models import Aula
 from ..daos import SQLAulaInformaticaDAO, SQLAulaMultimedioDAO, SQLAulaSinAdicionalesDAO
 
-class AulaReservaDTO():
-    def __init__(self, aula, reservacion, docente):
-        self.aula = aula
-        self.reservacion = reservacion
-        self.docente = docente
 
 class GestorAula():
     """Clase encargada de suministrar todo la lógica concerniente a la clase Aula"""
@@ -63,7 +58,7 @@ class GestorAula():
     def obtener_aulas_disponibles(self, capacidad, dia, horario_inicio, duracion, tipo):
         
         match tipo:
-            case "SinAdicionales":
+            case "Sin recursos adicionales":
                 aulas_reserva = self.aula_sin_adicionales_DAO.get_available(capacidad, dia, horario_inicio, duracion)
                 if len(aulas_reserva) == 0:
                     aulas_reserva = self.aula_sin_adicionales_DAO.calcular_reservacion_menor_diferencia(capacidad, dia, horario_inicio, duracion)

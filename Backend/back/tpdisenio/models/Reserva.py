@@ -25,7 +25,7 @@ class Reserva(models.Model):
     reservaciones = []
     
     def add_reservacion(self, reservacion):
-        self.reservaciones.add(reservacion)
+        self.reservaciones.append(reservacion)
 
     def get_id_reserva(self):
         return self.id_reserva

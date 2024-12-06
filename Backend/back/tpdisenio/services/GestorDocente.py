@@ -1,25 +1,25 @@
 from ..models import Docente
-class DocenteDTO(object):
-    def __init__(self, id, apellido, nombre, correo) -> None:
-        self.id_docente = id
-        self.apellido = apellido
-        self.nombre = nombre
-        self.correo = correo
+# class DocenteDTO(object):
+#     def __init__(self, id, apellido, nombre, correo) -> None:
+#         self.id_docente = id
+#         self.apellido = apellido
+#         self.nombre = nombre
+#         self.correo = correo
     
-    def get_id(self):
-        return self.id_docente
-    def get_nombre(self):
-        return self.nombre
-    def get_apellido(self):
-        return self.apellido
-    def get_correo(self):
-        return self.correo
+#     def get_id(self):
+#         return self.id_docente
+#     def get_nombre(self):
+#         return self.nombre
+#     def get_apellido(self):
+#         return self.apellido
+#     def get_correo(self):
+#         return self.correo
 
 
 class GestorDocente():
 
     def alta_docente(self, docente_DTO): 
-        docente = Docente(id_docente=docente_DTO.get_id(), apellido=docente_DTO.get_apellido(), nombre=docente_DTO.get_nombre(), correo_contacto=docente_DTO.get_correo(), activo=True, fecha_baja=None)
+        docente = Docente(id_docente=docente_DTO.get_id_docente(), apellido=docente_DTO.get_apellido(), nombre=docente_DTO.get_nombre(), correo_contacto=docente_DTO.get_correo_contacto(), activo=True, fecha_baja=None)
         #self.docente_DAO.create_docente(docente)
         return docente
 

@@ -1,8 +1,8 @@
 from datetime import timedelta, datetime 
 from django.core.exceptions import ObjectDoesNotExist
 from .AulaMultimedioDAO import AulaMultimedioDAO
-from ..models import AulaMultimedios
-from ..models import Reservacion
+from ..models import Aula, AulaMultimedio, Docente, Reservacion
+from ..serializers import AulaReservaDTO
 
 class SQLAulaMultimedioDAO(AulaMultimedioDAO):
     """Clase encargada de implementar el protocolo para persistir datos de la clase Aula multimedio en una BDD SQL (PostgreSQL)"""
@@ -17,12 +17,12 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
 
     def get_aula(self, nro_aula):
         try:
-            return AulaMultimedios.objects.get(nro_aula=nro_aula)
+            return AulaMultimedio.objects.get(nro_aula=nro_aula)
         except ObjectDoesNotExist:
             return None
         
     def getAll_multimedio(self):
-        return AulaMultimedios.objects.all()
+        return AulaMultimedio.objects.all()
 
     def update_multimedio(self, aula_multimedio):
         aula_multimedio.save()
@@ -36,26 +36,29 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
 
         # Calcular hora de fin de la reserva solicitada
         hora_fin = (datetime.combine(fecha, hora_inicio) + duracion_timedelta).time()
-
+        
+        #print(hora_fin)
         # Filtrar reservaciones ocupadas que se solapan en el horario
-        reservaciones_ocupadas = Reservacion.objects.select_related('aula').filter(
+        reservaciones_ocupadas = Reservacion.objects.select_related('Aula').select_related('AulaMultimedio').filter(
             fecha=fecha,
             # Filtrar solapamientos de horarios
             hora_inicio__lt=hora_fin,  # Comienza antes de que termine la nueva reserva
             hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time()
         ).values('aula__nro_aula')
-
+        #print(reservaciones_ocupadas)
         # Obtener los números de aulas ocupadas
         aulas_ocupadas = {res['aula__nro_aula'] for res in reservaciones_ocupadas}
-
+        #print(aulas_ocupadas)
         # Filtrar aulas disponibles
-        aulas_disponibles = AulaMultimedios.objects.filter(
+        aulas_disponibles = AulaMultimedio.objects.filter(
             capacidad__gte=capacidad,  # Verificar que la capacidad mínima se cumpla
             activo=True,               # Asegurarse de que el aula esté activa
         ).exclude(nro_aula__in=aulas_ocupadas)  # Excluir aulas ocupadas
-
+        #print(aulas_disponibles)
         # Devolver solo los números de aula
-        return list(aulas_disponibles.values_list('nro_aula', flat=True))
+
+        return [AulaReservaDTO(Aula(nro_aula=aula['nro_aula'], piso=aula['piso'], capacidad=aula['capacidad']), None, None)
+                for aula in list(aulas_disponibles.values('nro_aula', 'piso', 'capacidad'))]
     
     def calcular_reservacion_menor_diferencia(self, capacidad, fecha, hora_inicio, duracion):
         # Convertir duración de minutos a timedelta
@@ -66,29 +69,33 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
         hora_fin_dt = hora_inicio_dt + duracion_timedelta
 
         # Filtrar reservaciones conflictivas
-        reservaciones_conflictivas = Reservacion.objects.select_related('Aula').select_related('Reserva').select_related('Actividad').select_related('Docente').filter(
+        reservaciones_conflictivas = Reservacion.objects.select_related('Aula').select_related('AulaMultimedio').select_related('Reserva').select_related('Actividad').select_related('Docente').filter(
             fecha=fecha,
+            aula__capacidad__gte=capacidad,
             # Filtrar solapamientos de horarios
             hora_inicio__lt=hora_fin_dt.time(),  # Comienza antes de que termine la nueva reserva
             hora_inicio__gte=(hora_inicio_dt - duracion_timedelta).time()  # Termina después de que comience
         ).values(
             'id_reservacion',  # ID de la reservación
-            'horario_inicio',  # Hora de inicio
+            'hora_inicio',  # Hora de inicio
             'duracion',        # Duración en minutos
+            'dia',
+            'fecha',
             'aula__nro_aula',  # Número del aula
+            'aula__piso',
             'aula__capacidad', # Capacidad del aula
-            'docente__id_docente'
-            'docente__apellido'
-            'docente__correo'
+            'reserva__actividad__docente__id_docente',
+            'reserva__actividad__docente__nombre',
+            'reserva__actividad__docente__apellido',
+            'reserva__actividad__docente__correo_contacto'
         )
-
         # Determinar el menor tiempo de solapamiento
         menor_solapamiento = None
         mejor_reservacion = []
 
         for reservacion in reservaciones_conflictivas:
             # Convertir los datos de la reservación en horarios
-            reservacion_inicio = datetime.combine(fecha, reservacion['horario_inicio'])
+            reservacion_inicio = datetime.combine(fecha, reservacion['hora_inicio'])
             reservacion_fin = reservacion_inicio + timedelta(minutes=reservacion['duracion'])
 
             # Calcular el tiempo de solapamiento
@@ -105,4 +112,10 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
                     mejor_reservacion.append(reservacion)
 
         # Retornar la reservación con el menor solapamiento, o None si no hay conflictos
-        return mejor_reservacion
+        return [AulaReservaDTO(
+                    Aula(nro_aula=reservacion['aula__nro_aula'], piso=reservacion['aula__piso'], capacidad=reservacion['aula__capacidad']), 
+                    Reservacion(dia=reservacion['dia'], fecha=reservacion['fecha'], duracion=reservacion['duracion'], hora_inicio=reservacion['hora_inicio']), 
+                    Docente(id_docente=reservacion['reserva__actividad__docente__id_docente'], apellido=reservacion['reserva__actividad__docente__apellido'], 
+                            nombre=reservacion['reserva__actividad__docente__nombre'], correo_contacto=reservacion['reserva__actividad__docente__correo_contacto']))
+                for reservacion in mejor_reservacion]
+        
