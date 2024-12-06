@@ -162,9 +162,10 @@ const ComponenteOtro = (props) => (
     <ComponenteBaseInput {...props}  />
 );
 
-const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeholder, name, valorPorDefecto, valores}) => {
+const ComponenteDesplegableInput = ({estado, cambiarEstado, tipo, label, placeholder, name, valorPorDefecto, valores, arreglo}) => {
     const manejarCambio = (e) => {
         cambiarEstado({ ...estado, campo: e.target.value, valido: 'true' });
+        if(arreglo) arreglo([]);
     };
 
     return (

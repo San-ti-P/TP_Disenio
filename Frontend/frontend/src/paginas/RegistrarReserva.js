@@ -5,20 +5,20 @@ import { Botones, Container, FormSection, FormGroup, Label, ScheduleSection, Par
 import { ComponenteNyAP, ComponenteDesplegableInput } from '../componentes/input';
 import { Input, BotonSC } from "../elementos/formularios"
 import { CancelarModal } from '../componentes/modal';
-import { getActividadesDocentes } from "../services/api.js"
+import { getActividadesDocentes, obtenerAulasReserva } from "../services/api.js"
 import DataList from '../componentes/dataList.js';
 
 const RegistroReservas = () => {
   const [tipoReserva, setTipoReserva] = useState({ campo: '', valido: null });
-  const [nombreYAp, setNombreYAp] = useState({ campo: '', valido: null });
   const [correo, setCorreo] = useState({ campo: '', valido: null });
-  const [cantidadAlumnos, setCantidadAlumnos] = useState({ campo: '', valido: null });
+  const [cantidadAlumnos, setCantidadAlumnos] = useState({ campo: ''});
   const [tipoAula, setTipoAula] = useState({ campo: '', valido: null });
-  const [actividad, setActividad] = useState({ campo: '', valido: null });
   const [reservas, setReservas] = useState([]);
   const [periodo, setPeriodo] = useState(null);
-  const [nombre_apellido_id, setNombre_apellido_id] = useState([]);
-  const [actividadesDocentes, setActividadesDocentes] = useState({ actividades: [], docentes: [] });
+  const [nombreYAp, setNombreYAp] = useState({ campo: '', valido: null });
+  const [nombre_apellido_id, setNombre_apellido_id] = useState([]); //Lista
+  const [actividad, setActividad] = useState({ campo: '', valido: null });
+  const [actividadesDocentes, setActividadesDocentes] = useState({ actividades: [], docentes: [] }); //Lista
 
   const handleReservasChange = (nuevasReservas, periodo) => {
     setReservas(nuevasReservas);
@@ -28,6 +28,7 @@ const RegistroReservas = () => {
   const obtenerActividadesDocentes = async () => {
     try {
       const datos = await getActividadesDocentes();
+      console.log("Actividades y docentes: ", datos);
       setActividadesDocentes(datos);
       generarNombreApellidoId(datos.docentes);
     } catch (error) {
@@ -35,10 +36,10 @@ const RegistroReservas = () => {
     }
   };
 
-  const generarNombreApellidoId = (arreglo) => {
+  const generarNombreApellidoId = (docentes) => {
     setNombre_apellido_id(
-      arreglo.map(docente => ({
-        id: docente.id_docente,
+      docentes.map(docente => ({
+        //id: docente.id_docente,
         nombre: `${docente.nombre} ${docente.apellido} - ${docente.id_docente}`,
       }))
     );
@@ -47,7 +48,10 @@ const RegistroReservas = () => {
   const handleNombreYApChange = (estado) => {
     setNombreYAp(estado);
     const docenteSeleccionado = actividadesDocentes.docentes.find(doc => `${doc.nombre} ${doc.apellido} - ${doc.id_docente}` === estado.campo);
-    if (docenteSeleccionado) setCorreo({ campo: docenteSeleccionado.correo_contacto, valido: "true" });
+    if (docenteSeleccionado){
+      setCorreo({ campo: docenteSeleccionado.correo_contacto, valido: "true" });
+      setNombreYAp({ campo: estado.campo, valido: "true" });
+    }
     else setCorreo({ campo: '', valido: null });
   };
 
@@ -64,10 +68,21 @@ const RegistroReservas = () => {
       lista_reservaciones: reservas
     };
     console.log(JSON.stringify(formData, null, 2));
+  
+    const respuestaReserva = await obtenerAulasReserva(formData);
+    console.log("what", respuestaReserva);
 
-    // const respuestaReserva = await obtenerAulasReserva(formData);
-    // console.log("what", respuestaReserva);
+  };
 
+  const todosCamposValidos = () => {
+    //console.log("reservas.length: ", reservas.length);
+    return tipoReserva.valido &&
+    nombreYAp.valido &&
+    correo.valido &&
+    tipoAula.valido &&
+    actividad.valido &&
+    reservas.length > 0 &&
+    parseInt(cantidadAlumnos.campo, 10) > 0;
   };
 
   useEffect(() => { obtenerActividadesDocentes(); }, []);
@@ -107,9 +122,14 @@ const RegistroReservas = () => {
               id="cantidadAlumnos"
               type="number"
               min="0"
+              max="500"
+              step="10"
               placeholder="0"
               value={cantidadAlumnos.campo}
               onChange={(e) => setCantidadAlumnos({ ...cantidadAlumnos, campo: e.target.value })}
+              onKeyDown={(e) => {
+                if (e.key !== "ArrowUp" && e.key !== "ArrowDown" && e.key !== "Tab") e.preventDefault();
+              }}
             />
           </FormGroup>
           <FormGroup>
@@ -147,6 +167,7 @@ const RegistroReservas = () => {
             placeholder="Seleccione un tipo de reserva"
             name="tipoReserva"
             valores={["Periodica", "Esporadica"]}
+            arreglo={setReservas}
           />
         </FormGroup>
 
@@ -164,7 +185,11 @@ const RegistroReservas = () => {
       <Footer>
         <ParrafoObli>Todos los campos son obligatorios</ParrafoObli>
         <Botones>
-          <BotonSC onClick={handleSubmit}>
+          <BotonSC 
+            onClick={handleSubmit}
+            disabled={!todosCamposValidos()}
+            style={{ backgroundColor: todosCamposValidos() ? '#0075FF' : 'lightgrey' }}
+          >
             Siguiente
           </BotonSC>
           <CancelarModal

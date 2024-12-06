@@ -13,6 +13,13 @@ const HorarioModalEsporadica = ({ fecha, onAceptar, onCancelar }) => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    // Permitir solo las teclas de flecha arriba y abajo
+    if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown' && e.key !== "Tab") {
+      e.preventDefault();
+    }
+  };
+
   return (
     <>
       <ModalOverlay onClick={onCancelar} />
@@ -32,8 +39,10 @@ const HorarioModalEsporadica = ({ fecha, onAceptar, onCancelar }) => {
             type="number"
             value={duracion}
             onChange={(e) => setDuracion(Math.max(30, Number(e.target.value)))}
+            onKeyDown={handleKeyDown}
             step="30"
             min="30"
+            max="300"
           />
         </FormGroup>
         <ModalButtons>

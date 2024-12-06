@@ -19,7 +19,7 @@ const App = () => {
     const onSubmit = async (e) => {
         e.preventDefault();
         const respuesta = await enviarUsuario(datosLogin);
-      
+        console.log(respuesta);
         if (respuesta.rango === "acceso denegado") {
           cambiarMostrarContraLeyenda(true);
         } else {
