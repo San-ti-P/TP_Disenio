@@ -126,7 +126,7 @@ class GestorReserva():
                     break
                 vistos_dias.add(reservacion.get_dia())
 
-            if (periodo.get_fecha_inicio() <= date.today()):
+            if (periodo.get_fecha_fin() <= date.today()):
                 dia_anterior_actual = True
 
         for reservacion in lista_reservaciones: 
@@ -170,7 +170,8 @@ class GestorReserva():
     
     def iniciar_reserva(self, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones):
         if periodo is not None:
-            periodo = self.gestor_periodo.get_periodo(periodo, date.today().year)
+            periodo = self.gestor_periodo.get_periodo(periodo, date.today().year+1)
+            #El +1 de arriba es para que el periodo sea del año siguiente, así podemos testear.
         errores = self.validar_datos(docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones)
         
         if True in errores:
