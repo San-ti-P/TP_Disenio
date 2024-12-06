@@ -22,8 +22,8 @@ def login(request):
         print(id_usuario, contrasenia)
         response, cookie = gestor_sesion.inicio_sesion(id_usuario, contrasenia)
         response_serializer = LoginResponseSerializer(response)
-        if cookie is None:
-            raise AuthenticationFailed("Credenciales no válidas")
+        #if cookie is None:
+        #    raise AuthenticationFailed("Credenciales no válidas")
         r = Response(response_serializer.data)
         
         r.set_cookie(

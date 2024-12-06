@@ -1,5 +1,5 @@
 from django.urls import path
-from .api import bedeles, login, politicas, iniciar_reserva
+from .api import bedeles, login, politicas, iniciar_reserva, reservas
 from . import views
 
 urlpatterns = [
@@ -8,6 +8,7 @@ urlpatterns = [
     path("login", login, name="login usuarios"),
     path("politicas", politicas, name="buscador politicas"),
     path("iniciar_reserva", iniciar_reserva, name="iniciador reserva"),
+    path("reserva", reservas, name="manejador de reservas"),
     #path("buscar_bedel", buscar_bedel, name="buscador bedeles"),
     #path("modificar_bedel", modificar_bedel, name="actualizador bedeles"),
     #path("registrar_bedel", registrar_bedel, name="registrador bedeles"),

@@ -59,10 +59,12 @@ def bedeles(request):
     print("HOLAAAAAAAAAAAAAAAAAAAA", request.COOKIES)
     if 'sesion' in request.COOKIES:
         sesion = request.COOKIES.get('sesion')
+        autorizado, sesion = gestor_sesion.consultar_sesion(sesion)
     else:
+        autorizado = False
         sesion = None
     
-    autorizado, sesion = gestor_sesion.consultar_sesion(sesion)
+    
 
     if autorizado:
         if sesion.get_es_admin():
@@ -78,9 +80,9 @@ def bedeles(request):
             if request.method == 'DELETE':
                 return eliminar_bedel(request=request)
         else:
-            raise PermissionDenied("Acceso denegado")
+            return Response("Acceso denegado")
     else:
-        raise AuthenticationFailed("Credenciales no válidas")
+        return Response("Credenciales no válidas")
 
 
 def buscar_bedel(request):
