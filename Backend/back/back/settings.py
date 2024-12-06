@@ -98,44 +98,20 @@ MIDDLEWARE = [
 #    'x-requested-with',
 #]
 
-# SESSION_COOKIE_SAMESITE = None
-# CSRF_COOKIE_SAMESITE = None
-
-# CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOW_ALL_ORIGINS = True
-# CSRF_ALLOW_ALL_ORIGINS = True
-
-# CORS_ALLOW_CREDENTIALS = True
-# CORS_ALLOW_ALL_ORIGINS = True  # Cambiamos esto a False para ser más específicos
-# # CORS_ALLOWED_ORIGINS = [
-# #     "http://localhost:3000",  # Ajusta esto a la URL de tu frontend
-# # ]
-# CSRF_TRUSTED_ORIGINS = [
-#     "http://localhost:3000",  # Ajusta esto a la URL de tu frontend
-# ]
-# SESSION_COOKIE_SECURE = False  # Para HTTP
-# CSRF_COOKIE_SECURE = False  # Para HTTP
-
-# Configuraciones CORS
 CORS_ALLOW_CREDENTIALS = True
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-]
+#CORS_ORIGIN_WHITELIST = (
+#    'http://localhost:3000',
+#)
 CORS_ALLOW_ALL_ORIGINS = True
-# CORS_ALLOWED_ORIGINS = [
-#     'http://localhost:3000',
-# ]
+#CORS_ALLOWED_ORIGINS = [
+#    'http://localhost:3000',
+#]
 
 # Configuraciones de cookies
 SESSION_COOKIE_SAMESITE = 'None'
-# SESSION_COOKIE_SECURE = False  # Para desarrollo
+SESSION_COOKIE_SECURE = True  # Para desarrollo
 CSRF_COOKIE_SAMESITE = 'None'
-# CSRF_COOKIE_SECURE = False  # Para desarrollo
-
-
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
+CSRF_COOKIE_SECURE = True  # Para desarrollo
 
 
 ROOT_URLCONF = 'back.urls'
@@ -214,8 +190,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# CORS_ALLOWED_ORIGINS = []
 
 REST_FRAMEWORK = {
     # YOUR SETTINGS

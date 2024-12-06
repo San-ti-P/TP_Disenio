@@ -117,8 +117,8 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: "http://127.0.0.1:8000/tpdisenio/", 
-  withCredentials: true,
-  credentials: "include"
+  withCredentials: true
+  //credentials: "include"
 });
 
 const enviarFormulario = async (datosFormulario) => {

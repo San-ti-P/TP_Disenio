@@ -57,12 +57,12 @@ def bedeles(request):
     Define el comportamiento de .../bedeles. Acepta solicitudes GET, POST, PUT, DELETE
     """
     print("HOLAAAAAAAAAAAAAAAAAAAA", request.COOKIES)
-    if 'sessionid' in request.COOKIES:
-        sessionid = request.COOKIES.get('sessionid')
+    if 'sesion' in request.COOKIES:
+        sesion = request.COOKIES.get('sesion')
     else:
-        sessionid = None
+        sesion = None
     
-    autorizado, sesion = gestor_sesion.consultar_sesion(sessionid)
+    autorizado, sesion = gestor_sesion.consultar_sesion(sesion)
 
     if autorizado:
         if sesion.get_es_admin():

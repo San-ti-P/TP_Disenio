@@ -51,6 +51,7 @@ class GestorSesion():
             self.sesiones.pop(cookie)
 
     def consultar_sesion(self, cookie):
+        print("SESIONES: ", self.sesiones)
         if cookie in self.sesiones:
             sesion = self.sesiones[cookie]
             return True, sesion

@@ -47,13 +47,13 @@ const RegistroReservas = () => {
   const handleNombreYApChange = (estado) => {
     setNombreYAp(estado);
     const docenteSeleccionado = actividadesDocentes.docentes.find(doc => `${doc.nombre} ${doc.apellido} - ${doc.id_docente}` === estado.campo);
-    if (docenteSeleccionado) setCorreo({ campo: docenteSeleccionado.correo, valido: "true" });
+    if (docenteSeleccionado) setCorreo({ campo: docenteSeleccionado.correo_contacto, valido: "true" });
     else setCorreo({ campo: '', valido: null });
   };
 
   const handleSubmit = async () => {
     const actividadObj = actividadesDocentes.actividades.find(act => act.nombre === actividad.campo);
-    const docenteObj = actividadesDocentes.docentes.find(doc => doc.correo === correo.campo);
+    const docenteObj = actividadesDocentes.docentes.find(doc => doc.correo_contacto === correo.campo);
     
     const formData = {
       docente: docenteObj,
