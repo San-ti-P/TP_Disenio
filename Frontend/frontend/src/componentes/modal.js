@@ -18,7 +18,7 @@ const tuneoModal = (config) => {
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    z-index: 11000 !important;
+    z-index: 12000 !important;
   }
   .swal2-html-container {
     margin: 1em 1.6em 0.3em !important;
@@ -73,8 +73,7 @@ const tuneoModal = (config) => {
     width: 380,
     position: 'center',
     scrollbarPadding: false,
-    heightAuto: false
-    
+    heightAuto: false 
   };
 
   const finalConfig = { ...defaultConfig, ...config };
@@ -103,7 +102,7 @@ const CancelarModal = ({
       confirmButtonText: confirmarTexto,
       cancelButtonText: cancelarTexto,
       width: width,
-      zIndex: 12000
+      //z-Index: 12000
     }).then((result) => {
       if (result.isConfirmed) {
         if (onConfirm) {
@@ -137,6 +136,7 @@ const mostrarModalExito = (onConfirm) => {
   });
 };
 
+
 const mostrarModalExitoModificar = (onConfirm) => {
   tuneoModal({
     title: "Bedel modificado satisfactoriamente",
@@ -153,4 +153,18 @@ const mostrarModalExitoModificar = (onConfirm) => {
   });
 };
 
-export { CancelarModal, mostrarModalExito, tuneoModal, mostrarModalExitoModificar };
+const mostrarModalWarningReserva = (frase) => {
+  tuneoModal({
+    title: "Error al registrar la reserva",
+    html: frase,
+    icon: "warning",
+    confirmButtonText: "Aceptar",
+    width: 700,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      console.log("Cerro el modal de error al registrar la reserva");
+  }});
+
+};
+
+export { CancelarModal, mostrarModalExito, tuneoModal, mostrarModalExitoModificar, mostrarModalWarningReserva };

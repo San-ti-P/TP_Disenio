@@ -5,10 +5,10 @@ import HorarioModal from './horarioModalPeriodica';
 const diasMap = {
   'Lun': 'Lunes',
   'Mar': 'Martes',
-  'Mie': 'Miércoles',
+  'Mie': 'Miercoles',
   'Jue': 'Jueves',
   'Vie': 'Viernes',
-  'Sab': 'Sábado',
+  'Sab': 'Sabado',
   'Dom': 'Domingo'
 };
 
@@ -47,10 +47,10 @@ const ReservaPeriodica = ({ onReservasChange }) => {
     <DivPeriodica>
       <RadioGroup>
         <RadioButton>
-          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Primer cuatrimestre')} defaultChecked/> Primer cuatrimestre
+          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Primer Cuatrimestre')} defaultChecked/> Primer cuatrimestre
         </RadioButton>
         <RadioButton>
-          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Segundo cuatrimestre')} /> Segundo cuatrimestre
+          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Segundo Cuatrimestre')} /> Segundo cuatrimestre
         </RadioButton>
         <RadioButton>
           <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Anual')} /> Anual
