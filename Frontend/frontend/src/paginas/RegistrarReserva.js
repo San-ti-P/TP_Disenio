@@ -4,7 +4,7 @@ import ReservaPeriodica from '../componentes/reservaPeriodica';
 import { Botones, Container, FormSection, FormGroup, Label, ScheduleSection, ParrafoObli, Footer } from '../elementos/formReserva';
 import { ComponenteNyAP, ComponenteDesplegableInput } from '../componentes/input';
 import { Input, BotonSC } from "../elementos/formularios"
-import { CancelarModal } from '../componentes/modal';
+import { CancelarModal, mostrarModalWarningReserva } from '../componentes/modal';
 import { getActividadesDocentes, obtenerAulasReserva } from "../services/api.js"
 import DataList from '../componentes/dataList.js';
 
@@ -71,7 +71,15 @@ const RegistroReservas = () => {
   
     const respuestaReserva = await obtenerAulasReserva(formData);
     console.log("what", respuestaReserva);
-
+    if (respuestaReserva.errors.some(error => error === true)) {
+      let frase = "";
+      const errores = respuestaReserva.errors;
+      if(errores[2]) frase += "- Unicamente se puede seleccionar un horario por día.<br>";
+      if(errores[2]) frase += "- La duración seleccionada debe ser multiplo de 30 minutos.<br>";
+      if(errores[2]) frase += "- La fecha seleccionada debe ser posterior a la fecha actual.<br>";
+      if(errores[2]) frase += "- Todos los campos son obligatorios.<br>";
+      mostrarModalWarningReserva(frase);
+    }
   };
 
   const todosCamposValidos = () => {
