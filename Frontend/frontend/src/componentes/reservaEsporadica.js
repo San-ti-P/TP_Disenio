@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import CalendarioPersonalizado from '../componentes/calendarioEsporadico';
 import ModalHorarioEsporadico from '../componentes/horarioModalEsporadica';
+import FocusLock from 'react-focus-lock';
 import { 
   BotonEliminarReserva, 
   ContenedorReservas, 
@@ -30,6 +31,7 @@ const ReservasEsporadicas = ({ onReservasChange }) => {
   const [mostrarModalHorario, setMostrarModalHorario] = useState(false);
   const [reservas, setReservas] = useState({});
   const [mostrarModalReservas, setMostrarModalReservas] = useState(false);
+  const previousFocusRef = useRef(null);
 
   const manejarClickFecha = (fecha) => {
     setFechaSeleccionada(fecha);
@@ -64,6 +66,18 @@ const ReservasEsporadicas = ({ onReservasChange }) => {
     return reservas[fechaString] ? 'reservada' : null;
   };
 
+  const handleOpenModalReservas = () => {
+    previousFocusRef.current = document.activeElement;
+    setMostrarModalReservas(true);
+  };
+
+  const handleCloseModalReservas = () => {
+    setMostrarModalReservas(false);
+    if (previousFocusRef.current) {
+      previousFocusRef.current.focus();
+    }
+  };
+
   return (
     <ContenedorReservas>
       <ContenedorCalendario>
@@ -73,7 +87,7 @@ const ReservasEsporadicas = ({ onReservasChange }) => {
           value={null}
         />
       </ContenedorCalendario>
-      <BotonVerReservas onClick={() => setMostrarModalReservas(true)}>
+      <BotonVerReservas onClick={handleOpenModalReservas}>
         Ver Reservas
       </BotonVerReservas>
       {mostrarModalHorario && fechaSeleccionada && (
@@ -85,22 +99,24 @@ const ReservasEsporadicas = ({ onReservasChange }) => {
       )}
       {mostrarModalReservas && (
         <FondoModal>
-          <ContenidoModal>
-            <EncabezadoModal>
-              <TituloModal>Reservas</TituloModal>
-              <BotonCerrarModal onClick={() => setMostrarModalReservas(false)}>&times;</BotonCerrarModal>
-            </EncabezadoModal>
-            <ListaReservas>
-              {Object.entries(reservas).map(([fecha, { dia, duracion, hora_inicio }]) => (
-                <ItemReserva key={fecha}>
-                  {fecha} ({dia}): {hora_inicio} hs - {duracion} minutos
-                  <BotonEliminarReserva onClick={() => manejarEliminarReserva(fecha)}>
-                    Eliminar
-                  </BotonEliminarReserva>
-                </ItemReserva>
-              ))}
-            </ListaReservas>
-          </ContenidoModal>
+          <FocusLock>
+            <ContenidoModal>
+              <EncabezadoModal>
+                <TituloModal>Reservas</TituloModal>
+                <BotonCerrarModal onClick={handleCloseModalReservas}>&times;</BotonCerrarModal>
+              </EncabezadoModal>
+              <ListaReservas>
+                {Object.entries(reservas).map(([fecha, { dia, duracion, hora_inicio }]) => (
+                  <ItemReserva key={fecha}>
+                    {fecha} ({dia}): {hora_inicio} hs - {duracion} minutos
+                    <BotonEliminarReserva onClick={() => manejarEliminarReserva(fecha)}>
+                      Eliminar
+                    </BotonEliminarReserva>
+                  </ItemReserva>
+                ))}
+              </ListaReservas>
+            </ContenidoModal>
+          </FocusLock>
         </FondoModal>
       )}
     </ContenedorReservas>

@@ -11,6 +11,7 @@ import RegistrarBedel from "./paginas/RegistrarBedel";
 import Login from "./paginas/logIn";
 import ProtectedRoute from "./componentes/rutaProtegida";
 import EstilosGlobal from './estilos/estilosGlobal';
+import AulaReservas from "./paginas/AulaReservas";
 
 function App() {
   return (
@@ -84,6 +85,14 @@ function App() {
           element={
             <ProtectedRoute rolesPermitidos={["bedel"]}>
               <ListarReservasCurso />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/aulas-reservas"
+          element={
+            <ProtectedRoute rolesPermitidos={["bedel"]}>
+              <AulaReservas />
             </ProtectedRoute>
           }
         />

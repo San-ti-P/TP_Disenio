@@ -159,7 +159,7 @@ const mostrarModalWarningReserva = (frase) => {
     html: frase,
     icon: "warning",
     confirmButtonText: "Aceptar",
-    width: 700,
+    width: 640
   }).then((result) => {
     if (result.isConfirmed) {
       console.log("Cerro el modal de error al registrar la reserva");

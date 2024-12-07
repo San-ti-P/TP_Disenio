@@ -7,6 +7,7 @@ import { Input, BotonSC } from "../elementos/formularios"
 import { CancelarModal, mostrarModalWarningReserva } from '../componentes/modal';
 import { getActividadesDocentes, obtenerAulasReserva } from "../services/api.js"
 import DataList from '../componentes/dataList.js';
+import { useNavigate } from 'react-router-dom';
 
 const RegistroReservas = () => {
   const [tipoReserva, setTipoReserva] = useState({ campo: '', valido: null });
@@ -19,6 +20,7 @@ const RegistroReservas = () => {
   const [nombre_apellido_id, setNombre_apellido_id] = useState([]); //Lista
   const [actividad, setActividad] = useState({ campo: '', valido: null });
   const [actividadesDocentes, setActividadesDocentes] = useState({ actividades: [], docentes: [] }); //Lista
+  const navigate = useNavigate();
 
   const handleReservasChange = (nuevasReservas, periodo) => {
     setReservas(nuevasReservas);
@@ -80,6 +82,10 @@ const RegistroReservas = () => {
       if(errores[2]) frase += "- Todos los campos son obligatorios.<br>";
       mostrarModalWarningReserva(frase);
     }
+    else {
+      const fechas = respuestaReserva.fechas;
+      navigate('/aulas-reservas', { state: { fechas } });
+    }
   };
 
   const todosCamposValidos = () => {
@@ -119,6 +125,7 @@ const RegistroReservas = () => {
               placeholder="Correo electrónico del solicitante"
               name="correo"
               editable={false}
+              tabIndex="-1"
             />
           </FormGroup>
         </div>

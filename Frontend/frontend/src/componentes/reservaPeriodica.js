@@ -47,13 +47,16 @@ const ReservaPeriodica = ({ onReservasChange }) => {
     <DivPeriodica>
       <RadioGroup>
         <RadioButton>
-          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Primer Cuatrimestre')} defaultChecked/> Primer cuatrimestre
+          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Primer Cuatrimestre')} defaultChecked/> 
+          Primer cuatrimestre
         </RadioButton>
         <RadioButton>
-          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Segundo Cuatrimestre')} /> Segundo cuatrimestre
+          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Segundo Cuatrimestre')} />
+          Segundo cuatrimestre
         </RadioButton>
         <RadioButton>
-          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Anual')} /> Anual
+          <input type="radio" name="cuatrimestre" onChange={() => setPeriodo('Anual')} />
+          Anual
         </RadioButton>
       </RadioGroup>
 

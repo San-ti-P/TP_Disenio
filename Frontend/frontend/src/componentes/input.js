@@ -45,6 +45,7 @@ const ComponenteBaseInput = ({
     mostrarLeyenda,
     cambiarMostrarLeyenda,
     editable = true, // Nueva prop
+    tabIndex = "0"
 }) => {
     const [mostrarPassword, setMostrarPassword] = useState(false);
     const [campoTocado, setCampoTocado] = useState(false);
@@ -95,6 +96,7 @@ const ComponenteBaseInput = ({
             }}
             valido={estado.valido}
             readOnly={!editable} // Desactiva la edición
+            tabIndex={tabIndex}
         />
     );
     
