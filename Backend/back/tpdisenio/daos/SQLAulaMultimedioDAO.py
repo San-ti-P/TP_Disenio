@@ -1,8 +1,8 @@
 from datetime import timedelta, datetime 
 from django.core.exceptions import ObjectDoesNotExist
 from .AulaMultimedioDAO import AulaMultimedioDAO
-from ..models import Aula, AulaMultimedio, Docente, Reservacion
-from ..serializers import AulaReservaDTO
+from ..models import AulaMultimedio, Docente, Reservacion
+from ..serializers import AulaDTO, AulaReservaDTO
 
 class SQLAulaMultimedioDAO(AulaMultimedioDAO):
     """Clase encargada de implementar el protocolo para persistir datos de la clase Aula multimedio en una BDD SQL (PostgreSQL)"""
@@ -27,7 +27,29 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
     def update_multimedio(self, aula_multimedio):
         aula_multimedio.save()
 
-   
+    def get_caracteristicas(self, ac, tv, canion, pc, ventilador):
+        cars = "Posee"
+        elementos = [[ac, " aire acondicionado"], [tv, " televisor"], [canion, " cañón"], [pc, " computadora"], [ventilador, " ventilador"]]
+        cant = 0
+        for e in elementos:
+            if e[0]:
+                cant = cant + 1
+        
+        if cant == 0:
+            return ""
+        
+        agregados = 0
+        for e in elementos:
+            if e[0]:
+                if agregados == 0:
+                    cars = cars + e[1]
+                else:
+                    if agregados < cant-1:
+                        cars = cars + "," + e[1]
+                    else:
+                        cars = cars + " y" + e[1]
+                agregados = agregados + 1
+        return cars
 
     def get_available(self, capacidad, fecha, hora_inicio, duracion):
 
@@ -57,8 +79,9 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
         #print(aulas_disponibles)
         # Devolver solo los números de aula
 
-        return [AulaReservaDTO(Aula(nro_aula=aula['nro_aula'], piso=aula['piso'], capacidad=aula['capacidad']), None, None)
-                for aula in list(aulas_disponibles.values('nro_aula', 'piso', 'capacidad'))]
+        return [AulaReservaDTO(AulaDTO(aula['nro_aula'], aula['piso'], aula['capacidad'],
+                               self.get_caracteristicas(aula['aire_acondicionado'], aula['televisor'], aula['canion'], aula['computadora'], aula['ventilador'])), None, None)
+                for aula in list(aulas_disponibles.values('nro_aula', 'piso', 'capacidad', 'aire_acondicionado', 'televisor', 'canion', 'computadora', 'ventilador'))]
     
     def calcular_reservacion_menor_diferencia(self, capacidad, fecha, hora_inicio, duracion):
         # Convertir duración de minutos a timedelta
@@ -113,7 +136,7 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
 
         # Retornar la reservación con el menor solapamiento, o None si no hay conflictos
         return [AulaReservaDTO(
-                    Aula(nro_aula=reservacion['aula__nro_aula'], piso=reservacion['aula__piso'], capacidad=reservacion['aula__capacidad']), 
+                    AulaDTO(nro_aula=reservacion['aula__nro_aula'], piso=reservacion['aula__piso'], capacidad=reservacion['aula__capacidad'], caracteristicas=""), 
                     Reservacion(dia=reservacion['dia'], fecha=reservacion['fecha'], duracion=reservacion['duracion'], hora_inicio=reservacion['hora_inicio']), 
                     Docente(id_docente=reservacion['reserva__actividad__docente__id_docente'], apellido=reservacion['reserva__actividad__docente__apellido'], 
                             nombre=reservacion['reserva__actividad__docente__nombre'], correo_contacto=reservacion['reserva__actividad__docente__correo_contacto']))

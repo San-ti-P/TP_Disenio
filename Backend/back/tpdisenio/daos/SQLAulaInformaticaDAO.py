@@ -1,8 +1,8 @@
 from datetime import timedelta, datetime 
 from django.core.exceptions import ObjectDoesNotExist
 from .AulaInformaticaDAO import AulaInformaticaDAO
-from ..models import Aula, AulaInformatica, Docente, Reservacion
-from ..serializers import AulaReservaDTO
+from ..models import AulaInformatica, Docente, Reservacion
+from ..serializers import AulaDTO, AulaReservaDTO
 
 class SQLAulaInformaticaDAO(AulaInformaticaDAO):
     """Clase encargada de implementar el protocolo para persistir datos de la clase AulaInformatica en una BDD SQL (PostgreSQL)"""
@@ -27,7 +27,22 @@ class SQLAulaInformaticaDAO(AulaInformaticaDAO):
     def update_informatica(self, aula_informatica):
         aula_informatica.save()
 
-   
+    def get_caracteristicas(self, ac, cant_pc, canion):
+        if cant_pc == 1 :
+            str_PC = str(cant_pc) + " PC"
+        else:
+            str_PC = str(cant_pc) + " PCs"
+        if ac:
+            if canion:
+                cars = "Posee aire acondicionado, " + str_PC + " y cañón."
+            else :
+                cars = "Posee aire acondicionado y " + str_PC + "."
+        else:
+            if canion:
+                cars = "Posee " + str_PC + " y cañón."
+            else:
+                cars = "Posee " + str_PC + "."
+        return cars
 
     def get_available(self, capacidad, fecha, hora_inicio, duracion):
 
@@ -57,8 +72,9 @@ class SQLAulaInformaticaDAO(AulaInformaticaDAO):
         #print(aulas_disponibles)
         # Devolver solo los números de aula
 
-        return [AulaReservaDTO(Aula(nro_aula=aula['nro_aula'], piso=aula['piso'], capacidad=aula['capacidad']), None, None)
-                for aula in list(aulas_disponibles.values('nro_aula', 'piso', 'capacidad'))]
+        return [AulaReservaDTO(AulaDTO(aula['nro_aula'], aula['piso'], aula['capacidad'],
+                                self.get_caracteristicas(aula['aire_acondicionado'], aula['cant_PCs'], aula['canion'])), None, None)
+                for aula in list(aulas_disponibles.values('nro_aula', 'piso', 'capacidad', 'aire_acondicionado', 'cant_PCs', 'canion'))]
     
     def calcular_reservacion_menor_diferencia(self, capacidad, fecha, hora_inicio, duracion):
         # Convertir duración de minutos a timedelta
@@ -113,7 +129,7 @@ class SQLAulaInformaticaDAO(AulaInformaticaDAO):
 
         # Retornar la reservación con el menor solapamiento, o None si no hay conflictos
         return [AulaReservaDTO(
-                    Aula(nro_aula=reservacion['aula__nro_aula'], piso=reservacion['aula__piso'], capacidad=reservacion['aula__capacidad']), 
+                    AulaDTO(nro_aula=reservacion['aula__nro_aula'], piso=reservacion['aula__piso'], capacidad=reservacion['aula__capacidad']), 
                     Reservacion(dia=reservacion['dia'], fecha=reservacion['fecha'], duracion=reservacion['duracion'], hora_inicio=reservacion['hora_inicio']), 
                     Docente(id_docente=reservacion['reserva__actividad__docente__id_docente'], apellido=reservacion['reserva__actividad__docente__apellido'], 
                             nombre=reservacion['reserva__actividad__docente__nombre'], correo_contacto=reservacion['reserva__actividad__docente__correo_contacto']))

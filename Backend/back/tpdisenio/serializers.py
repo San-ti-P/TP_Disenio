@@ -8,6 +8,12 @@ class AulaReservaDTO():
         self.reservacion = reservacion
         self.docente = docente
 
+class AulaDTO():
+    def __init__(self, nro_aula, piso, capacidad, caracteristicas):
+        self.nro_aula = nro_aula
+        self.piso = piso
+        self.capacidad = capacidad
+        self.caracteristicas = caracteristicas
 
 class IniciarReservaEntidadesDTO():
     def __init__(self, actividades, docentes):
@@ -26,11 +32,12 @@ class BedelSerializer(serializers.ModelSerializer):
         model = Bedel
         fields = '__all__'
 
-class AulaDTOSerializer(serializers.ModelSerializer):
+class AulaDTOSerializer(serializers.Serializer):
 
-    class Meta:
-        model = Aula
-        fields = ['nro_aula', 'piso', 'capacidad']
+    nro_aula = serializers.CharField()
+    piso = serializers.CharField()
+    capacidad = serializers.IntegerField()
+    caracteristicas = serializers.CharField()
 
 #class TipoActividadDTOSerializer(serializers.Serializer):
 #    id_tipo_actividad = serializers.IntegerField()
