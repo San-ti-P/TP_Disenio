@@ -59,7 +59,7 @@ export const BotonFecha = styled.button`
 
   .estado {
     font-size: 0.9em;
-    color: ${props => props.noDisponible || !props.seleccionado ? '#bb2929' : '#666'};
+    color: ${props => props.nodisponible || !props.seleccionado ? '#bb2929' : '#666'};
   }
 `;
 

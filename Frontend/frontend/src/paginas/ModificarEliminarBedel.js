@@ -16,7 +16,7 @@ export default function ModificarEliminarBedel() {
 
   const location = useLocation();
   const [valores, setValores] = useState(location.state?.valores || []);
-  const [politicasTooltip, setPoliticasTooltip] = useState(location.state?.politicasTooltip || "");
+  const [politicasTooltip, setPoliticasTooltip] = useState(location.state?.politicas || "");
   const [criteriosBusqueda, setCriteriosBusqueda] = useState({
     apellido: location.state?.apellido || '',
     turno: location.state?.turno || ''
@@ -78,7 +78,7 @@ export default function ModificarEliminarBedel() {
                 <StyledTableCell>{row.turno}</StyledTableCell>
                 <StyledTableCell>{row.id_usuario}</StyledTableCell>
                 <StyledTableCell width="5fr" align="center">
-                  <ManejoModificar bedel={row} actualizarFila={actualizarFila} politicas={politicasTooltip} />
+                  <ManejoModificar bedel={row} actualizarFila={actualizarFila} politicasTooltip={politicasTooltip} />
                   <Button 
                     onClick={() => handleEliminar(row)} 
                     color="error"

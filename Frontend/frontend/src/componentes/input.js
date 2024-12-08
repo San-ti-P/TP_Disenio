@@ -44,7 +44,7 @@ const ComponenteBaseInput = ({
     leyendaError = "",
     mostrarLeyenda,
     cambiarMostrarLeyenda,
-    editable = true, // Nueva prop
+    editable = true,
     tabIndex = "0"
 }) => {
     const [mostrarPassword, setMostrarPassword] = useState(false);
