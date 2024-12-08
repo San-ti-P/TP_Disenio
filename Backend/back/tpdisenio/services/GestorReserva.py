@@ -11,8 +11,11 @@ class RespuestaIniciarReservaDTO():
     
 
 class SolicitudFechaDTO():
-    def __init__(self, fecha, lista_aula_reserva) -> None:
+    def __init__(self, fecha, dia, duracion, hora_inicio, lista_aula_reserva) -> None:
         self.fecha = fecha
+        self.dia = dia
+        self.duracion = duracion
+        self.hora_inicio = hora_inicio
         self.aulas = lista_aula_reserva
 
 
@@ -53,17 +56,26 @@ class GestorReserva():
         actividad = self.gestor_actividad.alta_actividad(actividad_DTO, docente_DTO)
         reserva.set_actividad(actividad)
 
-        #CHEQUAR SI VA LO DE SESION ACA O LO ELIMINAMOS 
-
         reserva.set_autor_reserva(usuario)
 
-        for r in lista_reservaciones:
-           reservacion = self.gestor_reservacion.alta_reservacion(r.get_hora_inicio(), r.get_duracion(), r.get_dia(), r.get_fecha(), reserva, r.get_aula().get_nro_aula())
-           reserva.add_reservacion(reservacion)
-        
-        self.reserva_DAO.create_reserva(reserva)
-        return reserva
+        exito = True
 
+        for r in lista_reservaciones:
+           
+            aulas = self.gestor_aula.obtener_aulas_disponibles(cant_alumnos, r.get_fecha(), r.get_hora_inicio(), r.get_duracion(), tipo_aula)
+            aulas_disponibles = [a.aula.nro_aula for a in aulas if a.reservacion is None]
+            if r.get_aula().get_nro_aula() not in aulas_disponibles:
+                exito = False
+                break
+            reservacion = self.gestor_reservacion.alta_reservacion(r.get_hora_inicio(), r.get_duracion(), r.get_dia(), r.get_fecha(), reserva, r.get_aula().get_nro_aula())
+            reserva.add_reservacion(reservacion)
+        
+        if exito: 
+            self.reserva_DAO.create_reserva(reserva)
+            return exito, reserva
+
+        else:
+            return exito, None
             
     def baja_reserva(self, id_reserva):
 
@@ -183,7 +195,7 @@ class GestorReserva():
         solicitudes = []
         for r in lista_reservaciones:
             aulas = self.gestor_aula.obtener_aulas_disponibles(cant_alumnos, r.get_fecha(), r.get_hora_inicio(), r.get_duracion(), tipo_aula)
-            solicitudes.append(SolicitudFechaDTO(r.get_fecha(), aulas))
+            solicitudes.append(SolicitudFechaDTO(r.get_fecha(), r.get_dia(), r.get_duracion(), r.get_hora_inicio(), aulas))
 
 
         return RespuestaIniciarReservaDTO(errores, solicitudes)

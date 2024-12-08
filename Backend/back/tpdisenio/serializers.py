@@ -100,6 +100,9 @@ class IniciarReservaRequestSerializer(serializers.Serializer):
 
 class SolicitudFechaSerializer(serializers.Serializer):
     fecha = serializers.DateField()
+    dia = serializers.DateField()
+    duracion = serializers.IntegerField()
+    hora_inicio = serializers.TimeField()
     aulas = AulaReservaDTOSerializer(many=True)
 
 class IniciarReservaResponseSerializer(serializers.Serializer):

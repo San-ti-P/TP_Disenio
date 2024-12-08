@@ -1,4 +1,4 @@
-TRUNCATE public."Usuario", public."Bedel", public."Administrador", public."Periodo", public."AulaInformatica", public."AulaMultimedios", public."AulaSinRecursosAdicionales", public."Aula"CASCADE;
+TRUNCATE public."Usuario", public."Bedel", public."Administrador", public."Periodo", public."AulaInformatica", public."AulaMultimedio", public."AulaSinRecursosAdicionales", public."Aula" CASCADE;
 
 INSERT INTO public."Usuario" (id_usuario, contrasenia, nombre, apellido, activo, fecha_baja) VALUES 
 ('utn-000000', '$2b$12$AGJJjVaYiowu/07AGLEVtOaxijElrlKC0JWnxzPmARm8t.1qB.1Uu', 'Marcos', 'Debona', true, NULL),
@@ -62,7 +62,7 @@ INSERT INTO public."Aula" (nro_aula, capacidad, piso, aire_acondicionado, estado
 INSERT INTO public."AulaInformatica" (nro_aula, "cant_PCs", canion) VALUES ('Laboratorio 1', 20, true);
 INSERT INTO public."AulaInformatica" (nro_aula, "cant_PCs", canion) VALUES ('Laboratorio 3', 20, false);
 
-INSERT INTO public."AulaMultimedios" (nro_aula, televisor, canion, ventilador, computadora) VALUES ('Aula Multimedios 1', true, true, true, false);
+INSERT INTO public."AulaMultimedio" (nro_aula, televisor, canion, ventilador, computadora) VALUES ('Aula Multimedios 1', true, true, true, false);
 
 INSERT INTO public."AulaSinRecursosAdicionales" (nro_aula, ventilador) VALUES ('Aula 17', false);
 INSERT INTO public."AulaSinRecursosAdicionales" (nro_aula, ventilador) VALUES ('Aula 18', false);

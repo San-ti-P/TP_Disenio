@@ -60,17 +60,21 @@ def registrar_reserva(request, usuario):
         fecha = reservacion['fecha']
         if fecha is not None:
             fecha = datetime.datetime.strptime(fecha, "%Y-%m-%d").date()
-        reservaciones_objs.append(
-            Reservacion(
-                dia=reservacion['dia'],
-                fecha=fecha,
-                duracion=reservacion['duracion'],
-                hora_inicio=datetime.datetime.strptime(reservacion['hora_inicio'], "%H:%M").time(),
-                aula = Aula(nro_aula=reservacion['aula'])
-            )
-        )
+            nro_aula = reservacion['aula']
+            if nro_aula is not None:
+                reservaciones_objs.append(
+                    Reservacion(
+                        dia=reservacion['dia'],
+                        fecha=fecha,
+                        duracion=reservacion['duracion'],
+                        hora_inicio=datetime.datetime.strptime(reservacion['hora_inicio'], "%H:%M").time(),
+                        aula = Aula(nro_aula=nro_aula)
+                    )
+                )
     
-    response = gestor_reserva.alta_reserva(usuario, docente, cant_alumnos, tipo_aula, actividad, periodo, reservaciones_objs)
-
-    response_serializer = ReservaSerializer(response)
-    return Response(response_serializer.data)
+    exito, response = gestor_reserva.alta_reserva(usuario, docente, cant_alumnos, tipo_aula, actividad, periodo, reservaciones_objs)
+    if exito:
+        response_serializer = ReservaSerializer(response)
+        return Response(response_serializer.data)
+    else:
+        return Response("No se pudo registrar la reserva")
