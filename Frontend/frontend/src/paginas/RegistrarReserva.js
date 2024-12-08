@@ -76,15 +76,15 @@ const RegistroReservas = () => {
     if (respuestaReserva.errors.some(error => error === true)) {
       let frase = "";
       const errores = respuestaReserva.errors;
-      if(errores[2]) frase += "- Unicamente se puede seleccionar un horario por día.<br>";
-      if(errores[2]) frase += "- La duración seleccionada debe ser multiplo de 30 minutos.<br>";
+      if(errores[0]) frase += "- Unicamente se puede seleccionar un horario por día.<br>";
+      if(errores[1]) frase += "- La duración seleccionada debe ser multiplo de 30 minutos.<br>";
       if(errores[2]) frase += "- La fecha seleccionada debe ser posterior a la fecha actual.<br>";
-      if(errores[2]) frase += "- Todos los campos son obligatorios.<br>";
+      if(errores[3]) frase += "- Todos los campos son obligatorios.<br>";
       mostrarModalWarningReserva(frase);
     }
     else {
       const fechas = respuestaReserva.fechas;
-      navigate('/aulas-reservas', { state: { fechas } });
+      navigate('/aulas-reservas', { state: { fechas, formData } });
     }
   };
 
@@ -225,3 +225,4 @@ const RegistroReservas = () => {
 };
 
 export default RegistroReservas;
+
