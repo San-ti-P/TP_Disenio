@@ -14,6 +14,7 @@ const App = () => {
     const [politicasTooltip, setPoliticasTooltip] = useState('');
 
     const obtenerPoliticas = async () => {
+        console.log("Hago peticion de politicas en Buscar Bedel!");
         const politicas = await getPoliticas();
         if (politicas) setPoliticasTooltip(politicas);
       };

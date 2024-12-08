@@ -1,7 +1,7 @@
 import React from 'react';
 import { Label, Input } from "../elementos/formularios";
 
-const DataList = ({ estado, cambiarEstado, label, placeholder, name, opciones }) => {
+const DataList = ({ estado, cambiarEstado, label, placeholder, name, opciones=[] }) => {
   const handleChange = (e) => {
     const valor = e.target.value;
     const esValido = opciones.some(opcion => opcion.nombre === valor);

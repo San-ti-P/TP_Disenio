@@ -52,8 +52,7 @@ const ContenidoModal = styled.div`
   background-color: white;
   padding: 20px;
   border-radius: 5px;
-  max-width: 500px;
-  width: 100%;
+  width: 500px;
   z-index: 1001;
 `;
 

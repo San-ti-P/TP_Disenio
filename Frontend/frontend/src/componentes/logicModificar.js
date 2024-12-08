@@ -19,8 +19,7 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
   const [animarErrores, cambiarAnimarErrores] = useState(false);
   const [mostrarIDLeyenda, cambiarMostrarIDLeyenda] = useState(false);
   const [mostrarContraLeyenda, cambiarMostrarContraLeyenda] = useState(false);
-  // const [politicasTooltip, setPoliticasTooltip] = useState(politicas);
-
+  
   const expresiones = {
     nombre: /^[a-zA-ZÀ-ÿ\s]{2,40}$/,
     apellido: /^[a-zA-ZÀ-ÿ\s]{2,40}$/,
@@ -86,9 +85,9 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
         contrasenia: contraseña1.campo
       };
 
-      console.log(datosFormulario);
+      console.log("Datos del Formulario: ", datosFormulario);
       const respuesta = await modificarBedel(datosFormulario);
-      console.log(respuesta.error);
+      console.log("Respuesta: ", respuesta.error);
 
       if (respuesta.error) alert("Ocurrió un error al enviar el formulario");
       else {
@@ -184,6 +183,7 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
             mostrarLeyenda={mostrarIDLeyenda}
             cambiarMostrarIDLeyenda={cambiarMostrarIDLeyenda}
             editable={false}
+            tabIndex="-1"
           />
           <ComponenteOtro 
             estado={contraseña1}
@@ -236,6 +236,8 @@ export const ManejoModificar = ({ bedel, actualizarFila, politicasTooltip }) => 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  console.log("Manejo Modificar", politicasTooltip);
 
   return (
     <>

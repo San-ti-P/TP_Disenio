@@ -102,7 +102,6 @@ const CancelarModal = ({
       confirmButtonText: confirmarTexto,
       cancelButtonText: cancelarTexto,
       width: width,
-      //z-Index: 12000
     }).then((result) => {
       if (result.isConfirmed) {
         if (onConfirm) {
@@ -164,7 +163,43 @@ const mostrarModalWarningReserva = (frase) => {
     if (result.isConfirmed) {
       console.log("Cerro el modal de error al registrar la reserva");
   }});
-
 };
 
-export { CancelarModal, mostrarModalExito, tuneoModal, mostrarModalExitoModificar, mostrarModalWarningReserva };
+const mostrarModalAulasSinSeleccionar = (funcion, datos) => {
+  tuneoModal({
+    title: "Hay fechas con aulas sin seleccionar",
+    html: "¿Esta seguro que desea confirmar la operacion? <br> Si presiona 'Confirmar' solo se reservarán las fechas con aulas seleccionadas.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Confirmar",
+    cancelButtonText: "Cancelar",
+    width: 550
+  }).then((result) => {
+    if (result.isConfirmed) {
+      funcion(datos); 
+      tuneoModal({
+        title: "Aulas reservadas exitosamente!",
+        text: "",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500
+      });
+    }
+  });
+};
+
+const mostrarModalAulasExitoso = () => {
+  tuneoModal({
+    title: "Aulas reservadas exitosamente!",
+    text: "",
+    icon: "success",
+    showConfirmButton: false, 
+    timer: 1500,
+    customClass: {
+      popup: "tick-verde-solo"
+    }
+  });
+};
+
+
+export { CancelarModal, mostrarModalExito, tuneoModal, mostrarModalExitoModificar, mostrarModalWarningReserva, mostrarModalAulasSinSeleccionar, mostrarModalAulasExitoso };

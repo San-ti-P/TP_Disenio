@@ -17,9 +17,9 @@ const RegistroReservas = () => {
   const [reservas, setReservas] = useState([]);
   const [periodo, setPeriodo] = useState(null);
   const [nombreYAp, setNombreYAp] = useState({ campo: '', valido: null });
-  const [nombre_apellido_id, setNombre_apellido_id] = useState([]); //Lista
+  const [nombre_apellido_id, setNombre_apellido_id] = useState([]); 
   const [actividad, setActividad] = useState({ campo: '', valido: null });
-  const [actividadesDocentes, setActividadesDocentes] = useState({ actividades: [], docentes: [] }); //Lista
+  const [actividadesDocentes, setActividadesDocentes] = useState({ actividades: [], docentes: [] });
   const navigate = useNavigate();
 
   const handleReservasChange = (nuevasReservas, periodo) => {
@@ -31,6 +31,7 @@ const RegistroReservas = () => {
     try {
       const datos = await getActividadesDocentes();
       console.log("Actividades y docentes: ", datos);
+      
       setActividadesDocentes(datos);
       generarNombreApellidoId(datos.docentes);
     } catch (error) {
@@ -40,10 +41,7 @@ const RegistroReservas = () => {
 
   const generarNombreApellidoId = (docentes) => {
     setNombre_apellido_id(
-      docentes.map(docente => ({
-        //id: docente.id_docente,
-        nombre: `${docente.nombre} ${docente.apellido} - ${docente.id_docente}`,
-      }))
+      docentes.map(docente => ({ nombre: `${docente.nombre} ${docente.apellido} - ${docente.id_docente}`}))
     );
   };
 
@@ -69,17 +67,19 @@ const RegistroReservas = () => {
       periodo: periodo,
       lista_reservaciones: reservas
     };
-    console.log(JSON.stringify(formData, null, 2));
+    console.log("Datos del formulario: ", JSON.stringify(formData, null, 2));
   
     const respuestaReserva = await obtenerAulasReserva(formData);
+
     console.log("what", respuestaReserva);
+    
     if (respuestaReserva.errors.some(error => error === true)) {
       let frase = "";
       const errores = respuestaReserva.errors;
       if(errores[0]) frase += "- Unicamente se puede seleccionar un horario por día.<br>";
       if(errores[1]) frase += "- La duración seleccionada debe ser multiplo de 30 minutos.<br>";
       if(errores[2]) frase += "- La fecha seleccionada debe ser posterior a la fecha actual.<br>";
-      if(errores[3]) frase += "- Todos los campos son obligatorios.<br>";
+      if(errores[3]) frase += "- Todos los campos son obligatorios.";
       mostrarModalWarningReserva(frase);
     }
     else {
@@ -89,7 +89,6 @@ const RegistroReservas = () => {
   };
 
   const todosCamposValidos = () => {
-    //console.log("reservas.length: ", reservas.length);
     return tipoReserva.valido &&
     nombreYAp.valido &&
     correo.valido &&
@@ -203,7 +202,10 @@ const RegistroReservas = () => {
           <BotonSC 
             onClick={handleSubmit}
             disabled={!todosCamposValidos()}
-            style={{ backgroundColor: todosCamposValidos() ? '#0075FF' : 'lightgrey' }}
+            style={{ 
+              backgroundColor: todosCamposValidos() ? '#0075FF' : 'lightgrey',
+              cursor: todosCamposValidos() ? 'pointer' : 'not-allowed'
+            }}
           >
             Siguiente
           </BotonSC>
