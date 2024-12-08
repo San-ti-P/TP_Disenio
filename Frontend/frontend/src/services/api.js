@@ -106,17 +106,17 @@ const obtenerAulasReserva = async (datosReserva) => {
 
 const enviarAulas = async (datosReserva) => {
   
-  console.log(JSON.stringify(datosReserva, null, 2));    
-  return -1;
+  // console.log(JSON.stringify(datosReserva, null, 2));    
+  // return -1;
 
-  // try {
-  //   const respuesta = await api.post("/reservas", datosReserva);
-  //   console.log("Respuesta del POST a /resreva: ", respuesta);
-  //   return respuesta;
-  // } catch (error) {
-  //   console.error("Error al enviar la reserva: ", error);
-  //   throw error;
-  // }
+  try {
+    const respuesta = await api.post("/reserva", datosReserva);
+    console.log("Respuesta del POST a /reserva: ", respuesta);
+    return respuesta;
+  } catch (error) {
+    console.error("Error al enviar la reserva: ", error);
+    throw error;
+  }
 }
 
 

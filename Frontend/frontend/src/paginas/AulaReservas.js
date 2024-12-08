@@ -40,9 +40,9 @@ export default function AulasReservas() {
         periodo: locate.state.formData.periodo || null,
         lista_reservaciones: (locate.state.fechas || []).map((fecha, index) => ({
           fecha: fecha.fecha,
-          dia: "fecha.dia_semana si Dios quiere",
-          duracion: "fecha.duracion si Dios quiere",
-          hora_inicio: "fecha.hora_incio si Dios quiere",
+          dia: fecha.dia,
+          duracion: fecha.duracion,
+          hora_inicio: fecha.hora_inicio ? fecha.hora_inicio.slice(0, 5) : null,
           aula: aulasSeleccionadas[fecha.fecha] || null
         }))
       };
@@ -67,11 +67,11 @@ export default function AulasReservas() {
 
   const handleSubmit = () => {
     const fechasSinSeleccionar = fechas.some(fecha => !aulasSeleccionadas[fecha.fecha]);
-    
-    if (fechasSinSeleccionar) mostrarModalAulasSinSeleccionar(enviarAulasSeleccionadas, datosFormulario);
+    console.log(datosFormulario);
+    if (fechasSinSeleccionar) mostrarModalAulasSinSeleccionar(navigate, enviarAulasSeleccionadas, datosFormulario);
     else {
       enviarAulasSeleccionadas(datosFormulario); 
-      mostrarModalAulasExitoso();
+      mostrarModalAulasExitoso(navigate);
     }
   };
 

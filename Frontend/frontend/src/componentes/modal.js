@@ -165,10 +165,94 @@ const mostrarModalWarningReserva = (frase) => {
   }});
 };
 
-const mostrarModalAulasSinSeleccionar = (funcion, datos) => {
+// // const mostrarModalAulasSinSeleccionar = (funcion, datos) => {
+// //   const navigate = useNavigate();
+// //   tuneoModal({
+// //     title: "Hay fechas con aulas sin seleccionar",
+// //     html: "¿Esta seguro que desea confirmar la operacion? <br> Si presiona 'Confirmar' solo se reservarán las fechas con aulas seleccionadas.",
+// //     icon: "warning",
+// //     showCancelButton: true,
+// //     confirmButtonText: "Confirmar",
+// //     cancelButtonText: "Cancelar",
+// //     width: 550
+// //   }).then((result) => {
+// //     if (result.isConfirmed) {
+// //       funcion(datos); 
+// //       tuneoModal({
+// //         title: "Aulas reservadas exitosamente!",
+// //         text: "",
+// //         icon: "success",
+// //         showConfirmButton: false,
+// //         timer: 1500
+// //       });
+// //     navigate("/registrar-reserva");
+// //     }
+// //   });
+// // };
+
+// const mostrarModalAulasSinSeleccionar = (funcion, datos) => {
+//   const navigate = useNavigate();
+//   tuneoModal({
+//     title: "Hay fechas con aulas sin seleccionar",
+//     html: "¿Esta seguro que desea confirmar la operación? <br> Si presiona 'Confirmar' solo se reservarán las fechas con aulas seleccionadas.",
+//     icon: "warning",
+//     showCancelButton: true,
+//     confirmButtonText: "Confirmar",
+//     cancelButtonText: "Cancelar",
+//     width: 550
+//   }).then((result) => {
+//     if (result.isConfirmed) {
+//       funcion(datos); 
+//       tuneoModal({
+//         title: "Aulas reservadas exitosamente!",
+//         text: "",
+//         icon: "success",
+//         showConfirmButton: false,
+//         timer: 1500,
+//         willClose: () => {
+//           navigate("/registrar-reserva");
+//         }
+//       });
+//     }
+//   });
+// };
+
+
+// // const mostrarModalAulasExitoso = () => {
+// //   const navigate = useNavigate();
+// //   tuneoModal({
+// //     title: "Aulas reservadas exitosamente!",
+// //     text: "",
+// //     icon: "success",
+// //     showConfirmButton: false, 
+// //     timer: 1500,
+// //     // customClass: {
+// //     //   popup: "tick-verde-solo"
+// //     // }
+// //   });
+// //   navigate("/registrar-reserva");
+// // };
+
+
+// const mostrarModalAulasExitoso = () => {
+//   const navigate = useNavigate();
+//   tuneoModal({
+//     title: "Aulas reservadas exitosamente!",
+//     text: "",
+//     icon: "success",
+//     showConfirmButton: false,
+//     timer: 1500,
+//     willClose: () => {
+//       navigate("/registrar-reserva");
+//     }
+//   });
+// };
+
+
+const mostrarModalAulasSinSeleccionar = (navigate, funcion, datos) => {
   tuneoModal({
     title: "Hay fechas con aulas sin seleccionar",
-    html: "¿Esta seguro que desea confirmar la operacion? <br> Si presiona 'Confirmar' solo se reservarán las fechas con aulas seleccionadas.",
+    html: "¿Está seguro que desea confirmar la operación? <br> Si presiona 'Confirmar' solo se reservarán las fechas con aulas seleccionadas.",
     icon: "warning",
     showCancelButton: true,
     confirmButtonText: "Confirmar",
@@ -182,24 +266,26 @@ const mostrarModalAulasSinSeleccionar = (funcion, datos) => {
         text: "",
         icon: "success",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
+        willClose: () => {
+          navigate("/menuBedel");
+        }
       });
     }
   });
 };
 
-const mostrarModalAulasExitoso = () => {
+const mostrarModalAulasExitoso = (navigate) => {
   tuneoModal({
     title: "Aulas reservadas exitosamente!",
     text: "",
     icon: "success",
-    showConfirmButton: false, 
+    showConfirmButton: false,
     timer: 1500,
-    customClass: {
-      popup: "tick-verde-solo"
+    willClose: () => {
+      navigate("/menuBedel");
     }
   });
 };
-
 
 export { CancelarModal, mostrarModalExito, tuneoModal, mostrarModalExitoModificar, mostrarModalWarningReserva, mostrarModalAulasSinSeleccionar, mostrarModalAulasExitoso };

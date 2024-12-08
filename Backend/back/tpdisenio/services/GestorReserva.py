@@ -43,7 +43,7 @@ class GestorReserva():
         errores = self.validar_datos(docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones)
         
         if True in errores:
-            return None
+            return False, None
 
         reserva = Reserva(cantidad_alumnos=cant_alumnos, fecha_solicitud=date.today())
 

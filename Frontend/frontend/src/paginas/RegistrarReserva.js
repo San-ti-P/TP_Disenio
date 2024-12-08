@@ -71,7 +71,7 @@ const RegistroReservas = () => {
   
     const respuestaReserva = await obtenerAulasReserva(formData);
 
-    console.log("what", respuestaReserva);
+    console.log("Respuesta Reserva: ", respuestaReserva);
     
     if (respuestaReserva.errors.some(error => error === true)) {
       let frase = "";
