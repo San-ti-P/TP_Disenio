@@ -67,16 +67,21 @@ export default function AulasReservas() {
     }));
   };
 
+  const alMenosUnAulaSeleccionada = () => {
+    return Object.values(aulasSeleccionadas).some(aula => aula !== null);
+  };
+
   const enviarAulasSeleccionadas = async (datos) => {
     const respuestaReserva = await enviarAulas(datos);
+    console.log("Respuesta del backend: ", JSON.stringify(respuestaReserva, null, 2))
   }
 
   const handleSubmit = () => {
-    const fechasSinSeleccionar = fechas.some(fecha => !aulasSeleccionadas[fecha.fecha]);
     console.log("JSON enviado al backend: ", JSON.stringify(datosFormulario, null, 2));
 
-    if (fechasSinSeleccionar) mostrarModalAulasSinSeleccionar(navigate, enviarAulasSeleccionadas, datosFormulario);
-    else {
+    if (!alMenosUnAulaSeleccionada()) {
+      mostrarModalAulasSinSeleccionar(navigate, enviarAulasSeleccionadas, datosFormulario);
+    } else {
       enviarAulasSeleccionadas(datosFormulario); 
       mostrarModalAulasExitoso(navigate);
     }
@@ -120,34 +125,42 @@ export default function AulasReservas() {
               {fechaSeleccionada.aulas.map((aula, index) => (
                 <OpcionAula 
                   key={index}
-                  onClick={() => manejarSeleccionAula(fechaSeleccionada, aula)}
+                  onClick={() => !aula.reservacion && !aula.docente && manejarSeleccionAula(fechaSeleccionada, aula)}
+                  style={{ cursor: aula.reservacion && aula.docente ? 'default' : 'pointer' }}
                 >
-                  <div className="encabezado">
-                    <input
-                      type="radio"
-                      name={`aula-${fechaSeleccionada.fecha}`}
-                      checked={aulasSeleccionadas[fechaSeleccionada.fecha] === aula.aula.nro_aula}
-                      onChange={() => {}}
-                    />
-                    <strong>{aula.aula.nro_aula}</strong>
-                  </div>
-                  <div className="detalles">
+
                     {!aula.reservacion && !aula.docente && (
                       <>
-                      <div>Ubicación: {aula.aula.piso}</div>
-                      <div>Capacidad: {aula.aula.capacidad} personas</div>
-                      <div>Características: {aula.aula.caracteristicas === "" ? " - " : aula.aula.caracteristicas}</div>
-                      </>
+                      <div className="encabezado">
+                          <input
+                            type="radio"
+                            name={`aula-${fechaSeleccionada.fecha}`}
+                            checked={aulasSeleccionadas[fechaSeleccionada.fecha] === aula.aula.nro_aula}
+                            onChange={() => manejarSeleccionAula(fechaSeleccionada, aula)}
+                          />
+                          <strong>{aula.aula.nro_aula}</strong>
+                      </div>
+                      <div className="detalles">
+                        <div>Ubicación: {aula.aula.piso}</div>
+                        <div>Capacidad: {aula.aula.capacidad} personas</div>
+                        <div>Características: {aula.aula.caracteristicas === "" ? " - " : aula.aula.caracteristicas}</div>
+                      </div>
+                    </>
                     )}
                     {aula.reservacion && aula.docente && (
                       <>
+                        <div className="encabezado">
+                            <label name={`aula-${fechaSeleccionada.fecha}`} />
+                            <strong>{aula.aula.nro_aula}</strong>
+                        </div>
+                      <div className="detalles">
                         <div>Profesor: {aula.docente.nombre} {aula.docente.apellido}</div>
                         <div>Actividad: {aula.actividad} </div>
                         <div>Correo de contacto: {aula.docente.correo_contacto}</div>
                         <div>Horario: {aula.reservacion.hora_inicio.slice(0, 5)}hs a {calcularHoraFinal(aula.reservacion.hora_inicio.slice(0, 5), aula.reservacion.duracion)}hs</div>
+                      </div>
                       </>
                     )}
-                  </div>
                 </OpcionAula>
               ))}
             </>
@@ -157,6 +170,11 @@ export default function AulasReservas() {
         <ContenedorBotones>
           <BotonSC 
             onClick={handleSubmit}
+            disabled={!alMenosUnAulaSeleccionada()}
+            style={{ 
+              backgroundColor: alMenosUnAulaSeleccionada() ? '#0075FF' : 'lightgrey',
+              cursor: alMenosUnAulaSeleccionada() ? 'pointer' : 'not-allowed'
+            }}
           >
             Guardar
           </BotonSC>

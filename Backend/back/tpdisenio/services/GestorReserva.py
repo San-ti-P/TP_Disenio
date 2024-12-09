@@ -39,9 +39,9 @@ class GestorReserva():
    
     def alta_reserva(self, usuario, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones):
         if periodo is not None:
-            periodo = self.gestor_periodo.get_periodo(periodo, date.today().year)
-        errores = self.validar_datos(docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones)
-        
+            periodo = self.gestor_periodo.get_periodo(periodo, date.today().year + 1)
+        errores = self.validar_datos(docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, None, lista_reservaciones) #cambio PERIODO por NONE
+        print(errores)
         if True in errores:
             return False, None
 
