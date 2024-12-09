@@ -70,7 +70,7 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
         # Devolver solo los números de aula
 
         return [AulaReservaDTO(AulaDTO(aula['nro_aula'], aula['piso'], aula['capacidad'], 
-                                self.get_caracteristicas(aula['aire_acondicionado'], aula['ventilador'])), None, None)
+                                self.get_caracteristicas(aula['aire_acondicionado'], aula['ventilador'])), None, None, None)
                 for aula in list(aulas_disponibles.values('nro_aula', 'piso', 'capacidad', 'aire_acondicionado', 'ventilador'))]
     
     def calcular_reservacion_menor_diferencia(self, capacidad, fecha, hora_inicio, duracion):
@@ -97,6 +97,7 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
             'aula__nro_aula',  # Número del aula
             'aula__piso',
             'aula__capacidad', # Capacidad del aula
+            'reserva__actividad__nombre',
             'reserva__actividad__docente__id_docente',
             'reserva__actividad__docente__nombre',
             'reserva__actividad__docente__apellido',
@@ -129,6 +130,7 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
                     AulaDTO(nro_aula=reservacion['aula__nro_aula'], piso=reservacion['aula__piso'], capacidad=reservacion['aula__capacidad'], caracteristicas=""), 
                     Reservacion(dia=reservacion['dia'], fecha=reservacion['fecha'], duracion=reservacion['duracion'], hora_inicio=reservacion['hora_inicio']), 
                     Docente(id_docente=reservacion['reserva__actividad__docente__id_docente'], apellido=reservacion['reserva__actividad__docente__apellido'], 
-                            nombre=reservacion['reserva__actividad__docente__nombre'], correo_contacto=reservacion['reserva__actividad__docente__correo_contacto']))
+                            nombre=reservacion['reserva__actividad__docente__nombre'], correo_contacto=reservacion['reserva__actividad__docente__correo_contacto']),
+                    reservacion['reserva__actividad__nombre'])
                 for reservacion in mejor_reservacion]
         

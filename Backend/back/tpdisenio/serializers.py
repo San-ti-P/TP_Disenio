@@ -3,10 +3,11 @@ from .models import Actividad, Aula, Bedel, Docente, Reserva, Reservacion, Usuar
 #import services
 
 class AulaReservaDTO():
-    def __init__(self, aula, reservacion, docente):
+    def __init__(self, aula, reservacion, docente, actividad):
         self.aula = aula
         self.reservacion = reservacion
         self.docente = docente
+        self.actividad = actividad
 
 class AulaDTO():
     def __init__(self, nro_aula, piso, capacidad, caracteristicas):
@@ -73,6 +74,7 @@ class AulaReservaDTOSerializer(serializers.Serializer):
     aula = AulaDTOSerializer()
     reservacion = ReservacionDTOSerializer(required=False)
     docente = DocenteDTOSerializer(required=False)
+    actividad = serializers.CharField()
 
 class ErrorsListSerializer(serializers.Serializer):
     """Serializador de la clase RespuestaRegistrarBedel"""
