@@ -70,7 +70,8 @@ export const CajaAdvertencia = styled.div`
   padding: 12px;
   margin-bottom: 20px;
   border-radius: 4px;
-`;
+  text-align: center;
+  `;
 
 export const OpcionAula = styled.div`
   padding: 15px;

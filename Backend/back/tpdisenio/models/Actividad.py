@@ -10,7 +10,7 @@ class Actividad(models.Model):
     id_actividad_historia = models.AutoField(primary_key=True)
     id_actividad = models.IntegerField()
     nombre = models.CharField(max_length=40)
-    descripcion = models.CharField(max_length=100)
+    descripcion = models.CharField(max_length=250)
     #tipo_actividad = models.ForeignKey(TipoActividad, on_delete=models.CASCADE, db_column="id_tipo_actividad")
     docente = models.ForeignKey(Docente, on_delete=models.PROTECT, db_column="id_docente")
     activo = models.BooleanField(default=True)

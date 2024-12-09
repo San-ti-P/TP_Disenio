@@ -14,6 +14,12 @@ import {
 } from '../elementos/AulasReservasEstilos';
 import {enviarAulas} from "../services/api"
 
+function calcularHoraFinal(horaInicio, duracion) {
+  const [horas, minutos] = horaInicio.split(":").map(Number);
+  const totalMinutos = horas * 60 + minutos + duracion;
+  const horaFinal = `${String(Math.floor(totalMinutos / 60)).padStart(2, '0')}:${String(totalMinutos % 60).padStart(2, '0')}`;
+  return horaFinal;
+}
 
 export default function AulasReservas() {
   const locate = useLocation();
@@ -42,7 +48,7 @@ export default function AulasReservas() {
           fecha: fecha.fecha,
           dia: fecha.dia,
           duracion: fecha.duracion,
-          hora_inicio: fecha.hora_inicio ? fecha.hora_inicio.slice(0, 5) : null,
+          hora_inicio: fecha.hora_inicio.slice(0, 5),
           aula: aulasSeleccionadas[fecha.fecha] || null
         }))
       };
@@ -67,7 +73,8 @@ export default function AulasReservas() {
 
   const handleSubmit = () => {
     const fechasSinSeleccionar = fechas.some(fecha => !aulasSeleccionadas[fecha.fecha]);
-    console.log(datosFormulario);
+    console.log("JSON enviado al backend: ", JSON.stringify(datosFormulario, null, 2));
+
     if (fechasSinSeleccionar) mostrarModalAulasSinSeleccionar(navigate, enviarAulasSeleccionadas, datosFormulario);
     else {
       enviarAulasSeleccionadas(datosFormulario); 
@@ -125,13 +132,19 @@ export default function AulasReservas() {
                     <strong>{aula.aula.nro_aula}</strong>
                   </div>
                   <div className="detalles">
-                    <div>Ubicación: {aula.aula.piso}</div>
-                    <div>Capacidad: {aula.aula.capacidad} personas</div>
-                    <div>Características: {aula.aula.caracteristicas === "" ? " - " : aula.aula.caracteristicas}</div>
+                    {!aula.reservacion && !aula.docente && (
+                      <>
+                      <div>Ubicación: {aula.aula.piso}</div>
+                      <div>Capacidad: {aula.aula.capacidad} personas</div>
+                      <div>Características: {aula.aula.caracteristicas === "" ? " - " : aula.aula.caracteristicas}</div>
+                      </>
+                    )}
                     {aula.reservacion && aula.docente && (
                       <>
                         <div>Profesor: {aula.docente.nombre} {aula.docente.apellido}</div>
-                        <div>Correo: {aula.docente.correo_contacto}</div>
+                        <div>Actividad: {aula.actividad} </div>
+                        <div>Correo de contacto: {aula.docente.correo_contacto}</div>
+                        <div>Horario: {aula.reservacion.hora_inicio.slice(0, 5)}hs a {calcularHoraFinal(aula.reservacion.hora_inicio.slice(0, 5), aula.reservacion.duracion)}hs</div>
                       </>
                     )}
                   </div>
