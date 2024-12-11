@@ -43,7 +43,7 @@ export default function ModificarEliminarBedel() {
 
 
   const valores_activo = valores.filter(valor => valor.activo);
-  console.log(valores_activo);
+  console.log("Arreglo de bedeles activos: ", valores_activo);
 
   return (
     <StyledContainer>
