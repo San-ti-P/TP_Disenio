@@ -19,8 +19,7 @@ class GestorReservacion():
     def alta_reservacion(self, horario, duracion, dia, date, reserva, nro_aula):
             aula = self.gestor_aula.get_aula(nro_aula)
             reservacion = Reservacion(hora_inicio = horario, duracion = duracion, dia = dia, fecha = date, reserva = reserva, aula = aula, activo=True, fecha_baja=None)
-            #self.reservacion_DAO.create_reservacion(reservacion)
-            self.gestor_aula.agregar_reservacion(reservacion, aula)
+
             return reservacion
 
 
