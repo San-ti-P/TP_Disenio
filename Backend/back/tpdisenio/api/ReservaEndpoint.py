@@ -22,7 +22,7 @@ def reservas(request):
     """
     Define el comportamiento de .../reservas. Acepta solicitudes POST
     """
-    #print(request.COOKIES)
+
     if 'sesion' in request.COOKIES:
         sesion = request.COOKIES.get('sesion')
         autorizado, sesion = gestor_sesion.consultar_sesion(sesion)
@@ -30,11 +30,12 @@ def reservas(request):
         autorizado = False
         sesion = None
     
-    #print(autorizado)
     if autorizado:
-        if request.method == 'POST':
-            return registrar_reserva(request=request, usuario=sesion.get_usuario())
-
+        if not sesion.get_es_admin():
+            if request.method == 'POST':
+                return registrar_reserva(request=request, usuario=sesion.get_usuario())
+        else:
+            return Response("Acceso denegado")
     else:
         return Response("Credenciales no válidas")
 
