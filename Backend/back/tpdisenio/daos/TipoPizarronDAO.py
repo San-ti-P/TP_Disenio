@@ -9,7 +9,7 @@ class TipoPizarronDAO(ABC):
     def delete_tipo_pizarron(self, id_tipo_pizarron):
         pass
 
-    def getAll_tipo_pizarron(self):
+    def get_all_tipo_pizarron(self):
         pass
 
     def update_tipo_pizarron(self, tipo_pizarron):

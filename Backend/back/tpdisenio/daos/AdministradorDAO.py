@@ -9,7 +9,7 @@ class AdministradorDAO(ABC):
     def delete_administrador(self, id_administrador):
         pass
 
-    def getAll_administrador(self):
+    def get_all_administrador(self):
         pass
 
     def update_administrador(self, administrador):

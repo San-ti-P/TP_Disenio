@@ -17,7 +17,7 @@ class SQLTipoPizarronDAO(TipoPizarronDAO):
             tipo_pizarron.set_fecha_baja(datetime.date.today())
             tipo_pizarron.save()
 
-    def getAll_tipo_pizarron(self):
+    def get_all_tipo_pizarron(self):
         return TipoPizarron.objects.all()
 
     def update_tipo_pizarron(self, tipo_pizarron):

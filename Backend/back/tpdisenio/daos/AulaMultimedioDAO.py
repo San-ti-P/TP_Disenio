@@ -9,11 +9,17 @@ class AulaMultimedioDAO(ABC):
     def delete_multimedio(self, nro_aula):
         pass
 
-    def getAll_multimedio(self):
+    def get_aula(self, nro_aula):
+        pass
+
+    def get_all_multimedio(self):
         pass
 
     def update_multimedio(self, aula_multimedio):
         pass
 
-    def get_avalible(self):
+    def get_available(self):
+        pass
+
+    def calcular_reservacion_menor_diferencia(self, capacidad, fecha, hora_inicio, duracion):
         pass

@@ -17,7 +17,7 @@ class SQLPeriodoDAO(PeriodoDAO):
             periodo.set_fecha_baja(datetime.date.today())
             periodo.save()
 
-    def getAll_periodo(self):
+    def get_all_periodo(self):
         return Periodo.objects.all()
 
     def update_periodo(self, periodo):

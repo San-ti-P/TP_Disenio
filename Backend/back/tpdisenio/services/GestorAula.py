@@ -4,15 +4,11 @@ from ..daos import SQLAulaInformaticaDAO, SQLAulaMultimedioDAO, SQLAulaSinAdicio
 
 class GestorAula():
     """Clase encargada de suministrar todo la lógica concerniente a la clase Aula"""
-    def __init__(self, gestor_sesion, aula_sin_adicionales_DAO, aula_multimedio_DAO, aula_informatica_DAO) -> None:
+    def __init__(self, aula_sin_adicionales_DAO, aula_multimedio_DAO, aula_informatica_DAO) -> None:
         
-        self.gestor_sesion = gestor_sesion
         self.aula_sin_adicionales_DAO = aula_sin_adicionales_DAO
         self.aula_multimedio_DAO = aula_multimedio_DAO
         self.aula_informatica_DAO = aula_informatica_DAO
-
-    def agregar_reservacion(self, reservacion, aula):
-        aula.add_reservacion(reservacion)
 
     def listar_reservaciones(self, nro_aula):
         pass
@@ -55,21 +51,21 @@ class GestorAula():
     def modificar_informatica(self):
         pass
 
-    def obtener_aulas_disponibles(self, capacidad, dia, horario_inicio, duracion, tipo):
+    def obtener_aulas_disponibles(self, capacidad, fecha, hora_inicio, duracion, tipo):
         
         match tipo:
             case "Sin recursos adicionales":
-                aulas_reserva = self.aula_sin_adicionales_DAO.get_available(capacidad, dia, horario_inicio, duracion)
+                aulas_reserva = self.aula_sin_adicionales_DAO.get_available(capacidad, fecha, hora_inicio, duracion)
                 if len(aulas_reserva) == 0:
-                    aulas_reserva = self.aula_sin_adicionales_DAO.calcular_reservacion_menor_diferencia(capacidad, dia, horario_inicio, duracion)
+                    aulas_reserva = self.aula_sin_adicionales_DAO.calcular_reservacion_menor_diferencia(capacidad, fecha, hora_inicio, duracion)
             case "Multimedio":
-                aulas_reserva = self.aula_multimedio_DAO.get_available(capacidad, dia, horario_inicio, duracion)
+                aulas_reserva = self.aula_multimedio_DAO.get_available(capacidad, fecha, hora_inicio, duracion)
                 if len(aulas_reserva) == 0:
-                    aulas_reserva = self.aula_multimedio_DAO.calcular_reservacion_menor_diferencia(capacidad, dia, horario_inicio, duracion)
+                    aulas_reserva = self.aula_multimedio_DAO.calcular_reservacion_menor_diferencia(capacidad, fecha, hora_inicio, duracion)
             case "Informatica":
-                aulas_reserva = self.aula_informatica_DAO.get_available(capacidad, dia, horario_inicio, duracion)
+                aulas_reserva = self.aula_informatica_DAO.get_available(capacidad, fecha, hora_inicio, duracion)
                 if len(aulas_reserva) == 0:
-                    aulas_reserva = self.aula_informatica_DAO.calcular_reservacion_menor_diferencia(capacidad, dia, horario_inicio, duracion)
+                    aulas_reserva = self.aula_informatica_DAO.calcular_reservacion_menor_diferencia(capacidad, fecha, hora_inicio, duracion)
         
         return aulas_reserva
 

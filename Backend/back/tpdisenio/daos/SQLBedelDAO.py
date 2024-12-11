@@ -16,7 +16,7 @@ class SQLBedelDAO(BedelDAO):
         bedel.set_fecha_baja(datetime.date.today())
         bedel.save()
 
-    def getAll_bedel(self):
+    def get_all_bedel(self):
         return Bedel.objects.all()
 
     def update_bedel(self, bedel):
@@ -34,7 +34,7 @@ class SQLBedelDAO(BedelDAO):
     def get_bedel_criterio(self, apellido, turno):
         if len(apellido) == 0:
             if len(turno) == 0:
-                return self.getAll_bedel()
+                return self.get_all_bedel()
             
             return Bedel.objects.filter(turno=turno)
         

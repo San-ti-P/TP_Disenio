@@ -26,10 +26,9 @@ class RespuestaModificarBedel(object):
 
 class GestorBedel():
     """Clase encargada de suministrar todo la lógica concerniente a la clase Bedel"""
-    def __init__(self, gestor_sesion, gestor_usuario, gestor_contrasenia,
+    def __init__(self, gestor_usuario, gestor_contrasenia,
                            bedel_DAO, administrador_DAO) -> None:
         
-        self.gestor_sesion = gestor_sesion
         self.gestor_usuario = gestor_usuario
         self.gestor_contrasenia = gestor_contrasenia
         self.bedel_DAO = bedel_DAO
@@ -113,8 +112,6 @@ class GestorBedel():
         id_usuario: str
             -- ID del bedel a eliminar
         """
-
-        #self.gestor_sesion.consultar_sesion()
 
         id_existente = False
         if not self.gestor_usuario.validacion_id_unico(id_usuario):

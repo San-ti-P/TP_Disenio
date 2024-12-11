@@ -14,7 +14,7 @@ class ReservacionDAO(ABC):
     def delete_reservacion(self, id_reservacion):
         pass
 
-    def getAll_reservacion(self):
+    def get_all_reservacion(self):
         pass
 
     def update_reservacion(self, reservacion):

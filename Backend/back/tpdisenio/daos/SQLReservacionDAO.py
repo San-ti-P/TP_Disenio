@@ -8,12 +8,8 @@ class SQLReservacionDAO(ReservacionDAO):
     """Clase encargada de implementar el protocolo para persistir datos de la clase Reservacion en una BDD SQL (PostgreSQL)"""
 
     def create_reservacion(self, reservacion):
-        #try:
         reservacion.save()
-        #except IntegrityError as e:
-            #Encargarse de que se guarden las cosas
-        #    pass
-        
+
     def delete_reservacion(self, id_reservacion):
         reservacion = Reservacion.objects.filter(id_reservacion=id_reservacion)
         if len(reservacion)==1:
@@ -22,7 +18,7 @@ class SQLReservacionDAO(ReservacionDAO):
             reservacion.set_fecha_baja(datetime.date.today())
             reservacion.save()
 
-    def getAll_reservacion(self):
+    def get_all_reservacion(self):
         Reservacion.objects.all()
 
     def update_reservacion(self, reservacion):

@@ -17,7 +17,7 @@ class SQLDocenteDAO(DocenteDAO):
             docente.set_fecha_baja(datetime.date.today())
             docente.save()
 
-    def getAll_docente(self):
+    def get_all_docente(self):
         return Docente.objects.all()
 
     def update_docente(self, docente):

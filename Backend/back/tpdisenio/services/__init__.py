@@ -25,11 +25,11 @@ SQL_reserva_DAO = SQLReservaDAO(SQL_bedel_DAO, SQL_periodo_DAO, SQL_actividad_DA
 gestor_sesion = GestorSesion(SQL_bedel_DAO, SQL_administrador_DAO)
 gestor_contrasenia = GestorContrasenia()
 gestor_usuario = GestorUsuario(SQL_bedel_DAO, SQL_administrador_DAO)
-gestor_bedel = GestorBedel(gestor_sesion, gestor_usuario, gestor_contrasenia,
+gestor_bedel = GestorBedel(gestor_usuario, gestor_contrasenia,
                            SQL_bedel_DAO, SQL_administrador_DAO)
 gestor_docente = GestorDocente()
 gestor_actividad = GestorActividad(gestor_docente, SQL_actividad_DAO)
 gestor_periodo = GestorPeriodo(SQL_periodo_DAO)
-gestor_aula = GestorAula(gestor_sesion, SQL_aula_sin_adicionales_DAO, SQL_aula_multimedios_DAO, SQL_aula_informatica_DAO)
-gestor_reservacion = GestorReservacion(gestor_sesion, gestor_aula, SQL_reservacion_DAO)
-gestor_reserva = GestorReserva(gestor_sesion, gestor_reservacion, gestor_actividad, gestor_periodo, gestor_aula, SQL_reserva_DAO, SQL_administrador_DAO)
+gestor_aula = GestorAula(SQL_aula_sin_adicionales_DAO, SQL_aula_multimedios_DAO, SQL_aula_informatica_DAO)
+gestor_reservacion = GestorReservacion(gestor_aula, SQL_reservacion_DAO)
+gestor_reserva = GestorReserva(gestor_reservacion, gestor_actividad, gestor_periodo, gestor_aula, SQL_reserva_DAO, SQL_administrador_DAO)

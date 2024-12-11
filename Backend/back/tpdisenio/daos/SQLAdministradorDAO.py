@@ -16,7 +16,7 @@ class SQLAdministradorDAO(AdministradorDAO):
         administrador.set_fecha_baja(datetime.date.today())
         administrador.save()
 
-    def getAll_administrador(self):
+    def get_all_administrador(self):
         return Administrador.objects.all()
 
     def update_administrador(self, administrador):

@@ -2,13 +2,12 @@ from ..models import Reservacion
 
 class GestorReservacion():
     """Clase encargada de suministrar todo la lógica concerniente a la clase reservacion"""
-    def __init__(self, gestor_sesion, gestor_aula, reservacion_DAO,) -> None:
+    def __init__(self, gestor_aula, reservacion_DAO) -> None:
         
-        self.gestor_sesion = gestor_sesion
         self.gestor_aula = gestor_aula
         self.reservacion_DAO = reservacion_DAO
 
-    def listarReservaciones(self):
+    def listar_reservaciones_fecha(self, fecha, nro_aula):
         pass
 
     def get_reserva(self, id_reservacion):
@@ -39,7 +38,3 @@ class GestorReservacion():
 
     def modificar_reservacion(self):
         pass
-
-    def guardar_reservacion(self, reservacion):
-        pass
-    

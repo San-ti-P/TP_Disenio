@@ -21,7 +21,7 @@ class GestorSesion():
         administrador = self.administrador_DAO.get_administrador(id_usuario)
         if administrador != None:
             if administrador.get_activo():
-                if bcrypt.checkpw(contrasenia.encode('utf-8'), administrador.get_contrasena()):
+                if bcrypt.checkpw(contrasenia.encode('utf-8'), administrador.get_contrasenia()):
                 #if contrasenia == administrador.get_contrasena():
                     if len(self.sesiones) != 0:
                         id_sesion = max([s.id_sesion for s in self.sesiones.values()])+1
@@ -34,7 +34,7 @@ class GestorSesion():
             bedel = self.bedel_DAO.get_bedel(id_usuario)
             if bedel != None:
                 if bedel.get_activo():
-                    if bcrypt.checkpw(contrasenia.encode('utf-8'), bedel.get_contrasena()):
+                    if bcrypt.checkpw(contrasenia.encode('utf-8'), bedel.get_contrasenia()):
                     #if contrasenia == bedel.get_contrasena():
                         if len(self.sesiones) != 0:
                             id_sesion = max([s.id_sesion for s in self.sesiones.values()])+1

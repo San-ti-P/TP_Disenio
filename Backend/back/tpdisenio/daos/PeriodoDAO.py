@@ -9,8 +9,11 @@ class PeriodoDAO(ABC):
     def delete_periodo(self, id_periodo):
         pass
 
-    def getAll_periodo(self):
+    def get_all_periodo(self):
         pass
 
     def update_periodo(self, periodo):
+        pass
+
+    def get_periodo_by_year(self, tipo_periodo, anio):
         pass

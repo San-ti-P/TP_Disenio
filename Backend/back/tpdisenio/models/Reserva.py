@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .Actividad import Actividad
 from .Periodo import Periodo
-from .Usuario import Usuario
+from .Bedel import Bedel
 
 class Reserva(models.Model):
     class Meta:
@@ -20,12 +20,16 @@ class Reserva(models.Model):
     fecha_baja = models.DateField(blank=True, default=None, null=True)
     periodo = models.ForeignKey(Periodo, on_delete=models.PROTECT, blank=True, null=True, db_column="id_periodo")
     actividad = models.ForeignKey(Actividad, on_delete=models.PROTECT, db_column="id_actividad")
-    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT, db_column="id_usuario")
+    bedel = models.ForeignKey(Bedel, on_delete=models.PROTECT, db_column="id_bedel")
     
     reservaciones = []
     
     def add_reservacion(self, reservacion):
         self.reservaciones.append(reservacion)
+    def get_reservaciones(self):
+        return self.reservaciones
+    def set_reservaciones(self, reservaciones):
+        self.reservaciones = reservaciones
 
     def get_id_reserva(self):
         return self.id_reserva
@@ -43,10 +47,8 @@ class Reserva(models.Model):
         return self.periodo
     def get_actividad(self):
         return self.actividad
-    def get_usuario(self):
-        return self.usuario
-    def get_reservaciones(self):
-        return self.reservaciones
+    def get_bedel(self):
+        return self.bedel
     
     def set_id_reserva(self, id):
         self.id_reserva = id
@@ -64,9 +66,5 @@ class Reserva(models.Model):
         self.periodo= periodo
     def set_actividad(self, actividad):
         self.actividad = actividad
-    def set_usuario(self, usuario):
-        self.usuario = usuario
-    def add_reservacion(self, reservacion):
-        self.reservaciones.append(reservacion)  
-    def set_autor_reserva(self, usuario):
-        self.set_usuario(usuario)
+    def set_bedel(self, bedel):
+        self.bedel = bedel

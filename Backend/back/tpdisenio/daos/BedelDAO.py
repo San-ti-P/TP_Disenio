@@ -9,7 +9,7 @@ class BedelDAO(ABC):
     def delete_bedel(self, id_bedel):
         pass
 
-    def getAll_bedel(self):
+    def get_all_bedel(self):
         pass
 
     def update_bedel(self, bedel):

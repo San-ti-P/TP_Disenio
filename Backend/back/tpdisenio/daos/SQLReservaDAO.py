@@ -26,7 +26,7 @@ class SQLReservaDAO(ReservaDAO):
             reserva.set_fecha_baja(datetime.date.today())
             reserva.save()
 
-    def getAll_reserva(self):
+    def get_all_reserva(self):
         return Reserva.objects.all()
 
     def update_reserva(self, reserva):

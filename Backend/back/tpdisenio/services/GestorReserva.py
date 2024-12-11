@@ -1,6 +1,5 @@
 from ..models import Reserva
 from ..models import Reservacion
-from ..models import Periodo
 from datetime import date, timedelta
 
 
@@ -22,10 +21,9 @@ class SolicitudFechaDTO():
 
 class GestorReserva():
     """Clase encargada de suministrar todo la lógica concerniente a la clase reserva"""
-    def __init__(self, gestor_sesion, gestor_reservacion, gestor_actividad, gestor_periodo, gestor_aula, 
+    def __init__(self, gestor_reservacion, gestor_actividad, gestor_periodo, gestor_aula, 
                            reserva_DAO, administrador_DAO) -> None:
         
-        self.gestor_sesion = gestor_sesion
         self.gestor_reservacion = gestor_reservacion
         self.gestor_actividad = gestor_actividad
         self.gestor_periodo = gestor_periodo
@@ -56,7 +54,7 @@ class GestorReserva():
         actividad = self.gestor_actividad.alta_actividad(actividad_DTO, docente_DTO)
         reserva.set_actividad(actividad)
 
-        reserva.set_autor_reserva(usuario)
+        reserva.set_usuario(usuario)
 
         exito = True
 

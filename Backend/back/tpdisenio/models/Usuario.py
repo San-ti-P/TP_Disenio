@@ -14,7 +14,7 @@ class Usuario(models.Model):
 
     def get_id_usuario(self):
         return self.id_usuario
-    def get_contrasena(self):
+    def get_contrasenia(self):
         return self.contrasenia
     def get_apellido(self):
         return self.apellido
@@ -27,7 +27,7 @@ class Usuario(models.Model):
     
     def set_id_usuario(self, id):
         self.id_usuario = id
-    def set_contrasena(self, contrasena):
+    def set_contrasenia(self, contrasena):
         self.contrasenia = contrasena
     def set_apellido(self, apellido):
         self.apellido = apellido

@@ -1,24 +1,4 @@
-from ..models import Actividad#, TipoActividad
-
-#class TipoActividadDTO(object):
-#    def __init__(self, id, nombre, descripcion):
-#        self.id_tipo_actividad = id
-#        self.nombre = nombre
-#        self.descripcion = descripcion
-
-# class ActividadDTO(object):
-#     def __init__(self, id, nombre, descripcion) -> None:
-#         self.id_actividad = id
-#         self.nombre = nombre
-#         self.descripcion = descripcion
-#         #self.tipo_actividad = tipo_actividad
-
-#     def get_id(self):
-#         return self.id_actividad
-#     def get_nombre(self):
-#         return self.nombre
-#     def get_descripcion(self):
-#         return self.descripcion
+from ..models import Actividad
 
 class GestorActividad():
 
@@ -28,14 +8,10 @@ class GestorActividad():
     
     def alta_actividad(self, actividad_DTO, docente_DTO):
         docente = self.gestor_docente.alta_docente(docente_DTO)
-        #tipo_actividad_DTO = actividad_DTO.get_tipo()
-        #tipo_actividad = TipoActividad()
         actividad = Actividad(id_actividad=actividad_DTO.get_id_actividad(), nombre=actividad_DTO.get_nombre(), descripcion=actividad_DTO.get_descripcion(), docente=docente, activo=True, fecha_baja=None)
-        #self.actividad_DAO.create_actividad(actividad)
         return actividad
 
     def obtener_actividades(self):
-        #materia = TipoActividadDTO(1, "Cátedra", "Materia de algún curso de grado, pregrado o posgrado")
         actividades = [
             Actividad(id_actividad=1, nombre="Análisis Matemático I", 
             descripcion="Primera materia de cálculo. Se enseñan funciones, límites, derivadas, integrales y series."),

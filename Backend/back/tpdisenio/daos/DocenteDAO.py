@@ -9,7 +9,7 @@ class DocenteDAO(ABC):
     def delete_docente(self, id_docente):
         pass
 
-    def getAll_docente(self):
+    def get_all_docente(self):
         pass
 
     def update_docente(self, docente):

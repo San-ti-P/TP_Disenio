@@ -17,4 +17,4 @@ class GestorUsuario():
             if id_usuario not in ids_bedel:
                 return True
         return False
-    #Se usa true momentáneamente para pruebas
+

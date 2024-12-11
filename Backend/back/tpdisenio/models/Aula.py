@@ -15,13 +15,9 @@ class Aula(models.Model):
     piso = models.CharField(max_length=20)
     aire_acondicionado = models.BooleanField()
     estado_aula = models.CharField(max_length=15, choices=EstadoAula)
-    tiene_pizarrones = models.ManyToManyField(TipoPizarron, through="Tiene", related_name="aulas")
+    pizarrones = models.ManyToManyField(TipoPizarron, through="Tiene", related_name="aulas")
     activo = models.BooleanField(default=True)
     fecha_baja = models.DateField(blank=True, default=None, null=True)
-    reservaciones = []
-
-    def add_reservacion(self, reservacion):
-        self.reservaciones.append(reservacion)
 
     def get_nro_aula(self):
         return self.nro_aula
@@ -34,7 +30,7 @@ class Aula(models.Model):
     def get_estado_aula(self):
         return self.estado_aula
     def get_pizarrones(self):
-        return self.tiene_pizarrones
+        return self.pizarrones
     def get_activo(self):
         return self.activo
     def get_fecha_baja(self):
@@ -51,7 +47,7 @@ class Aula(models.Model):
     def set_estado_aula(self, estado_aula):
         self.estado_aula = estado_aula
     def set_pizarrones(self, pizarrones):
-        self.tiene_pizarrones = pizarrones
+        self.pizarrones = pizarrones
     def set_activo(self, activo):
         self.activo = activo
     def set_fecha_baja(self, fecha_baja):
@@ -61,7 +57,7 @@ class Tiene(models.Model):
     class Meta:
         db_table = "Tiene"
 
-    id = models.CharField(max_length=10, primary_key=True)
-    nro_aula = models.ForeignKey(Aula, on_delete=models.CASCADE, db_column="nro_aula")
-    id_tipo_pizarron = models.ForeignKey(TipoPizarron, on_delete=models.CASCADE, db_column="id_tipo_pizarron")
+    id = models.AutoField(primary_key=True)
+    aula = models.ForeignKey(Aula, on_delete=models.CASCADE, db_column="nro_aula")
+    tipo_pizarron = models.ForeignKey(TipoPizarron, on_delete=models.CASCADE, db_column="id_tipo_pizarron")
 
