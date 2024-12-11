@@ -24,13 +24,13 @@ const App = () => {
     }, []);
 
     const fetchValores = async () => {
+        console.log("Criterios de busqueda: ", apellido.campo, turno.campo);
         return await getResultadosBusqueda(apellido.campo, turno.campo);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const valores = await fetchValores();
-        console.log(politicasTooltip);
         navigate('/modificar-eliminar-bedel', { state: { valores, apellido: apellido.campo, turno: turno.campo, politicas: politicasTooltip} });
     };
 

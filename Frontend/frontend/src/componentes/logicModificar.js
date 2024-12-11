@@ -85,7 +85,7 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
         contrasenia: contraseña1.campo
       };
 
-      console.log("Datos del Formulario: ", datosFormulario);
+      console.log("Datos del Formulario de Modificar: ", datosFormulario);
       const respuesta = await modificarBedel(datosFormulario);
       console.log("Respuesta: ", respuesta.error);
 
@@ -236,8 +236,6 @@ export const ManejoModificar = ({ bedel, actualizarFila, politicasTooltip }) => 
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  console.log("Manejo Modificar", politicasTooltip);
 
   return (
     <>
