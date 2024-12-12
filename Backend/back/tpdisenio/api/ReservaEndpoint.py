@@ -33,14 +33,14 @@ def reservas(request):
     if autorizado:
         if not sesion.get_es_admin():
             if request.method == 'POST':
-                return registrar_reserva(request=request, usuario=sesion.get_usuario())
+                return registrar_reserva(request=request, id_usuario=sesion.get_id_usuario())
         else:
             return Response("Acceso denegado")
     else:
         return Response("Credenciales no válidas")
 
 
-def registrar_reserva(request, usuario):
+def registrar_reserva(request, id_usuario):
     """
     Define el comportamiento de .../reservas con solicitudes POST
     """
@@ -73,7 +73,7 @@ def registrar_reserva(request, usuario):
                     )
                 )
     
-    exito, response = gestor_reserva.alta_reserva(usuario, docente, cant_alumnos, tipo_aula, actividad, periodo, reservaciones_objs)
+    exito, response = gestor_reserva.alta_reserva(id_usuario, docente, cant_alumnos, tipo_aula, actividad, periodo, reservaciones_objs)
     if exito:
         response_serializer = ReservaSerializer(response)
         return Response(response_serializer.data)

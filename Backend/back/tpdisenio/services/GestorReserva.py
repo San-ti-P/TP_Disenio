@@ -21,13 +21,14 @@ class SolicitudFechaDTO():
 
 class GestorReserva():
     """Clase encargada de suministrar todo la lógica concerniente a la clase reserva"""
-    def __init__(self, gestor_reservacion, gestor_actividad, gestor_periodo, gestor_aula, 
+    def __init__(self, gestor_reservacion, gestor_actividad, gestor_periodo, gestor_aula, gestor_bedel,
                            reserva_DAO, administrador_DAO) -> None:
         
         self.gestor_reservacion = gestor_reservacion
         self.gestor_actividad = gestor_actividad
         self.gestor_periodo = gestor_periodo
         self.gestor_aula = gestor_aula
+        self.gestor_bedel = gestor_bedel
         self.reserva_DAO = reserva_DAO
         self.administrador_DAO = administrador_DAO
 
@@ -35,7 +36,7 @@ class GestorReserva():
         pass
 
    
-    def alta_reserva(self, bedel, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, tipo_periodo, lista_reservaciones):
+    def alta_reserva(self, id_bedel, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, tipo_periodo, lista_reservaciones):
         if tipo_periodo is not None:
             periodo = self.gestor_periodo.get_periodo(periodo, date.today().year + 1)
             
@@ -55,18 +56,19 @@ class GestorReserva():
         actividad = self.gestor_actividad.alta_actividad(actividad_DTO, docente_DTO)
         reserva.set_actividad(actividad)
 
+        bedel = self.gestor_bedel.get_bedel(id_bedel)
+        print(bedel)
         reserva.set_bedel(bedel)
 
         exito = True
 
         for r in lista_reservaciones:
            
-            aulas = self.gestor_aula.obtener_aulas_disponibles(cant_alumnos, r.get_fecha(), r.get_hora_inicio(), r.get_duracion(), tipo_aula)
-            aulas_disponibles = [a.aula.nro_aula for a in aulas if a.reservacion is None]
-            if r.get_aula().get_nro_aula() not in aulas_disponibles:
+            aula = self.gestor_aula.consultar_disponibilidad_aula(r.get_aula().get_nro_aula(), r.get_fecha(), r.get_hora_inicio(), r.get_duracion())
+            if aula is None:
                 exito = False
                 break
-            reservacion = self.gestor_reservacion.alta_reservacion(r.get_hora_inicio(), r.get_duracion(), r.get_dia(), r.get_fecha(), reserva, r.get_aula().get_nro_aula())
+            reservacion = self.gestor_reservacion.alta_reservacion(r.get_hora_inicio(), r.get_duracion(), r.get_dia(), r.get_fecha(), reserva, aula)
             reserva.add_reservacion(reservacion)
         
         if exito: 

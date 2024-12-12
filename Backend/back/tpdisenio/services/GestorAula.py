@@ -51,6 +51,14 @@ class GestorAula():
     def modificar_informatica(self):
         pass
 
+    def consultar_disponibilidad_aula(self, nro_aula, fecha, hora_inicio, duracion):
+        aula = self.aula_informatica_DAO.consultar_disponibilidad_aula(nro_aula, fecha, hora_inicio, duracion)
+        if aula is None:
+            aula = self.aula_multimedio_DAO.consultar_disponibilidad_aula(nro_aula, fecha, hora_inicio, duracion)
+            if aula is None:
+                aula = self.aula_sin_adicionales_DAO.consultar_disponibilidad_aula(nro_aula, fecha, hora_inicio, duracion)
+        return aula
+
     def obtener_aulas_disponibles(self, capacidad, fecha, hora_inicio, duracion, tipo):
         
         match tipo:

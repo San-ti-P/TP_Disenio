@@ -33,7 +33,7 @@ def iniciar_reserva(request):
         sesion = None
         
     if autorizado:
-        if sesion.get_es_admin():
+        if not sesion.get_es_admin():
             if request.method == 'GET':
                 return obtener_datos(request=request)
             

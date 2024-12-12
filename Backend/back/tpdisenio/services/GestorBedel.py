@@ -34,12 +34,12 @@ class GestorBedel():
         self.bedel_DAO = bedel_DAO
         self.administrador_DAO = administrador_DAO
 
-    def get_datos_bedel(self, id_usuario):
+    def get_bedel(self, id_usuario):
         """Obtiene los datos del bedel
         Parameters:
         id_usuario: str
             -- ID del bedel para el que se solicitan los datos"""
-        pass
+        return self.bedel_DAO.get_bedel(id_usuario)
 
     def validar_datos(self, nombre, apellido, turno, id_usuario):
         """Valida datos de entrada. Retorna True si estos cumplen el formato requerido y False en caso contrario

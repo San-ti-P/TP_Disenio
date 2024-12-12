@@ -44,6 +44,29 @@ class SQLAulaInformaticaDAO(AulaInformaticaDAO):
                 cars = "Posee " + str_PC + "."
         return cars
 
+    def consultar_disponibilidad_aula(self, nro_aula, fecha, hora_inicio, duracion):
+        duracion_timedelta = timedelta(minutes=duracion)
+
+        hora_fin = (datetime.combine(fecha, hora_inicio) + duracion_timedelta).time()
+        
+        reservaciones_ocupadas = Reservacion.objects.select_related('Aula').select_related('AulaInformatica').filter(
+            fecha=fecha,
+            hora_inicio__lt=hora_fin,
+            hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time()
+        ).values('aula__nro_aula')
+
+        aulas_ocupadas = [res['aula__nro_aula'] for res in reservaciones_ocupadas]
+
+        aula = list(AulaInformatica.objects.filter(
+            nro_aula=nro_aula,
+            activo=True,
+        ).exclude(nro_aula__in=aulas_ocupadas))
+
+        if len(aula)==0:
+            return None
+        else:
+            return aula[0]
+
     def get_available(self, capacidad, fecha, hora_inicio, duracion):
 
         duracion_timedelta = timedelta(minutes=duracion)

@@ -26,7 +26,7 @@ class GestorSesion():
                     if len(self.sesiones) != 0:
                         id_sesion = max([s.id_sesion for s in self.sesiones.values()])+1
                     else: id_sesion = 1
-                    sesion = Sesion(id_sesion, date.today(), True, administrador)
+                    sesion = Sesion(id_sesion, date.today(), True, id_usuario)
                     self.sesiones[sesion.get_cookie()] = sesion
                     return RespuestaLogin("admin", administrador.get_nombre()), sesion.get_cookie()
             #else: return "acceso denegado"
@@ -39,7 +39,7 @@ class GestorSesion():
                         if len(self.sesiones) != 0:
                             id_sesion = max([s.id_sesion for s in self.sesiones.values()])+1
                         else: id_sesion = 1
-                        sesion = Sesion(id_sesion, date.today(), True, bedel)
+                        sesion = Sesion(id_sesion, date.today(), False, id_usuario)
                         self.sesiones[sesion.get_cookie()] = sesion
                         return RespuestaLogin("bedel", bedel.get_nombre()), sesion.get_cookie()
                 #else: return "acceso denegado"

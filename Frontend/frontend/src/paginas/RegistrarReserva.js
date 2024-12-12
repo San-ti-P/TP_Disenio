@@ -154,7 +154,7 @@ const RegistroReservas = () => {
               label="Tipo de aula"
               placeholder="Seleccione un tipo de aula"
               name="tipoAula"
-              valores={["Informatica", "Sin recursos adicionales", "Multimedios"]}
+              valores={["Informatica", "Sin recursos adicionales", "Multimedio"]}
             />
           </FormGroup>
           <FormGroup>
