@@ -7,9 +7,7 @@ from ..serializers import RegistrarReservaRequestSerializer, ReservaSerializer
 from ..services import gestor_reserva, gestor_sesion
 from ..models import Actividad, Aula, Docente, Reservacion
 
-
 @extend_schema_view(
-
     post=extend_schema(
         request=RegistrarReservaRequestSerializer,
         responses=ReservaSerializer,
@@ -38,7 +36,6 @@ def reservas(request):
             return Response("Acceso denegado")
     else:
         return Response("Credenciales no válidas")
-
 
 def registrar_reserva(request, id_usuario):
     """

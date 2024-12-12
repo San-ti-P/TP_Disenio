@@ -1,38 +1,14 @@
-from ..models import Bedel
-
 import bcrypt
-
-class RespuestaRegistrarBedel(object):
-    """Se usa para construir el objeto respuesta del método .alta_bedel() de GestorBedel"""
-    def __init__(self, campos_validos, contrasenia_valida, id_valido):
-        self.errors = []
-        if not campos_validos:
-            self.errors.append("campos_invalidos")
-        if not contrasenia_valida:
-            self.errors.append("contrasenia_invalida")
-        if not id_valido:
-            self.errors.append("id_existente")
-
-class RespuestaModificarBedel(object):
-    """Se usa para construir el objeto respuesta del método .alta_bedel() de GestorBedel"""
-    def __init__(self, campos_validos, contrasenia_valida, id_valido):
-        self.errors = []
-        if not campos_validos:
-            self.errors.append("campos_invalidos")
-        if not contrasenia_valida:
-            self.errors.append("contrasenia_invalida")
-        if not id_valido:
-            self.errors.append("id_inexistente")
+from ..models import Bedel
+from ..dtos import RespuestaModificarBedel, RespuestaRegistrarBedel
 
 class GestorBedel():
     """Clase encargada de suministrar todo la lógica concerniente a la clase Bedel"""
-    def __init__(self, gestor_usuario, gestor_contrasenia,
-                           bedel_DAO, administrador_DAO) -> None:
+    def __init__(self, gestor_usuario, gestor_contrasenia, bedel_DAO) -> None:
         
         self.gestor_usuario = gestor_usuario
         self.gestor_contrasenia = gestor_contrasenia
         self.bedel_DAO = bedel_DAO
-        self.administrador_DAO = administrador_DAO
 
     def get_bedel(self, id_usuario):
         """Obtiene los datos del bedel
@@ -122,7 +98,6 @@ class GestorBedel():
 
         return id_existente
 
-
     def modificar_bedel(self, nombre, apellido, turno, id_usuario, contrasenia):
         """
         Principal responsable de implementar el CU14: Modificar Bedel
@@ -153,7 +128,6 @@ class GestorBedel():
             hash_contrasenia = bcrypt.hashpw(contrasenia.encode('utf-8'), bcrypt.gensalt())
 
         if campos_validos and contrasenia_valida and id_existente:
-            #bedel = self.bedel_DAO.get_bedel(id_usuario)
             bedel = Bedel(nombre=nombre, apellido=apellido, turno=turno, id_usuario=id_usuario, contrasenia=hash_contrasenia, activo=True, fecha_baja=None)
             self.bedel_DAO.update_bedel(bedel)
         
@@ -179,5 +153,3 @@ class GestorBedel():
             bedel.set_turno(turno)
         
         return bedeles
-
-        

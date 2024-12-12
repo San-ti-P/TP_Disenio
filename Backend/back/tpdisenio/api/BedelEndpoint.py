@@ -1,6 +1,4 @@
-# from django.http import JsonResponse
 from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter, OpenApiTypes
 from ..serializers import BedelSerializer, ErrorsListSerializer
@@ -56,7 +54,7 @@ def bedeles(request):
     """
     Define el comportamiento de .../bedeles. Acepta solicitudes GET, POST, PUT, DELETE
     """
-    #print("HOLAAAAAAAAAAAAAAAAAAAA", request.COOKIES)
+
     if 'sesion' in request.COOKIES:
         sesion = request.COOKIES.get('sesion')
         autorizado, sesion = gestor_sesion.consultar_sesion(sesion)
@@ -64,8 +62,6 @@ def bedeles(request):
         autorizado = False
         sesion = None
     
-    
-
     if autorizado:
         if sesion.get_es_admin():
             if request.method == 'GET':
@@ -83,7 +79,6 @@ def bedeles(request):
             return Response("Acceso denegado")
     else:
         return Response("Credenciales no válidas")
-
 
 def buscar_bedel(request):
     """
@@ -108,7 +103,6 @@ def buscar_bedel(request):
     bedeles_serializer = BedelSerializer(bedeles, many=True)
     return Response(bedeles_serializer.data)
 
-
 def eliminar_bedel(request):
     """
     Define el comportamiento de .../bedeles con solicitudes DELETE
@@ -123,7 +117,6 @@ def eliminar_bedel(request):
 
     exito = gestor_bedel.baja_bedel(id_usuario=id)
     return Response(exito)
-
 
 def modificar_bedel(request):
     """
@@ -144,7 +137,6 @@ def modificar_bedel(request):
     response = gestor_bedel.modificar_bedel(nombre, apellido, turno, id_usuario, contrasenia)
     response_serializer = ErrorsListSerializer(response)
     return Response(response_serializer.data)
-
 
 def registrar_bedel(request):
     """

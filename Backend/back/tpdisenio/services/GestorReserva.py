@@ -1,28 +1,10 @@
-from ..models import Reserva
-from ..models import Reservacion
 from datetime import date, timedelta
-
-
-class RespuestaIniciarReservaDTO():
-    def __init__(self, lista_errores, lista_solicitudes) -> None:
-        self.errors = lista_errores
-        self.fechas = lista_solicitudes
-    
-
-class SolicitudFechaDTO():
-    def __init__(self, fecha, dia, duracion, hora_inicio, lista_aula_reserva) -> None:
-        self.fecha = fecha
-        self.dia = dia
-        self.duracion = duracion
-        self.hora_inicio = hora_inicio
-        self.aulas = lista_aula_reserva
-
-
+from ..models import Reserva, Reservacion
+from ..dtos import RespuestaIniciarReservaDTO, SolicitudFechaDTO
 
 class GestorReserva():
     """Clase encargada de suministrar todo la lógica concerniente a la clase reserva"""
-    def __init__(self, gestor_reservacion, gestor_actividad, gestor_periodo, gestor_aula, gestor_bedel,
-                           reserva_DAO, administrador_DAO) -> None:
+    def __init__(self, gestor_reservacion, gestor_actividad, gestor_periodo, gestor_aula, gestor_bedel, reserva_DAO) -> None:
         
         self.gestor_reservacion = gestor_reservacion
         self.gestor_actividad = gestor_actividad
@@ -30,17 +12,15 @@ class GestorReserva():
         self.gestor_aula = gestor_aula
         self.gestor_bedel = gestor_bedel
         self.reserva_DAO = reserva_DAO
-        self.administrador_DAO = administrador_DAO
 
     def get_datos_reserva(self, id_reserva):
         pass
-
    
     def alta_reserva(self, id_bedel, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, tipo_periodo, lista_reservaciones):
         if tipo_periodo is not None:
             periodo = self.gestor_periodo.get_periodo(periodo, date.today().year + 1)
             
-        errores = self.validar_datos(docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, None, lista_reservaciones) #cambio PERIODO por NONE
+        errores = self.validar_datos(docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones)
 
         if True in errores:
             return False, None
@@ -57,7 +37,7 @@ class GestorReserva():
         reserva.set_actividad(actividad)
 
         bedel = self.gestor_bedel.get_bedel(id_bedel)
-        print(bedel)
+
         reserva.set_bedel(bedel)
 
         exito = True
@@ -106,16 +86,31 @@ class GestorReserva():
         duracion_no_multiplo_30 = False 
         mas_de_una_hora_inicio_dia = False
 
+        id = docente_DTO.get_id_docente()
         nombre = docente_DTO.get_nombre()
         apellido = docente_DTO.get_apellido()
         correo = docente_DTO.get_correo_contacto()
 
+        if not (type(id)==type(1) and id >= 0):
+            datos_completos = False
         if not (len(nombre)>1 and len(nombre)<30):
             datos_completos = False
         if not (len(apellido)>1 and len(apellido)<30):
             datos_completos = False
         if not (len(correo)>1 and len(correo)<50):
             datos_completos = False
+        
+        id = actividad_DTO.get_id_docente()
+        nombre = actividad_DTO.get_nombre()
+        descripcion = actividad_DTO.get_descripcion()
+
+        if not (type(id)==type(1) and id >= 0):
+            datos_completos = False
+        if not (len(nombre)>1 and len(nombre)<30):
+            datos_completos = False
+        if not (len(descripcion)>1 and len(descripcion)<30):
+            datos_completos = False
+
         if not (type(cant_alumnos)==type(1) and cant_alumnos >= 0):
             datos_completos = False
 
@@ -133,11 +128,19 @@ class GestorReserva():
                 vistos_fechas.add(reservacion.get_fecha())
         else:
             vistos_dias = set()
+            vistos_fechas = set()
             for reservacion in lista_reservaciones:
-                if reservacion.get_dia() in vistos_dias:
-                    mas_de_una_hora_inicio_dia = True
-                    break
-                vistos_dias.add(reservacion.get_dia())
+                if reservacion.get_fecha() is None:
+                    if reservacion.get_dia() in vistos_dias:
+                        mas_de_una_hora_inicio_dia = True
+                        break
+                    vistos_dias.add(reservacion.get_dia())
+                else:
+                    if reservacion.get_fecha() in vistos_fechas:
+                        mas_de_una_hora_inicio_dia = True
+                    if reservacion.get_fecha() <= date.today():
+                        dia_anterior_actual = True
+                    vistos_fechas.add(reservacion.get_fecha())
 
             if (periodo.get_fecha_fin() <= date.today()):
                 dia_anterior_actual = True
@@ -197,7 +200,6 @@ class GestorReserva():
         for r in lista_reservaciones:
             aulas = self.gestor_aula.obtener_aulas_disponibles(cant_alumnos, r.get_fecha(), r.get_hora_inicio(), r.get_duracion(), tipo_aula)
             solicitudes.append(SolicitudFechaDTO(r.get_fecha(), r.get_dia(), r.get_duracion(), r.get_hora_inicio(), aulas))
-
 
         return RespuestaIniciarReservaDTO(errores, solicitudes)
     

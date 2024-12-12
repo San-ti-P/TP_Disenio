@@ -1,6 +1,3 @@
-from ..models import Aula
-from ..daos import SQLAulaInformaticaDAO, SQLAulaMultimedioDAO, SQLAulaSinAdicionalesDAO
-
 
 class GestorAula():
     """Clase encargada de suministrar todo la lógica concerniente a la clase Aula"""

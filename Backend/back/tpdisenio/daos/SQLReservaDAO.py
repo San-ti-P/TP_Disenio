@@ -7,7 +7,6 @@ class SQLReservaDAO(ReservaDAO):
     """Clase encargada de implementar el protocolo para persistir datos de la clase Reserva en una BDD SQL (PostgreSQL)"""
 
     def create_reserva(self, reserva):
-        #self.periodo_DAO.create_periodo(reserva.get_periodo())
         self.actividad_DAO.create_actividad(reserva.get_actividad())
         reserva.save()
         reservaciones = reserva.get_reservaciones()

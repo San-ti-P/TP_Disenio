@@ -1,8 +1,8 @@
 from rest_framework.response import Response
-from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 from rest_framework.decorators import api_view
-from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter, OpenApiTypes
-from ..serializers import IniciarReservaEntidadesSerializer, IniciarReservaRequestSerializer, IniciarReservaResponseSerializer, IniciarReservaEntidadesDTO, ReservacionDTOSerializer
+from drf_spectacular.utils import extend_schema_view, extend_schema
+from ..serializers import IniciarReservaEntidadesSerializer, IniciarReservaRequestSerializer, IniciarReservaResponseSerializer
+from ..dtos import IniciarReservaEntidadesDTO
 from ..services import gestor_actividad, gestor_docente, gestor_reserva, gestor_sesion
 from ..models import Actividad, Docente, Reservacion
 import datetime
@@ -24,7 +24,7 @@ def iniciar_reserva(request):
     """
     Define el comportamiento de .../iniciar_reserva. Acepta solicitudes GET, POST
     """
-    #print(request.COOKIES)
+
     if 'sesion' in request.COOKIES:
         sesion = request.COOKIES.get('sesion')
         autorizado, sesion = gestor_sesion.consultar_sesion(sesion)
@@ -44,7 +44,6 @@ def iniciar_reserva(request):
             return Response("Acceso denegado")
     else:
         return Response("Credenciales no válidas")
-
 
 def obtener_datos(request):
     """
@@ -85,7 +84,6 @@ def comenzar_reserva(request):
                 hora_inicio=datetime.datetime.strptime(reservacion['hora_inicio'], "%H:%M").time()
             )
         )
-    
     
     response = gestor_reserva.iniciar_reserva(docente, cant_alumnos, tipo_aula, actividad, periodo, reservaciones_objs)
 

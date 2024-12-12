@@ -14,7 +14,6 @@ class GestorContrasenia():
             Si puede ser igual a una contraseña anterior del usuario: boolean
         """
         #Políticas obtenidas del sistema externo hardcodeadas
-        #Consultar y modificar
         longitud_minima = 8
         contiene_signos_esp = True
         contiene_mayus = True

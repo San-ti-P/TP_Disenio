@@ -2,7 +2,7 @@ from datetime import timedelta, datetime
 from django.core.exceptions import ObjectDoesNotExist
 from .AulaInformaticaDAO import AulaInformaticaDAO
 from ..models import AulaInformatica, Docente, Reservacion
-from ..serializers import AulaDTO, AulaReservaDTO
+from ..dtos import AulaDTO, AulaReservaDTO
 
 class SQLAulaInformaticaDAO(AulaInformaticaDAO):
     """Clase encargada de implementar el protocolo para persistir datos de la clase AulaInformatica en una BDD SQL (PostgreSQL)"""

@@ -1,4 +1,3 @@
-from ..models import Periodo
 
 class GestorPeriodo():
     def __init__(self, periodo_DAO) -> None:
