@@ -100,7 +100,7 @@ class GestorReserva():
         if not (len(correo)>1 and len(correo)<50):
             datos_completos = False
         
-        id = actividad_DTO.get_id_docente()
+        id = actividad_DTO.get_id_actividad()
         nombre = actividad_DTO.get_nombre()
         descripcion = actividad_DTO.get_descripcion()
 

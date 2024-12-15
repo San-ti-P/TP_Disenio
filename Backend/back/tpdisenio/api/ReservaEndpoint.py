@@ -5,7 +5,7 @@ from drf_spectacular.utils import extend_schema_view, extend_schema
 from django.db import transaction
 from ..serializers import RegistrarReservaRequestSerializer, ReservaSerializer
 from ..services import gestor_reserva, gestor_sesion
-from ..models import Actividad, Aula, Docente, Reservacion
+from ..dtos import ActividadDTO, AulaDTO, DocenteDTO, ReservacionDTO
 
 @extend_schema_view(
     post=extend_schema(
@@ -46,11 +46,11 @@ def registrar_reserva(request, id_usuario):
     data = registrar_reserva_serializer.initial_data
     
     docente = data['docente']
-    docente = Docente(id_docente=docente['id_docente'], apellido=docente['apellido'], nombre=docente['nombre'], correo_contacto=docente['correo_contacto'])
+    docente = DocenteDTO(id_docente=docente['id_docente'], apellido=docente['apellido'], nombre=docente['nombre'], correo_contacto=docente['correo_contacto'])
     cant_alumnos = data['cant_alumnos']
     tipo_aula = data['tipo_aula']
     actividad = data['actividad']
-    actividad = Actividad(id_actividad=actividad['id_actividad'], nombre=actividad['nombre'], descripcion=actividad['descripcion'])
+    actividad = ActividadDTO(id_actividad=actividad['id_actividad'], nombre=actividad['nombre'], descripcion=actividad['descripcion'])
     periodo = data['periodo']
     lista_reservaciones = data['lista_reservaciones']
     reservaciones_objs = []
@@ -61,12 +61,12 @@ def registrar_reserva(request, id_usuario):
             nro_aula = reservacion['aula']
             if nro_aula is not None:
                 reservaciones_objs.append(
-                    Reservacion(
+                    ReservacionDTO(
                         dia=reservacion['dia'],
                         fecha=fecha,
                         duracion=reservacion['duracion'],
                         hora_inicio=datetime.datetime.strptime(reservacion['hora_inicio'], "%H:%M").time(),
-                        aula = Aula(nro_aula=nro_aula)
+                        aula = AulaDTO(nro_aula=nro_aula)
                     )
                 )
     

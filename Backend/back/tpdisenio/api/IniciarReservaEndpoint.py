@@ -2,20 +2,19 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from drf_spectacular.utils import extend_schema_view, extend_schema
 from ..serializers import IniciarReservaEntidadesSerializer, IniciarReservaRequestSerializer, IniciarReservaResponseSerializer
-from ..dtos import IniciarReservaEntidadesDTO
+from ..dtos import ActividadDTO, DocenteDTO, IniciarReservaEntidadesDTO, ReservacionDTO
 from ..services import gestor_actividad, gestor_docente, gestor_reserva, gestor_sesion
-from ..models import Actividad, Docente, Reservacion
 import datetime
 
 @extend_schema_view(
     get=extend_schema(
         responses=IniciarReservaEntidadesSerializer,
-        description="Obtener reservaes"
+        description="Obtener reservas"
     ),
     post=extend_schema(
         request=IniciarReservaRequestSerializer,
         responses=IniciarReservaResponseSerializer,
-        description="Crear un nuevo reserva"
+        description="Iniciar registro de nueva reserva"
     )
 )
 
@@ -64,11 +63,11 @@ def comenzar_reserva(request):
     data = iniciar_reserva_serializer.initial_data
     
     docente = data['docente']
-    docente = Docente(id_docente=docente['id_docente'], apellido=docente['apellido'], nombre=docente['nombre'], correo_contacto=docente['correo_contacto'])
+    docente = DocenteDTO(id_docente=docente['id_docente'], apellido=docente['apellido'], nombre=docente['nombre'], correo_contacto=docente['correo_contacto'])
     cant_alumnos = data['cant_alumnos']
     tipo_aula = data['tipo_aula']
     actividad = data['actividad']
-    actividad = Actividad(id_actividad=actividad['id_actividad'], nombre=actividad['nombre'], descripcion=actividad['descripcion'])
+    actividad = ActividadDTO(id_actividad=actividad['id_actividad'], nombre=actividad['nombre'], descripcion=actividad['descripcion'])
     periodo = data['periodo']
     lista_reservaciones = data['lista_reservaciones']
     reservaciones_objs = []
@@ -77,7 +76,7 @@ def comenzar_reserva(request):
         if fecha is not None:
             fecha = datetime.datetime.strptime(fecha, "%Y-%m-%d").date()
         reservaciones_objs.append(
-            Reservacion(
+            ReservacionDTO(
                 dia=reservacion['dia'],
                 fecha=fecha,
                 duracion=reservacion['duracion'],
