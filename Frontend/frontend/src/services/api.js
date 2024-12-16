@@ -105,7 +105,6 @@ const obtenerAulasReserva = async (datosReserva) => {
 const enviarAulas = async (datosReserva) => {
   try {
     const respuesta = await api.post("/reserva", datosReserva);
-    console.log("Respuesta del POST a /reserva: ", respuesta);
     return respuesta;
   } catch (error) {
     console.error("Error al enviar la reserva: ", error);

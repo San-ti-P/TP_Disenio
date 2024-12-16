@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { BotonSC, BotonDeseleccionar } from "../elementos/formularios";
-import { CancelarModal, mostrarModalAulasSinSeleccionar, mostrarModalAulasExitoso } from '../componentes/modal';
+import { CancelarModal, mostrarModalAulasSinSeleccionar, mostrarModalAulasExitoso, mostrarModalAulasFracaso } from '../componentes/modal';
 import {
   Contenedor,
   PanelIzquierdo,
@@ -81,18 +81,18 @@ export default function AulasReservas() {
 
   const enviarAulasSeleccionadas = async (datos) => {
     const respuestaReserva = await enviarAulas(datos);
-    if (respuestaReserva.data.id_reserva != null) console.log("Respuesta del backend: ", JSON.stringify(respuestaReserva, null, 2));
-    else alert("No se hizo ninguna reserva");
+
+    if ( typeof respuestaReserva.data === "object" && Object.keys(respuestaReserva.data).length !== 0) {
+      console.log("Respuesta del backend: ", JSON.stringify(respuestaReserva, null, 2));
+      mostrarModalAulasExitoso(navigate);
+    } else mostrarModalAulasFracaso(navigate);
   }
 
   const handleSubmit = () => {
     console.log("JSON enviado al backend: ", JSON.stringify(datosFormulario, null, 2));
 
     if (!alMenosUnAulaSeleccionada()) mostrarModalAulasSinSeleccionar(navigate, enviarAulasSeleccionadas, datosFormulario);
-    else {
-      enviarAulasSeleccionadas(datosFormulario);
-      mostrarModalAulasExitoso(navigate);
-    }
+    else enviarAulasSeleccionadas(datosFormulario);
   };
 
   return (
@@ -130,7 +130,7 @@ export default function AulasReservas() {
                 </CajaAdvertencia>
               )}
               {fechaSeleccionada.aulas.length === 0 && (
-                <OpcionAula><div style={{textAlign: "center"}}><b>No hay aulas disponibles para la fecha seleccionada</b></div></OpcionAula>
+                <OpcionAula><div style={{ textAlign: "center" }}><b>No hay aulas disponibles para la fecha seleccionada</b></div></OpcionAula>
               )}
               {fechaSeleccionada.aulas.map((aula, index) => (
                 <OpcionAula
