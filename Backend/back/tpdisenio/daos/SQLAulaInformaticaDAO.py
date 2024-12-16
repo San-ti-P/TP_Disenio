@@ -17,12 +17,19 @@ class SQLAulaInformaticaDAO(AulaInformaticaDAO):
 
     def get_aula(self, nro_aula):
         try:
-            return AulaInformatica.objects.get(nro_aula=nro_aula)
+            return AulaInformatica.objects.get(
+                nro_aula=nro_aula, 
+                estado_aula=AulaInformatica.EstadoAula.HABILITADO,
+                activo=True
+            )
         except ObjectDoesNotExist:
             return None
         
     def get_all_informatica(self):
-        return AulaInformatica.objects.all()
+        return AulaInformatica.objects.filter(
+            aula__estado_aula=AulaInformatica.EstadoAula.HABILITADO,
+            aula__activo=True
+        )
 
     def update_informatica(self, aula_informatica):
         aula_informatica.save()
@@ -52,14 +59,18 @@ class SQLAulaInformaticaDAO(AulaInformaticaDAO):
         reservaciones_ocupadas = Reservacion.objects.select_related('Aula').select_related('AulaInformatica').filter(
             fecha=fecha,
             hora_inicio__lt=hora_fin,
-            hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time()
+            hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time(),
+            activo=True,
+            aula__estado_aula=AulaInformatica.EstadoAula.HABILITADO,
+            aula__activo=True
         ).values('aula__nro_aula')
 
         aulas_ocupadas = [res['aula__nro_aula'] for res in reservaciones_ocupadas]
 
         aula = list(AulaInformatica.objects.filter(
             nro_aula=nro_aula,
-            activo=True,
+            estado_aula=AulaInformatica.EstadoAula.HABILITADO,
+            activo=True
         ).exclude(nro_aula__in=aulas_ocupadas))
 
         if len(aula)==0:
@@ -76,15 +87,19 @@ class SQLAulaInformaticaDAO(AulaInformaticaDAO):
         reservaciones_ocupadas = Reservacion.objects.select_related('Aula').select_related('AulaInformatica').filter(
             fecha=fecha,
             hora_inicio__lt=hora_fin,
-            hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time()
+            hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time(),
+            activo=True,
+            aula__estado_aula=AulaInformatica.EstadoAula.HABILITADO,
+            aula__activo=True
         ).values('aula__nro_aula')
 
         aulas_ocupadas = {res['aula__nro_aula'] for res in reservaciones_ocupadas}
 
         aulas_disponibles = AulaInformatica.objects.filter(
             capacidad__gte=capacidad,
-            activo=True,
-        ).exclude(nro_aula__in=aulas_ocupadas)
+            estado_aula=AulaInformatica.EstadoAula.HABILITADO,
+            activo=True
+        ).order_by('capacidad').exclude(nro_aula__in=aulas_ocupadas)
 
         return [AulaReservaDTO(AulaDTO(aula['nro_aula'], aula['piso'], aula['capacidad'],
                                 self.get_caracteristicas(aula['aire_acondicionado'], aula['cant_PCs'], aula['canion'])), None, None, None)
@@ -101,10 +116,12 @@ class SQLAulaInformaticaDAO(AulaInformaticaDAO):
         reservaciones_conflictivas = Reservacion.objects.select_related('Aula').select_related('AulaInformatica').select_related('Reserva').select_related('Actividad').select_related('Docente').filter(
             fecha=fecha,
             aula__capacidad__gte=capacidad,
-
             hora_inicio__lt=hora_fin_dt.time(),
-            hora_inicio__gte=(hora_inicio_dt - duracion_timedelta).time()
-        ).values(
+            hora_inicio__gte=(hora_inicio_dt - duracion_timedelta).time(),
+            activo=True,
+            aula__estado_aula=AulaInformatica.EstadoAula.HABILITADO,
+            aula__activo=True
+        ).order_by('aula__capacidad').values(
             'id_reservacion',
             'hora_inicio',
             'duracion',

@@ -10,7 +10,7 @@ class SQLDocenteDAO(DocenteDAO):
         docente.save()
 
     def delete_docente(self, id_docente_historia):
-        docente = Docente.objects.filter(id_docente_historia=id_docente_historia)
+        docente = Docente.objects.filter(id_docente_historia=id_docente_historia, activo=True)
         if len(docente)==1:
             docente = docente[0]
             docente.set_activo(False)
@@ -18,7 +18,7 @@ class SQLDocenteDAO(DocenteDAO):
             docente.save()
 
     def get_all_docente(self):
-        return Docente.objects.all()
+        return Docente.objects.filter(activo=True)
 
     def update_docente(self, docente):
         docente.save()

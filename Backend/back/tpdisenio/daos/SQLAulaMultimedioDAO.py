@@ -17,12 +17,19 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
 
     def get_aula(self, nro_aula):
         try:
-            return AulaMultimedio.objects.get(nro_aula=nro_aula)
+            return AulaMultimedio.objects.get(
+                nro_aula=nro_aula, 
+                estado_aula=AulaMultimedio.EstadoAula.HABILITADO,
+                activo=True
+            )
         except ObjectDoesNotExist:
             return None
         
     def get_all_multimedio(self):
-        return AulaMultimedio.objects.all()
+        return AulaMultimedio.objects.filter(
+            aula__estado_aula=AulaMultimedio.EstadoAula.HABILITADO,
+            aula__activo=True
+        )
 
     def update_multimedio(self, aula_multimedio):
         aula_multimedio.save()
@@ -59,14 +66,18 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
         reservaciones_ocupadas = Reservacion.objects.select_related('Aula').select_related('AulaMultimedio').filter(
             fecha=fecha,
             hora_inicio__lt=hora_fin,
-            hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time()
+            hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time(),
+            activo=True,
+            aula__estado_aula=AulaMultimedio.EstadoAula.HABILITADO,
+            aula__activo=True
         ).values('aula__nro_aula')
 
         aulas_ocupadas = [res['aula__nro_aula'] for res in reservaciones_ocupadas]
 
         aula = list(AulaMultimedio.objects.filter(
             nro_aula=nro_aula,
-            activo=True,
+            estado_aula=AulaMultimedio.EstadoAula.HABILITADO,
+            activo=True
         ).exclude(nro_aula__in=aulas_ocupadas))
 
         if len(aula)==0:
@@ -83,15 +94,19 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
         reservaciones_ocupadas = Reservacion.objects.select_related('Aula').select_related('AulaMultimedio').filter(
             fecha=fecha,
             hora_inicio__lt=hora_fin,
-            hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time()
+            hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time(),
+            activo=True,
+            aula__estado_aula=AulaMultimedio.EstadoAula.HABILITADO,
+            aula__activo=True
         ).values('aula__nro_aula')
 
         aulas_ocupadas = {res['aula__nro_aula'] for res in reservaciones_ocupadas}
 
         aulas_disponibles = AulaMultimedio.objects.filter(
             capacidad__gte=capacidad,
-            activo=True,
-        ).exclude(nro_aula__in=aulas_ocupadas)
+            estado_aula=AulaMultimedio.EstadoAula.HABILITADO,
+            activo=True
+        ).order_by('capacidad').exclude(nro_aula__in=aulas_ocupadas)
 
         return [AulaReservaDTO(AulaDTO(aula['nro_aula'], aula['piso'], aula['capacidad'],
                                self.get_caracteristicas(aula['aire_acondicionado'], aula['televisor'], aula['canion'], aula['computadora'], aula['ventilador'])), None, None, None)
@@ -108,8 +123,11 @@ class SQLAulaMultimedioDAO(AulaMultimedioDAO):
             fecha=fecha,
             aula__capacidad__gte=capacidad,
             hora_inicio__lt=hora_fin_dt.time(),
-            hora_inicio__gte=(hora_inicio_dt - duracion_timedelta).time()
-        ).values(
+            hora_inicio__gte=(hora_inicio_dt - duracion_timedelta).time(),
+            activo=True,
+            aula__estado_aula=AulaMultimedio.EstadoAula.HABILITADO,
+            aula__activo=True
+        ).order_by('aula__capacidad').values(
             'id_reservacion',
             'hora_inicio',
             'duracion',

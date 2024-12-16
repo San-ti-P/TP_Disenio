@@ -17,14 +17,14 @@ class SQLAdministradorDAO(AdministradorDAO):
         administrador.save()
 
     def get_all_administrador(self):
-        return Administrador.objects.all()
+        return Administrador.objects.filter(activo=True)
 
     def update_administrador(self, administrador):
         administrador.save()
     
     def get_administrador(self, id_administrador):
         try:
-            return Administrador.objects.get(id_usuario=id_administrador)
+            return Administrador.objects.get(id_usuario=id_administrador, activo=True)
         except ObjectDoesNotExist:
             return None
 

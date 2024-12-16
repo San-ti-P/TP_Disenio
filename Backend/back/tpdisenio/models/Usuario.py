@@ -6,7 +6,7 @@ class Usuario(models.Model):
         db_table = "Usuario"
 
     id_usuario = models.CharField(max_length=10, primary_key=True)
-    contrasenia = models.BinaryField(max_length=60) #models.CharField(max_length=60)
+    contrasenia = models.BinaryField(max_length=60)
     nombre = models.CharField(max_length=30)
     apellido = models.CharField(max_length=30)
     activo = models.BooleanField(default=True)

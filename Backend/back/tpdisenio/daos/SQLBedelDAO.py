@@ -17,14 +17,14 @@ class SQLBedelDAO(BedelDAO):
         bedel.save()
 
     def get_all_bedel(self):
-        return Bedel.objects.all()
+        return Bedel.objects.filter(activo=True)
 
     def update_bedel(self, bedel):
         bedel.save()
     
     def get_bedel(self, id_bedel):
         try:
-            return Bedel.objects.get(id_usuario=id_bedel)
+            return Bedel.objects.get(id_usuario=id_bedel, activo=True)
         except ObjectDoesNotExist:
             return None
 
@@ -36,9 +36,9 @@ class SQLBedelDAO(BedelDAO):
             if len(turno) == 0:
                 return self.get_all_bedel()
             
-            return Bedel.objects.filter(turno=turno)
+            return Bedel.objects.filter(turno=turno, activo=True)
         
         if len(turno) == 0:
-            return Bedel.objects.filter(apellido=apellido)
+            return Bedel.objects.filter(apellido=apellido, activo=True)
 
-        return Bedel.objects.filter(apellido=apellido, turno=turno)
+        return Bedel.objects.filter(apellido=apellido, turno=turno, activo=True)

@@ -66,7 +66,7 @@ def registrar_reserva(request, id_usuario):
                         fecha=fecha,
                         duracion=reservacion['duracion'],
                         hora_inicio=datetime.datetime.strptime(reservacion['hora_inicio'], "%H:%M").time(),
-                        aula = AulaDTO(nro_aula=nro_aula)
+                        aula = AulaDTO(nro_aula=nro_aula, piso=None, capacidad=None, caracteristicas=None)
                     )
                 )
     

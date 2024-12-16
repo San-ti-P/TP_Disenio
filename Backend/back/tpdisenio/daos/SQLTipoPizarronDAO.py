@@ -10,7 +10,7 @@ class SQLTipoPizarronDAO(TipoPizarronDAO):
         tipo_pizarron.save()
 
     def delete_tipo_pizarron(self, id_tipo_pizarron):
-        tipo_pizarron = TipoPizarron.objects.filter(id_tipo_pizarron=id_tipo_pizarron)
+        tipo_pizarron = TipoPizarron.objects.filter(id_tipo_pizarron=id_tipo_pizarron, activo=True)
         if len(tipo_pizarron)==1:
             tipo_pizarron = tipo_pizarron[0]
             tipo_pizarron.set_activo(False)
@@ -18,7 +18,7 @@ class SQLTipoPizarronDAO(TipoPizarronDAO):
             tipo_pizarron.save()
 
     def get_all_tipo_pizarron(self):
-        return TipoPizarron.objects.all()
+        return TipoPizarron.objects.filter(activo=True)
 
     def update_tipo_pizarron(self, tipo_pizarron):
         tipo_pizarron.save()
