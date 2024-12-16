@@ -149,8 +149,8 @@ def registrar_bedel(request):
     if data['turno'] == "Mañana":
         data['turno'] = "Maniana"
     
-    nombre = data['nombre'].capitalize()
-    apellido = data['apellido'].capitalize()
+    nombre = data['nombre'].title()
+    apellido = data['apellido'].title()
     turno = data['turno']
     id_usuario = data['id_usuario']
     contrasenia = data['contrasenia']
