@@ -1,12 +1,12 @@
 import React from 'react';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
-import { BotonSC } from '../elementos/formularios'; 
+import { BotonSC } from '../elementos/formularios';
 
 const tuneoModal = (config) => {
   const existingStyle = document.getElementById('swal-custom-styles');
   if (existingStyle) existingStyle.remove();
-  
+
   const style = document.createElement("style");
   style.id = 'swal-custom-styles';
   style.innerHTML = `
@@ -58,7 +58,7 @@ const tuneoModal = (config) => {
   }
   `;
   document.head.appendChild(style);
-  
+
   const defaultConfig = {
     showCancelButton: false,
     allowOutsideClick: false,
@@ -73,7 +73,7 @@ const tuneoModal = (config) => {
     width: 380,
     position: 'center',
     scrollbarPadding: false,
-    heightAuto: false 
+    heightAuto: false
   };
 
   const finalConfig = { ...defaultConfig, ...config };
@@ -86,7 +86,7 @@ const CancelarModal = ({
   mostrarCancelar = false,
   confirmarTexto = 'Confirmar',
   cancelarTexto = 'Regresar',
-  labelBoton, 
+  labelBoton,
   width = 320,
   type = "button",
   url = '/menuAdm',
@@ -162,92 +162,9 @@ const mostrarModalWarningReserva = (frase) => {
   }).then((result) => {
     if (result.isConfirmed) {
       console.log("Cerro el modal de error al registrar la reserva");
-  }});
+    }
+  });
 };
-
-// // const mostrarModalAulasSinSeleccionar = (funcion, datos) => {
-// //   const navigate = useNavigate();
-// //   tuneoModal({
-// //     title: "Hay fechas con aulas sin seleccionar",
-// //     html: "¿Esta seguro que desea confirmar la operacion? <br> Si presiona 'Confirmar' solo se reservarán las fechas con aulas seleccionadas.",
-// //     icon: "warning",
-// //     showCancelButton: true,
-// //     confirmButtonText: "Confirmar",
-// //     cancelButtonText: "Cancelar",
-// //     width: 550
-// //   }).then((result) => {
-// //     if (result.isConfirmed) {
-// //       funcion(datos); 
-// //       tuneoModal({
-// //         title: "Aulas reservadas exitosamente!",
-// //         text: "",
-// //         icon: "success",
-// //         showConfirmButton: false,
-// //         timer: 1500
-// //       });
-// //     navigate("/registrar-reserva");
-// //     }
-// //   });
-// // };
-
-// const mostrarModalAulasSinSeleccionar = (funcion, datos) => {
-//   const navigate = useNavigate();
-//   tuneoModal({
-//     title: "Hay fechas con aulas sin seleccionar",
-//     html: "¿Esta seguro que desea confirmar la operación? <br> Si presiona 'Confirmar' solo se reservarán las fechas con aulas seleccionadas.",
-//     icon: "warning",
-//     showCancelButton: true,
-//     confirmButtonText: "Confirmar",
-//     cancelButtonText: "Cancelar",
-//     width: 550
-//   }).then((result) => {
-//     if (result.isConfirmed) {
-//       funcion(datos); 
-//       tuneoModal({
-//         title: "Aulas reservadas exitosamente!",
-//         text: "",
-//         icon: "success",
-//         showConfirmButton: false,
-//         timer: 1500,
-//         willClose: () => {
-//           navigate("/registrar-reserva");
-//         }
-//       });
-//     }
-//   });
-// };
-
-
-// // const mostrarModalAulasExitoso = () => {
-// //   const navigate = useNavigate();
-// //   tuneoModal({
-// //     title: "Aulas reservadas exitosamente!",
-// //     text: "",
-// //     icon: "success",
-// //     showConfirmButton: false, 
-// //     timer: 1500,
-// //     // customClass: {
-// //     //   popup: "tick-verde-solo"
-// //     // }
-// //   });
-// //   navigate("/registrar-reserva");
-// // };
-
-
-// const mostrarModalAulasExitoso = () => {
-//   const navigate = useNavigate();
-//   tuneoModal({
-//     title: "Aulas reservadas exitosamente!",
-//     text: "",
-//     icon: "success",
-//     showConfirmButton: false,
-//     timer: 1500,
-//     willClose: () => {
-//       navigate("/registrar-reserva");
-//     }
-//   });
-// };
-
 
 const mostrarModalAulasSinSeleccionar = (navigate, funcion, datos) => {
   tuneoModal({
@@ -260,7 +177,7 @@ const mostrarModalAulasSinSeleccionar = (navigate, funcion, datos) => {
     width: 550
   }).then((result) => {
     if (result.isConfirmed) {
-      funcion(datos); 
+      funcion(datos);
       tuneoModal({
         title: "Aulas reservadas exitosamente!",
         text: "",

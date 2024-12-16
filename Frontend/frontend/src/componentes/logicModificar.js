@@ -9,17 +9,17 @@ import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 
 export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, politicas }) => {
-  const [nombre, cambiarNombre] = useState({campo: bedel.nombre || '', valido: 'true'});
-  const [apellido, cambiarApellido] = useState({campo: bedel.apellido || '', valido: 'true'});
-  const [turno, cambiarTurno] = useState({campo: bedel.turno || '', valido: 'true'});
-  const [idUsuario, cambiarIdUsuario] = useState({campo: bedel.id_usuario || '', valido: 'true'});
-  const [contraseña1, cambiarContraseña1] = useState({campo: '', valido: 'true'});
-  const [contraseña2, cambiarContraseña2] = useState({campo: '', valido: 'true'});
+  const [nombre, cambiarNombre] = useState({ campo: bedel.nombre || '', valido: 'true' });
+  const [apellido, cambiarApellido] = useState({ campo: bedel.apellido || '', valido: 'true' });
+  const [turno, cambiarTurno] = useState({ campo: bedel.turno || '', valido: 'true' });
+  const [idUsuario, cambiarIdUsuario] = useState({ campo: bedel.id_usuario || '', valido: 'true' });
+  const [contraseña1, cambiarContraseña1] = useState({ campo: "", valido: 'true' });
+  const [contraseña2, cambiarContraseña2] = useState({ campo: "", valido: 'true' });
   const [formularioValido, cambiarFormularioValido] = useState(null);
   const [animarErrores, cambiarAnimarErrores] = useState(false);
   const [mostrarIDLeyenda, cambiarMostrarIDLeyenda] = useState(false);
   const [mostrarContraLeyenda, cambiarMostrarContraLeyenda] = useState(false);
-  
+
   const expresiones = {
     nombre: /^[a-zA-ZÀ-ÿ\s]{2,40}$/,
     apellido: /^[a-zA-ZÀ-ÿ\s]{2,40}$/,
@@ -27,22 +27,22 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
   };
 
   const validarContraseña2 = () => {
-    if(contraseña1.campo.length > 0){
-      if(contraseña1.campo !== contraseña2.campo){
+    if (contraseña1.campo.length > 0) {
+      if (contraseña1.campo !== contraseña2.campo) {
         cambiarContraseña2((prevState) => {
-          return {...prevState, valido: 'false'}
+          return { ...prevState, valido: 'false' }
         })
       } else {
         cambiarContraseña2((prevState) => {
-          return {...prevState, valido: 'true'}
+          return { ...prevState, valido: 'true' }
         })
-      } 
+      }
     }
   }
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    
+
     let hayErrores = false;
 
     validarContraseña2();
@@ -87,7 +87,7 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
 
       console.log("Datos del Formulario de Modificar: ", datosFormulario);
       const respuesta = await modificarBedel(datosFormulario);
-      console.log("Respuesta: ", respuesta.error);
+      console.log("Respuesta del backend a la modificacion: ", respuesta);
 
       if (respuesta.error) alert("Ocurrió un error al enviar el formulario");
       else {
@@ -98,10 +98,10 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
             handleClose();
           });
         } else {
-          if (respuestaErrores.includes("campos_invalidos")) { 
-            alert("Error de campo"); 
+          if (respuestaErrores.includes("campos_invalidos")) {
+            alert("Error de campo");
           }
-          if (respuestaErrores.includes("contrasenia_invalida")){
+          if (respuestaErrores.includes("contrasenia_invalida")) {
             cambiarMostrarContraLeyenda(true);
             cambiarContraseña1({ campo: contraseña1.campo, valido: "false" });
           }
@@ -116,8 +116,8 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
       cambiarApellido({ campo: bedel.apellido || '', valido: 'true' });
       cambiarTurno({ campo: bedel.turno || '', valido: 'true' });
       cambiarIdUsuario({ campo: bedel.id_usuario || '', valido: 'true' });
-      cambiarContraseña1({ campo: "" || '', valido: 'true' });
-      cambiarContraseña2({ campo: "" || '', valido: 'true' });
+      cambiarContraseña1({ campo: '', valido: 'true' });
+      cambiarContraseña2({ campo: '', valido: 'true' });
     }
   }, [open, bedel]);
 
@@ -139,7 +139,7 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
         p: 4,
         borderRadius: '10px'
       }}>
-        <h2 id="modal-modal-title" style={{ textAlign: 'center', marginBottom: 15, marginTop: 0  }}>Modificar Bedel</h2>
+        <h2 id="modal-modal-title" style={{ textAlign: 'center', marginBottom: 15, marginTop: 0 }}>Modificar Bedel</h2>
         <Formulario onSubmit={onSubmit}>
           <ComponenteNyAP
             estado={nombre}
@@ -161,22 +161,22 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
             expresionRegular={expresiones.apellido}
             textoTooltip={apellido.valido === "false" ? "El apellido debe tener mínimo 2 letras y no tener números" : null}
           />
-          <ComponenteDesplegableInput 
+          <ComponenteDesplegableInput
             estado={turno}
             cambiarEstado={cambiarTurno}
-            tipo="text" 
-            label="Turno" 
+            tipo="text"
+            label="Turno"
             placeholder="Seleccione un turno"
-            name="turno" 
+            name="turno"
             valores={["Mañana", "Tarde", "Noche"]}
           />
           <ComponenteOtro
             estado={idUsuario}
             cambiarEstado={cambiarIdUsuario}
-            tipo="text" 
-            label="ID usuario" 
+            tipo="text"
+            label="ID usuario"
             placeholder="ID de usuario"
-            name="idUsuario" 
+            name="idUsuario"
             expresionRegular={expresiones.idUsuario}
             comportamientoTooltip="nunca"
             leyendaError={"ID de usuario ya existe"}
@@ -185,13 +185,13 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
             editable={false}
             tabIndex="-1"
           />
-          <ComponenteOtro 
+          <ComponenteOtro
             estado={contraseña1}
             cambiarEstado={cambiarContraseña1}
-            tipo="password" 
-            label="Contraseña" 
+            tipo="password"
+            label="Contraseña"
             placeholder="Ingrese su contraseña"
-            name="contraseña" 
+            name="contraseña"
             funcion={validarContraseña2}
             textoTooltip={politicas}
             comportamientoTooltip="siempre"
@@ -199,13 +199,13 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
             mostrarLeyenda={mostrarContraLeyenda}
             cambiarMostrarLeyenda={cambiarMostrarContraLeyenda}
           />
-          <ComponenteOtro 
+          <ComponenteOtro
             estado={contraseña2}
             cambiarEstado={cambiarContraseña2}
-            tipo="password" 
-            label="Confirmar contraseña" 
+            tipo="password"
+            label="Confirmar contraseña"
             placeholder="Confirme la contraseña"
-            name="confirmarContraseña" 
+            name="confirmarContraseña"
             funcion={validarContraseña2}
             textoTooltip="Las contraseñas no coinciden"
           />
@@ -213,7 +213,7 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
             <p>Todos los campos son obligatorios</p>
             <DivBotonesSC>
               <BotonSubmit label="Guardar cambios" />
-              <CancelarModal 
+              <CancelarModal
                 titulo="¿Está seguro que desea cancelar la modificación?"
                 texto="No podrá deshacer esta acción"
                 icono="question"
@@ -239,12 +239,12 @@ export const ManejoModificar = ({ bedel, actualizarFila, politicasTooltip }) => 
 
   return (
     <>
-      <Button 
+      <Button
         onClick={handleOpen}
         color="info"
         style={{ marginRight: '-15px' }}>
-       <EditIcon />
-    </Button>
+        <EditIcon />
+      </Button>
       <ModificarModal open={open} handleClose={handleClose} bedel={bedel} actualizarFila={actualizarFila} politicas={politicasTooltip} />
     </>
   );

@@ -10,7 +10,6 @@ const enviarFormulario = async (datosFormulario) => {
     const respuesta = await api.post("/bedeles", datosFormulario, {
       headers: { "Content-Type": "application/json" },
     });
-    console.log(respuesta.data);
     return respuesta;
   } catch (error) {
     console.error(error);
@@ -76,10 +75,9 @@ const modificarBedel = async (datosFormulario) => {
     const respuesta = await api.put("/bedeles", datosFormulario, {
       headers: { "Content-Type": "application/json" },
     });
-    console.log(respuesta.data);
     return respuesta;
   } catch (error) {
-    console.error(error);
+    console.error("Error al modificar bedel", error);
     return { error: true, mensaje: error.message };
   }
 };
@@ -105,10 +103,6 @@ const obtenerAulasReserva = async (datosReserva) => {
 }
 
 const enviarAulas = async (datosReserva) => {
-  
-  // console.log(JSON.stringify(datosReserva, null, 2));    
-  // return -1;
-
   try {
     const respuesta = await api.post("/reserva", datosReserva);
     console.log("Respuesta del POST a /reserva: ", respuesta);

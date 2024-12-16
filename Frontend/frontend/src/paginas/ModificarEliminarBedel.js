@@ -42,7 +42,7 @@ export default function ModificarEliminarBedel() {
   };
 
 
-  const valores_activo = valores.filter(valor => valor.activo);
+  const valores_activo = valores.filter(valor => valor.activo).sort((a, b) => a.id_usuario.localeCompare(b.id_usuario));
   console.log("Arreglo de bedeles activos: ", valores_activo);
 
   return (
