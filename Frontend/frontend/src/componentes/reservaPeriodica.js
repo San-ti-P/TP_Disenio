@@ -36,11 +36,14 @@ const ReservaPeriodica = ({ onReservasChange }) => {
   };
 
   const manejarEliminarHorario = (index) => {
+    const horarioEliminado = horario[index];
     const nuevosHorarios = horario.filter((_, i) => i !== index);
-    const nuevosSeleccionados = nuevosHorarios.map(h => h.dia);
+    const diaEliminado = Object.keys(diasMap).find(key => diasMap[key] === horarioEliminado.dia);
+    const nuevosDiasSeleccionados = diaSeleccionado.filter(dia => dia !== diaEliminado);
+    
     setHorario(nuevosHorarios);
-    setDiaSeleccionado(nuevosSeleccionados);
-    onReservasChange(nuevosHorarios);
+    setDiaSeleccionado(nuevosDiasSeleccionados);
+    onReservasChange(nuevosHorarios, periodo);
   };
 
   return (
