@@ -4,6 +4,7 @@ from .AulaReservaDTO import AulaReservaDTO
 from .DocenteDTO import DocenteDTO
 from .IniciarReservaEntidadesDTO import IniciarReservaEntidadesDTO
 from .ReservacionDTO import ReservacionDTO
+from .ReservaDTO import ReservaDTO
 from .RespuestaIniciarReservaDTO import RespuestaIniciarReservaDTO
 from .RespuestaLogin import RespuestaLogin
 from .RespuestaModificarBedel import RespuestaModificarBedel

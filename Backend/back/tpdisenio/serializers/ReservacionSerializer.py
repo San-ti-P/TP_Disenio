@@ -1,7 +1,10 @@
 from rest_framework import serializers
-from ..models import Reservacion
+from .AulaDTOSerializer import AulaDTOSerializer
     
-class ReservacionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Reservacion
-        fields = ['dia', 'fecha', 'duracion', 'hora_inicio', 'aula']
+class ReservacionSerializer(serializers.Serializer):
+
+    dia = serializers.CharField()
+    fecha = serializers.CharField()
+    duracion = serializers.IntegerField()
+    hora_inicio = serializers.CharField()
+    aula = AulaDTOSerializer()

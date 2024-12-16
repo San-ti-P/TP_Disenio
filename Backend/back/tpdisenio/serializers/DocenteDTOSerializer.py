@@ -1,7 +1,8 @@
 from rest_framework import serializers
-from ..models import Docente
 
-class DocenteDTOSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Docente
-        fields = ['id_docente', 'apellido', 'nombre', 'correo_contacto']
+class DocenteDTOSerializer(serializers.Serializer):
+    
+    id_docente = serializers.IntegerField()
+    apellido = serializers.CharField()
+    nombre = serializers.CharField()
+    correo_contacto = serializers.CharField()

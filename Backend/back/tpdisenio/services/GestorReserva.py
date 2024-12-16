@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 from ..models import Periodo, Reserva, Reservacion
-from ..dtos import RespuestaIniciarReservaDTO, SolicitudFechaDTO
+from ..dtos import ReservaDTO, RespuestaIniciarReservaDTO, SolicitudFechaDTO
 
 class GestorReserva():
     """Clase encargada de suministrar todo la lógica concerniente a la clase reserva"""
@@ -55,7 +55,9 @@ class GestorReserva():
         
         if exito: 
             self.reserva_DAO.create_reserva(reserva)
-            return exito, reserva
+            return exito, ReservaDTO(id_reserva=reserva.get_id_reserva(), cant_alumnos=reserva.get_cantidad_alumnos(), fecha_solicitud=reserva.get_fecha_solicitud(),
+                                     tipo=reserva.get_tipo(), activo=reserva.get_activo(), fecha_baja=reserva.get_fecha_baja(), periodo=reserva.get_periodo().get_id_periodo(),
+                                     actividad=reserva.get_actividad().get_id_actividad(), bedel=reserva.get_bedel().get_id_usuario())
 
         else:
             return exito, None

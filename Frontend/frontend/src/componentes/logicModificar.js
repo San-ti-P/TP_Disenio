@@ -149,7 +149,7 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
             placeholder="Ingrese su nombre"
             name="nombre"
             expresionRegular={expresiones.nombre}
-            textoTooltip={nombre.valido === "false" ? "El nombre debe tener mínimo 2 letras y no tener números" : null}
+            textoTooltip={nombre.valido === "false" ? "El nombre debe tener entre 2 y 40 letras inclusive, sólo caracteres alfabéticos" : null}
           />
           <ComponenteNyAP
             estado={apellido}
@@ -159,7 +159,7 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
             placeholder="Ingrese su apellido"
             name="apellido"
             expresionRegular={expresiones.apellido}
-            textoTooltip={apellido.valido === "false" ? "El apellido debe tener mínimo 2 letras y no tener números" : null}
+            textoTooltip={apellido.valido === "false" ? "El apellido debe tener entre 2 y 40 letras inclusive, sólo caracteres alfabéticos" : null}
           />
           <ComponenteDesplegableInput
             estado={turno}
