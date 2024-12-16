@@ -203,7 +203,7 @@ export default function AulasReservas() {
             cancelarTexto="Regresar"
             labelBoton="Cancelar"
             url="/registrar-reserva"
-            width="480px"
+            width="490px"
           />
         </ContenedorBotones>
       </PanelDerecho>
