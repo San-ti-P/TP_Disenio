@@ -61,7 +61,7 @@ def comenzar_reserva(request):
     
     iniciar_reserva_serializer = IniciarReservaRequestSerializer(data=request.data)
     data = iniciar_reserva_serializer.initial_data
-    
+
     docente = data['docente']
     docente = DocenteDTO(id_docente=docente['id_docente'], apellido=docente['apellido'], nombre=docente['nombre'], correo_contacto=docente['correo_contacto'])
     cant_alumnos = data['cant_alumnos']
@@ -80,7 +80,8 @@ def comenzar_reserva(request):
                 dia=reservacion['dia'],
                 fecha=fecha,
                 duracion=reservacion['duracion'],
-                hora_inicio=datetime.datetime.strptime(reservacion['hora_inicio'], "%H:%M").time()
+                hora_inicio=datetime.datetime.strptime(reservacion['hora_inicio'], "%H:%M").time(),
+                aula=None
             )
         )
     

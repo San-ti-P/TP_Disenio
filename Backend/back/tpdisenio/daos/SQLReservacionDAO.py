@@ -11,7 +11,7 @@ class SQLReservacionDAO(ReservacionDAO):
         reservacion.save()
 
     def delete_reservacion(self, id_reservacion):
-        reservacion = Reservacion.objects.filter(id_reservacion=id_reservacion)
+        reservacion = Reservacion.objects.filter(id_reservacion=id_reservacion, activo=True)
         if len(reservacion)==1:
             reservacion = reservacion[0]
             reservacion.set_activo(False)
@@ -19,7 +19,7 @@ class SQLReservacionDAO(ReservacionDAO):
             reservacion.save()
 
     def get_all_reservacion(self):
-        Reservacion.objects.all()
+        Reservacion.objects.filter(activo=True)
 
     def update_reservacion(self, reservacion):
         reservacion.save()

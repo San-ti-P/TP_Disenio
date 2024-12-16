@@ -11,7 +11,7 @@ class SQLActividadDAO(ActividadDAO):
         actividad.save()
 
     def delete_actividad(self, id_actividad_historia):
-        actividad = Actividad.objects.filter(id_actividad_historia=id_actividad_historia)
+        actividad = Actividad.objects.filter(id_actividad_historia=id_actividad_historia, activo=True)
         if len(actividad)==1:
             actividad = actividad[0]
             self.docente_DAO.delete_docente(actividad.get_docente().get_id_docente_historia())
@@ -20,7 +20,7 @@ class SQLActividadDAO(ActividadDAO):
             actividad.save()
 
     def get_all_actividad(self):
-        return Actividad.objects.all()
+        return Actividad.objects.filter(activo=True)
 
     def update_actividad(self, actividad):
         self.docente_DAO.update_docente(actividad.get_docente())

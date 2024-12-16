@@ -109,7 +109,7 @@ def eliminar_bedel(request):
     """
     
     params = request.query_params
-    print(params)
+
     if 'id' in params:
         id = params['id']
     else:
@@ -147,8 +147,7 @@ def registrar_bedel(request):
     data = bedeles_serializer.initial_data
     if data['turno'] == "Mañana":
         data['turno'] = "Maniana"
-    print(data['id_usuario'], data['contrasenia'],
-            data['nombre'], data['apellido'], data['turno'])
+    
     nombre = data['nombre'].capitalize()
     apellido = data['apellido'].capitalize()
     turno = data['turno']

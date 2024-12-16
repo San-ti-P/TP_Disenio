@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-from ..models import Reserva, Reservacion
+from ..models import Periodo, Reserva, Reservacion
 from ..dtos import RespuestaIniciarReservaDTO, SolicitudFechaDTO
 
 class GestorReserva():
@@ -18,7 +18,9 @@ class GestorReserva():
    
     def alta_reserva(self, id_bedel, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, tipo_periodo, lista_reservaciones):
         if tipo_periodo is not None:
-            periodo = self.gestor_periodo.get_periodo(periodo, date.today().year + 1)
+            periodo = self.gestor_periodo.get_periodo(tipo_periodo, date.today().year + 1)
+        else:
+            periodo = None
             
         errores = self.validar_datos(docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones)
 
@@ -106,9 +108,9 @@ class GestorReserva():
 
         if not (type(id)==type(1) and id >= 0):
             datos_completos = False
-        if not (len(nombre)>1 and len(nombre)<30):
+        if not (len(nombre)>1 and len(nombre)<40):
             datos_completos = False
-        if not (len(descripcion)>1 and len(descripcion)<30):
+        if not (len(descripcion)>1 and len(descripcion)<250):
             datos_completos = False
 
         if not (type(cant_alumnos)==type(1) and cant_alumnos >= 0):
@@ -169,31 +171,42 @@ class GestorReserva():
             "sabado": 5,      
             "domingo": 6
         }
+        periodos=[]
         lista = []
+        if periodo.get_tipo()==Periodo.TipoPeriodo.ANUAL:
+            primer_cuatrimestre = self.gestor_periodo.get_periodo(Periodo.TipoPeriodo.PRIMER_CUATRIMESTRE, date.today().year+1)
+            segundo_cuatrimestre = self.gestor_periodo.get_periodo(Periodo.TipoPeriodo.SEGUNDO_CUATRIMESTRE, date.today().year+1)
+            periodos = [primer_cuatrimestre, segundo_cuatrimestre]
+        else:
+            periodos = [periodo]
+        
         for reservacion in reservaciones_periodicas:
-            actual = periodo.get_fecha_inicio()
-            fin = periodo.get_fecha_fin()
-            
-            while actual.weekday() != dias_semana.get(reservacion.get_dia().lower(), None):
-                actual += timedelta(days=1)
-            
-            while actual <= fin:
-                r = Reservacion(dia=reservacion.get_dia(), fecha=actual, hora_inicio=reservacion.get_hora_inicio(), duracion=reservacion.get_duracion())
-                lista.append(r)
-                actual += timedelta(days=7)
+            for p in periodos:
+                actual = p.get_fecha_inicio()
+                fin = p.get_fecha_fin()
+    
+                while actual.weekday() != dias_semana.get(reservacion.get_dia().lower(), None):
+                    actual += timedelta(days=1)
+
+                while actual <= fin:
+                    r = Reservacion(dia=reservacion.get_dia(), fecha=actual, hora_inicio=reservacion.get_hora_inicio(), duracion=reservacion.get_duracion())
+                    lista.append(r)
+                    actual += timedelta(days=7)
 
         return lista
     
-    def iniciar_reserva(self, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones):
-        if periodo is not None:
-            periodo = self.gestor_periodo.get_periodo(periodo, date.today().year+1)
+    def iniciar_reserva(self, docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, tipo_periodo, lista_reservaciones):
+        if tipo_periodo is not None:
+            periodo = self.gestor_periodo.get_periodo(tipo_periodo, date.today().year+1)
             #El +1 de arriba es para que el periodo sea del año siguiente, así podemos testear.
+        else:
+            periodo = None
         errores = self.validar_datos(docente_DTO, cant_alumnos, tipo_aula, actividad_DTO, periodo, lista_reservaciones)
         
         if True in errores:
             return RespuestaIniciarReservaDTO(errores, None)
 
-        if periodo is not None:
+        if tipo_periodo is not None:
             lista_reservaciones = self.obtener_fechas(periodo, lista_reservaciones)
         
         solicitudes = []

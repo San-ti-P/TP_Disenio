@@ -14,7 +14,7 @@ class SQLReservaDAO(ReservaDAO):
             self.reservacion_DAO.create_reservacion(reservacion)
 
     def delete_reserva(self, id_reserva):
-        reserva = Reserva.objects.filter(id_reserva=id_reserva)
+        reserva = Reserva.objects.filter(id_reserva=id_reserva, activo=True)
         if len(reserva)==1:
             reserva = reserva[0]
             self.actividad_DAO.delete_actividad(reserva.get_actividad().get_id_actividad_historia())
@@ -26,7 +26,7 @@ class SQLReservaDAO(ReservaDAO):
             reserva.save()
 
     def get_all_reserva(self):
-        return Reserva.objects.all()
+        return Reserva.objects.filter(activo=True)
 
     def update_reserva(self, reserva):
         self.actividad_DAO.update_actividad(reserva.get_actividad())

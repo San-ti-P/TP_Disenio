@@ -17,12 +17,19 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
 
     def get_aula(self, nro_aula):
         try:
-            return AulaSinRecursosAdicionales.objects.get(nro_aula=nro_aula)
+            return AulaSinRecursosAdicionales.objects.get(
+                nro_aula=nro_aula, 
+                estado_aula=AulaSinRecursosAdicionales.EstadoAula.HABILITADO,
+                activo=True
+            )
         except ObjectDoesNotExist:
             return None
         
     def get_all_sin_adicionales(self):
-        return AulaSinRecursosAdicionales.objects.all()
+        return AulaSinRecursosAdicionales.objects.filter(
+            aula__estado_aula=AulaSinRecursosAdicionales.EstadoAula.HABILITADO,
+            aula__activo=True
+        )
 
     def update_sin_adicionales(self, aula_sin_adicionales):
         aula_sin_adicionales.save()
@@ -49,14 +56,18 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
         reservaciones_ocupadas = Reservacion.objects.select_related('Aula').select_related('AulaSinRecursosAdicionales').filter(
             fecha=fecha,
             hora_inicio__lt=hora_fin,
-            hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time()
+            hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time(),
+            activo=True,
+            aula__estado_aula=AulaSinRecursosAdicionales.EstadoAula.HABILITADO,
+            aula__activo=True
         ).values('aula__nro_aula')
 
         aulas_ocupadas = [res['aula__nro_aula'] for res in reservaciones_ocupadas]
 
         aula = list(AulaSinRecursosAdicionales.objects.filter(
             nro_aula=nro_aula,
-            activo=True,
+            estado_aula=AulaSinRecursosAdicionales.EstadoAula.HABILITADO,
+            activo=True
         ).exclude(nro_aula__in=aulas_ocupadas))
 
         if len(aula)==0:
@@ -73,15 +84,19 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
         reservaciones_ocupadas = Reservacion.objects.select_related('Aula').select_related('AulaSinRecursosAdicionales').filter(
             fecha=fecha,
             hora_inicio__lt=hora_fin,
-            hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time()
+            hora_inicio__gte=(datetime.combine(fecha, hora_inicio) - duracion_timedelta).time(),
+            activo=True,
+            aula__estado_aula=AulaSinRecursosAdicionales.EstadoAula.HABILITADO,
+            aula__activo=True
         ).values('aula__nro_aula')
 
         aulas_ocupadas = {res['aula__nro_aula'] for res in reservaciones_ocupadas}
 
         aulas_disponibles = AulaSinRecursosAdicionales.objects.filter(
             capacidad__gte=capacidad,
-            activo=True,
-        ).exclude(nro_aula__in=aulas_ocupadas).select_related('AulaSinAdicionales')
+            estado_aula=AulaSinRecursosAdicionales.EstadoAula.HABILITADO,
+            activo=True
+        ).order_by('capacidad').exclude(nro_aula__in=aulas_ocupadas)#.select_related('AulaSinAdicionales')
 
         return [AulaReservaDTO(AulaDTO(aula['nro_aula'], aula['piso'], aula['capacidad'], 
                                 self.get_caracteristicas(aula['aire_acondicionado'], aula['ventilador'])), None, None, None)
@@ -98,8 +113,11 @@ class SQLAulaSinAdicionalesDAO(AulaSinAdicionalesDAO):
             fecha=fecha,
             aula__capacidad__gte=capacidad,
             hora_inicio__lt=hora_fin_dt.time(),
-            hora_inicio__gte=(hora_inicio_dt - duracion_timedelta).time()
-        ).values(
+            hora_inicio__gte=(hora_inicio_dt - duracion_timedelta).time(),
+            activo=True,
+            aula__estado_aula=AulaSinRecursosAdicionales.EstadoAula.HABILITADO,
+            aula__activo=True
+        ).order_by('aula__capacidad').values(
             'id_reservacion',
             'hora_inicio',
             'duracion',

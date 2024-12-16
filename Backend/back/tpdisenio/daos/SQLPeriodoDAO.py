@@ -10,7 +10,7 @@ class SQLPeriodoDAO(PeriodoDAO):
         periodo.save()
 
     def delete_periodo(self, id_periodo):
-        periodo = Periodo.objects.filter(id_periodo=id_periodo)
+        periodo = Periodo.objects.filter(id_periodo=id_periodo, activo=True)
         if len(periodo)==1:
             periodo = periodo[0]
             periodo.set_activo(False)
@@ -18,13 +18,13 @@ class SQLPeriodoDAO(PeriodoDAO):
             periodo.save()
 
     def get_all_periodo(self):
-        return Periodo.objects.all()
+        return Periodo.objects.filter(activo=True)
 
     def update_periodo(self, periodo):
         periodo.save()
 
     def get_periodo_by_year(self, tipo_periodo, anio):
-        periodos = Periodo.objects.filter(tipo=tipo_periodo, anio=anio)
+        periodos = Periodo.objects.filter(tipo=tipo_periodo, anio=anio, activo=True)
         if len(periodos) > 0:
             return periodos[0]
         return None
