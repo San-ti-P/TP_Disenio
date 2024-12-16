@@ -12,12 +12,12 @@ import { useNavigate } from 'react-router-dom';
 const RegistroReservas = () => {
   const [tipoReserva, setTipoReserva] = useState({ campo: '', valido: null });
   const [correo, setCorreo] = useState({ campo: '', valido: null });
-  const [cantidadAlumnos, setCantidadAlumnos] = useState({ campo: ''});
+  const [cantidadAlumnos, setCantidadAlumnos] = useState({ campo: '' });
   const [tipoAula, setTipoAula] = useState({ campo: '', valido: null });
   const [reservas, setReservas] = useState([]);
   const [periodo, setPeriodo] = useState(null);
   const [nombreYAp, setNombreYAp] = useState({ campo: '', valido: null });
-  const [nombre_apellido_id, setNombre_apellido_id] = useState([]); 
+  const [nombre_apellido_id, setNombre_apellido_id] = useState([]);
   const [actividad, setActividad] = useState({ campo: '', valido: null });
   const [actividadesDocentes, setActividadesDocentes] = useState({ actividades: [], docentes: [] });
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const RegistroReservas = () => {
     try {
       const datos = await getActividadesDocentes();
       console.log("Actividades y docentes: ", datos);
-      
+
       setActividadesDocentes(datos);
       generarNombreApellidoId(datos.docentes);
     } catch (error) {
@@ -41,14 +41,14 @@ const RegistroReservas = () => {
 
   const generarNombreApellidoId = (docentes) => {
     setNombre_apellido_id(
-      docentes.map(docente => ({ nombre: `${docente.nombre} ${docente.apellido} - ${docente.id_docente}`}))
+      docentes.map(docente => ({ nombre: `${docente.nombre} ${docente.apellido} - ${docente.id_docente}` }))
     );
   };
 
   const handleNombreYApChange = (estado) => {
     setNombreYAp(estado);
     const docenteSeleccionado = actividadesDocentes.docentes.find(doc => `${doc.nombre} ${doc.apellido} - ${doc.id_docente}` === estado.campo);
-    if (docenteSeleccionado){
+    if (docenteSeleccionado) {
       setCorreo({ campo: docenteSeleccionado.correo_contacto, valido: "true" });
       setNombreYAp({ campo: estado.campo, valido: "true" });
     }
@@ -58,7 +58,7 @@ const RegistroReservas = () => {
   const handleSubmit = async () => {
     const actividadObj = actividadesDocentes.actividades.find(act => act.nombre === actividad.campo);
     const docenteObj = actividadesDocentes.docentes.find(doc => doc.correo_contacto === correo.campo);
-    
+
     const formData = {
       docente: docenteObj,
       cant_alumnos: parseInt(cantidadAlumnos.campo, 10),
@@ -68,18 +68,18 @@ const RegistroReservas = () => {
       lista_reservaciones: reservas
     };
     console.log("Datos del formulario: ", JSON.stringify(formData, null, 2));
-  
+
     const respuestaReserva = await obtenerAulasReserva(formData);
 
     console.log("Respuesta Reserva: ", respuestaReserva);
-    
+
     if (respuestaReserva.errors.some(error => error === true)) {
       let frase = "";
       const errores = respuestaReserva.errors;
-      if(errores[0]) frase += "- Unicamente se puede seleccionar un horario por día.<br>";
-      if(errores[1]) frase += "- La duración seleccionada debe ser multiplo de 30 minutos.<br>";
-      if(errores[2]) frase += "- La fecha seleccionada debe ser posterior a la fecha actual.<br>";
-      if(errores[3]) frase += "- Todos los campos son obligatorios.";
+      if (errores[0]) frase += "- Unicamente se puede seleccionar un horario por día.<br>";
+      if (errores[1]) frase += "- La duración seleccionada debe ser multiplo de 30 minutos.<br>";
+      if (errores[2]) frase += "- La fecha seleccionada debe ser posterior a la fecha actual.<br>";
+      if (errores[3]) frase += "- Todos los campos son obligatorios.";
       mostrarModalWarningReserva(frase);
     }
     else {
@@ -90,12 +90,12 @@ const RegistroReservas = () => {
 
   const todosCamposValidos = () => {
     return tipoReserva.valido &&
-    nombreYAp.valido &&
-    correo.valido &&
-    tipoAula.valido &&
-    actividad.valido &&
-    reservas.length > 0 &&
-    parseInt(cantidadAlumnos.campo, 10) > 0;
+      nombreYAp.valido &&
+      correo.valido &&
+      tipoAula.valido &&
+      actividad.valido &&
+      reservas.length > 0 &&
+      parseInt(cantidadAlumnos.campo, 10) > 0;
   };
 
   useEffect(() => { obtenerActividadesDocentes(); }, []);
@@ -199,10 +199,10 @@ const RegistroReservas = () => {
       <Footer>
         <ParrafoObli>Todos los campos son obligatorios</ParrafoObli>
         <Botones>
-          <BotonSC 
+          <BotonSC
             onClick={handleSubmit}
             disabled={!todosCamposValidos()}
-            style={{ 
+            style={{
               backgroundColor: todosCamposValidos() ? '#0075FF' : 'lightgrey',
               cursor: todosCamposValidos() ? 'pointer' : 'not-allowed'
             }}
@@ -227,4 +227,3 @@ const RegistroReservas = () => {
 };
 
 export default RegistroReservas;
-

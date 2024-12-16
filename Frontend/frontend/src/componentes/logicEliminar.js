@@ -3,7 +3,7 @@ import { eliminarBedel } from '../services/api';
 
 export const manejoEliminar = async (bedel, actualizarValores) => {
   const result = await tuneoModal({
-    title: `¿Está seguro de que desea eliminar al bedel ${bedel.nombre} ${bedel.apellido}? ${"\n"} ID: ${bedel.id_usuario}`,
+    title: `¿Está seguro de que desea eliminar al bedel ${bedel.nombre} ${bedel.apellido}? ${"\n"} ID: ${bedel.id_usuario} ${"\n"} Turno: ${bedel.turno}`,
     text: "Esta acción no podrá revertirse",
     icon: 'warning',
     showCancelButton: true,
