@@ -10,10 +10,8 @@ const HorarioModalEsporadica = ({ fecha, onAceptar, onCancelar }) => {
   const datosValidos = hora_inicio && duracion >= 30;
 
   useEffect(() => {
-    // Guardar el elemento que tenía el foco antes de abrir el modal
     previousFocusRef.current = document.activeElement;
     return () => {
-      // Restaurar el foco al elemento anterior cuando el modal se cierre
       if (previousFocusRef.current) {
         previousFocusRef.current.focus();
       }

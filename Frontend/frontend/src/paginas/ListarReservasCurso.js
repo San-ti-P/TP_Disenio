@@ -1,5 +1,8 @@
 import React from "react";
 import BackButton from "../componentes/backButton"; 
+
+// Este CU no se implementa
+
 const App = () => {
     return (
         <>
