@@ -20,8 +20,8 @@ const App = () => {
   const [politicasTooltip, setPoliticasTooltip] = useState('');
 
   const expresiones = {
-    nombre: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
-    apellido: /^[a-zA-ZÀ-ÿ\s]{2,40}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
+    nombre: /^[a-zA-ZÀ-ÿ\s]{2,30}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
+    apellido: /^[a-zA-ZÀ-ÿ\s]{2,30}$/, // Letras y espacios, pueden llevar acentos- min 2 letras
     idUsuario: /^utn-\d{6}$/, // Formato: utn- seguido de exactamente 6 dígitos.
     //contraseña: /^(?=.*[@#$%&*])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@#$%&*]{8,50}$/ // Mínimo 8 y máximo 50 caracteres
   };
@@ -146,7 +146,7 @@ const App = () => {
           placeholder="Ingrese su nombre"
           name="nombre"
           expresionRegular={expresiones.nombre}
-          textoTooltip={nombre.valido === "false" ? "El nombre debe tener entre 2 y 40 letras inclusive, sólo caracteres alfabéticos" : null}
+          textoTooltip={nombre.valido === "false" ? "El nombre debe tener entre 2 y 30 letras inclusive, sólo caracteres alfabéticos" : null}
         />
         <ComponenteNyAP
           estado={apellido}
@@ -156,7 +156,7 @@ const App = () => {
           placeholder="Ingrese su apellido"
           name="apellido"
           expresionRegular={expresiones.apellido}
-          textoTooltip={apellido.valido === "false" ? "El apellido debe tener entre 2 y 40 letras inclusive, sólo caracteres alfabéticos" : null}
+          textoTooltip={apellido.valido === "false" ? "El apellido debe tener entre 2 y 30 letras inclusive, sólo caracteres alfabéticos" : null}
         />
         <ComponenteDesplegableInput
           estado={turno}
