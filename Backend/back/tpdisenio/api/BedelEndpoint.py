@@ -88,7 +88,7 @@ def buscar_bedel(request):
     params = request.query_params
 
     if 'apellido' in params:
-        apellido = params['apellido'].capitalize()
+        apellido = params['apellido'].strip().lower()
     else:
         apellido = ""
 
@@ -98,6 +98,7 @@ def buscar_bedel(request):
             turno = "Maniana"
     else:
         turno = ""
+
 
     bedeles = gestor_bedel.buscar_bedel(apellido=apellido, turno=turno)
     bedeles_serializer = BedelSerializer(bedeles, many=True)

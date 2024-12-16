@@ -39,6 +39,6 @@ class SQLBedelDAO(BedelDAO):
             return Bedel.objects.filter(turno=turno, activo=True)
         
         if len(turno) == 0:
-            return Bedel.objects.filter(apellido=apellido, activo=True)
+            return Bedel.objects.filter(apellido__iexact=apellido, activo=True)
 
-        return Bedel.objects.filter(apellido=apellido, turno=turno, activo=True)
+        return Bedel.objects.filter(apellido__iexact=apellido, turno=turno, activo=True)

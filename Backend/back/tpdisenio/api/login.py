@@ -25,7 +25,7 @@ def login(request):
             httponly=True,
             secure=True,
             samesite="None",
-            max_age=3600,
+            max_age=3600*12,
             path="/"
         )
         return r
