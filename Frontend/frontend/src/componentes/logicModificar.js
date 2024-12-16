@@ -21,8 +21,8 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
   const [mostrarContraLeyenda, cambiarMostrarContraLeyenda] = useState(false);
 
   const expresiones = {
-    nombre: /^[a-zA-ZÀ-ÿ\s]{2,40}$/,
-    apellido: /^[a-zA-ZÀ-ÿ\s]{2,40}$/,
+    nombre: /^[a-zA-ZÀ-ÿ\s]{2,30}$/,
+    apellido: /^[a-zA-ZÀ-ÿ\s]{2,30}$/,
     idUsuario: /^utn-\d{6}$/,
   };
 
@@ -149,7 +149,7 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
             placeholder="Ingrese su nombre"
             name="nombre"
             expresionRegular={expresiones.nombre}
-            textoTooltip={nombre.valido === "false" ? "El nombre debe tener entre 2 y 40 letras inclusive, sólo caracteres alfabéticos" : null}
+            textoTooltip={nombre.valido === "false" ? "El nombre debe tener entre 2 y 30 letras inclusive, sólo caracteres alfabéticos" : null}
           />
           <ComponenteNyAP
             estado={apellido}
@@ -159,7 +159,7 @@ export const ModificarModal = ({ open, handleClose, bedel, actualizarFila, polit
             placeholder="Ingrese su apellido"
             name="apellido"
             expresionRegular={expresiones.apellido}
-            textoTooltip={apellido.valido === "false" ? "El apellido debe tener entre 2 y 40 letras inclusive, sólo caracteres alfabéticos" : null}
+            textoTooltip={apellido.valido === "false" ? "El apellido debe tener entre 2 y 30 letras inclusive, sólo caracteres alfabéticos" : null}
           />
           <ComponenteDesplegableInput
             estado={turno}
