@@ -75,6 +75,10 @@ export default function AulasReservas() {
     });
   };
 
+  const todasAulasSeleccionadas = () => {
+    return fechas.every(fecha => aulasSeleccionadas[fecha.fecha]);
+  };
+
   const alMenosUnAulaSeleccionada = () => {
     return Object.values(aulasSeleccionadas).some(aula => aula !== null);
   };
@@ -82,17 +86,22 @@ export default function AulasReservas() {
   const enviarAulasSeleccionadas = async (datos) => {
     const respuestaReserva = await enviarAulas(datos);
 
-    if ( typeof respuestaReserva.data === "object" && Object.keys(respuestaReserva.data).length !== 0) {
+    if (typeof respuestaReserva.data === "object" && Object.keys(respuestaReserva.data).length !== 0) {
       console.log("Respuesta del backend: ", JSON.stringify(respuestaReserva, null, 2));
       mostrarModalAulasExitoso(navigate);
-    } else mostrarModalAulasFracaso(navigate);
+    } else {
+      mostrarModalAulasFracaso(navigate);
+    }
   }
 
   const handleSubmit = () => {
     console.log("JSON enviado al backend: ", JSON.stringify(datosFormulario, null, 2));
 
-    if (!alMenosUnAulaSeleccionada()) mostrarModalAulasSinSeleccionar(navigate, enviarAulasSeleccionadas, datosFormulario);
-    else enviarAulasSeleccionadas(datosFormulario);
+    if (todasAulasSeleccionadas()) {
+      enviarAulasSeleccionadas(datosFormulario);
+    } else if (alMenosUnAulaSeleccionada()) {
+      mostrarModalAulasSinSeleccionar(navigate, enviarAulasSeleccionadas, datosFormulario);
+    }
   };
 
   return (
@@ -138,7 +147,6 @@ export default function AulasReservas() {
                   onClick={() => !aula.reservacion && !aula.docente && manejarSeleccionAula(fechaSeleccionada, aula)}
                   style={{ cursor: aula.reservacion && aula.docente ? 'default' : 'pointer' }}
                 >
-
                   {!aula.reservacion && !aula.docente && (
                     <>
                       <div className="encabezado">
@@ -172,8 +180,7 @@ export default function AulasReservas() {
                     </>
                   )}
                 </OpcionAula>
-              ))
-              }
+              ))}
             </>
           )}
         </ListaAulas>

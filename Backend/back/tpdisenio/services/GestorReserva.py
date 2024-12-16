@@ -53,12 +53,24 @@ class GestorReserva():
             reservacion = self.gestor_reservacion.alta_reservacion(r.get_hora_inicio(), r.get_duracion(), r.get_dia(), r.get_fecha(), reserva, aula)
             reserva.add_reservacion(reservacion)
         
+        # if exito: 
+        #     self.reserva_DAO.create_reserva(reserva)
+        #     return exito, ReservaDTO(id_reserva=reserva.get_id_reserva(), cant_alumnos=reserva.get_cantidad_alumnos(), fecha_solicitud=reserva.get_fecha_solicitud(),
+        #                              tipo=reserva.get_tipo(), activo=reserva.get_activo(), fecha_baja=reserva.get_fecha_baja(), periodo=reserva.get_periodo().get_id_periodo(),
+        #                              actividad=reserva.get_actividad().get_id_actividad(), bedel=reserva.get_bedel().get_id_usuario())
         if exito: 
             self.reserva_DAO.create_reserva(reserva)
-            return exito, ReservaDTO(id_reserva=reserva.get_id_reserva(), cant_alumnos=reserva.get_cantidad_alumnos(), fecha_solicitud=reserva.get_fecha_solicitud(),
-                                     tipo=reserva.get_tipo(), activo=reserva.get_activo(), fecha_baja=reserva.get_fecha_baja(), periodo=reserva.get_periodo().get_id_periodo(),
-                                     actividad=reserva.get_actividad().get_id_actividad(), bedel=reserva.get_bedel().get_id_usuario())
-
+            return exito, ReservaDTO(
+                id_reserva=reserva.get_id_reserva(),
+                cant_alumnos=reserva.get_cantidad_alumnos(),
+                fecha_solicitud=reserva.get_fecha_solicitud(),
+                tipo=reserva.get_tipo(),
+                activo=reserva.get_activo(),
+                fecha_baja=reserva.get_fecha_baja(),
+                periodo=reserva.get_periodo().get_id_periodo() if reserva.get_periodo() else None,
+                actividad=reserva.get_actividad().get_id_actividad(),
+                bedel=reserva.get_bedel().get_id_usuario()
+            )
         else:
             return exito, None
             
