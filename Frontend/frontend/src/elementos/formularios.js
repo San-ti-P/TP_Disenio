@@ -198,4 +198,24 @@ const FormLogin = styled.form`
   }
 `;
 
-export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC, BotonSubmit, LeyendaError, FormLogin}
+const BotonDeseleccionar = styled.button`
+  padding: 5px 10px;
+  width: 30%;
+  border: none;
+  border-radius: 5px;
+  background-color: #0075FF;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.1s;
+  user-select: none;
+  align-self: center;
+  justify-self: center;
+  margin-bottom: 3px;
+
+  &:hover {
+    background-color: #005BB5;
+  }
+`;
+
+
+export {Formulario, DivTextoCampoObligatorio, DivBotonesSC, Input, Label, GrupoInput, Select, IconoPassword, BotonSC, BotonSubmit, LeyendaError, FormLogin, BotonDeseleccionar}

@@ -205,4 +205,17 @@ const mostrarModalAulasExitoso = (navigate) => {
   });
 };
 
-export { CancelarModal, mostrarModalExito, tuneoModal, mostrarModalExitoModificar, mostrarModalWarningReserva, mostrarModalAulasSinSeleccionar, mostrarModalAulasExitoso };
+const mostrarModalAulasFracaso = (navigate) => {
+  tuneoModal({
+    title: "No se hizo ninguna reserva!",
+    text: "",
+    icon: "error",
+    showConfirmButton: false,
+    timer: 1500,
+    willClose: () => {
+      navigate("/menuBedel");
+    }
+  });
+};
+
+export { CancelarModal, mostrarModalExito, tuneoModal, mostrarModalExitoModificar, mostrarModalWarningReserva, mostrarModalAulasSinSeleccionar, mostrarModalAulasExitoso, mostrarModalAulasFracaso };

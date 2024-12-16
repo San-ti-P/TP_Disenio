@@ -21,7 +21,6 @@ function App() {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         
-        {/* Rutas para Administradores */}
         <Route
           path="/menuAdm"
           element={
@@ -55,7 +54,6 @@ function App() {
             } 
           />
 
-        {/* Rutas para Bedeles */}
         <Route
           path="/menuBedel"
           element={
