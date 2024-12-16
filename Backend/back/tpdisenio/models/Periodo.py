@@ -9,9 +9,7 @@ class Periodo(models.Model):
         ANUAL = "Anual"
         PRIMER_CUATRIMESTRE = "Primer Cuatrimestre"
         SEGUNDO_CUATRIMESTRE = "Segundo Cuatrimestre"
-    
-    #id_periodo = models.CharField(max_length=10, primary_key=True)
-    
+        
     id_periodo = models.AutoField(primary_key=True)
     tipo = models.CharField(max_length=25, choices=TipoPeriodo)
     anio = models.IntegerField()
