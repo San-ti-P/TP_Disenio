@@ -20,21 +20,21 @@ const ReservaPeriodica = ({ onReservasChange }) => {
   const [modalData, setModalData] = useState({ dia: '', fecha: null, duracion: 30, hora_inicio: '' });
 
   const manejarClickDia = (dia) => {
-    setModalData({ ...modalData, dia });
+    setModalData({ ...modalData, dia: diasMap[dia] });
     setMostrarModal(true);
   };
 
   const manejarAgregarHorario = () => {
     if (modalData.hora_inicio && modalData.duracion >= 30) {
-      const nuevoHorario = [...horario, { ...modalData, dia: diasMap[modalData.dia] }];
+      const nuevoHorario = [...horario, { ...modalData }];
       setHorario(nuevoHorario);
-      setDiaSeleccionado([...diaSeleccionado, modalData.dia]);
+      setDiaSeleccionado([...diaSeleccionado, Object.keys(diasMap).find(key => diasMap[key] === modalData.dia)]);
       setMostrarModal(false);
       setModalData({ dia: '', fecha: null, duracion: 30, hora_inicio: '' });
       onReservasChange(nuevoHorario, periodo);
     }
   };
-
+  
   const manejarEliminarHorario = (index) => {
     const horarioEliminado = horario[index];
     const nuevosHorarios = horario.filter((_, i) => i !== index);
